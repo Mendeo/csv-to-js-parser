@@ -22,7 +22,7 @@ const normal_obj =
 		closed: [true, false]
 	},
 	{
-		customer_id: 2,
+		customer_id: 3,
 		name: 'Eve',
 		product: ['microphone', 'router', 'mobile phone'],
 		price: [20, 105, 110],
@@ -47,7 +47,7 @@ const not_normal_obj =
 		closed: [null, false]
 	},
 	{
-		customer_id: 2,
+		customer_id: 3,
 		name: 'Eve',
 		product: ['microphone', 'router', 'mobile phone'],
 		price: [20, 105, 110],
