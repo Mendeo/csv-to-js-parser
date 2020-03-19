@@ -151,6 +151,57 @@ module.exports.csvToObj = function(data, delimeter, description)
 	}
 }
 
+module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
+{
+	if (!Array.isArray(obj)) throw new Error ('Object is not array');
+	if (!obj[0]) throw new Error('Object error');
+	if (!rowDelimeter) rowDelimeter = '\n';
+	let out = '';
+	let keys = []; //Saving keys order
+	for (let key in obj[0]) keys.push(key);
+	let isConstant = new Array(keys.length);
+	for (let i = 0; i < keys.length; i++)
+	{
+		out += keys[i]
+		if (i !== keys.length - 1) out += delimeter;
+		isConstant[i] = !Array.isArray(obj[0][keys[i]]);
+	}
+	out += rowDelimeter;
+	//Body
+	for (let elem of obj)
+	{
+		//Get max length of val arrays
+		let maxArrayLength = 0;
+		for (let i = 0; i < keys.length; i++)
+		{
+			if (!isConstant[i])
+			{
+				let ln = elem[keys[i]].length;
+			 	if (maxArrayLength < ln) maxArrayLength = ln;
+			}
+		}
+		//Fill rows
+		for (let i = 0; i < maxArrayLength; i++)
+		{
+			for (let j = 0; j < keys.length; j++)
+			{
+				if (isConstant[j])
+				{
+					out += elem[keys[j]].toString();
+				}
+				else
+				{
+					let val = elem[keys[j]][i];
+					if (val) out += val.toString();	
+				}
+				if (j !== keys.length - 1) out += delimeter;
+			}
+			out += rowDelimeter;
+		}
+	}
+	return out;
+}
+
 let desc =
 	{
 		customer_id: {constant: true, type: 'string'},
@@ -161,4 +212,7 @@ let desc =
 	};
 
 let obj = module.exports.csvToObj(data, ';', desc);
+let csv = module.exports.objToCsv(obj, ';');
 console.log(obj);
+console.log();
+console.log(csv);
