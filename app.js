@@ -43,7 +43,7 @@ module.exports.csvToObj = function(data, delimeter, constantFileds)
 	
 	let constants = {};
 	let constantsIndexes = {};
-	let mainKey;
+	let mainKey; //One of the constant field
 	if (!constantFileds) throw new Error('You must specify constant fields!');
 	constantFileds.forEach((key) => 
 		{
