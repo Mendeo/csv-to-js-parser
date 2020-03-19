@@ -2,10 +2,10 @@ customer_id;name;product;price;closed
 3;Eve;router;105;false
 1;Bob;monitor;400;false
 2;Alice;mouse;7;false
-1;Bob;mobile phone;970;true
-2;Alice;laptop;1200;true
+1;Bob;;970;true
+2;Alice;laptop;1200;
 3;Eve;mobile phone;110;false
-1;Bob;computer;550;true
+1;Bob;computer;;true
 3;Eve;microphone;20;true
 
 

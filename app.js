@@ -1,6 +1,6 @@
 'use strict';
-const fs = require('fs');
-let data = fs.readFileSync(__dirname + '\\tests\\data_unsort.csv').toString();
+//const fs = require('fs');
+//let data = fs.readFileSync(__dirname + '\\tests\\data_unsort.csv').toString();
 
 module.exports.csvToObj = function(data, delimeter, description)
 {
@@ -57,12 +57,20 @@ module.exports.csvToObj = function(data, delimeter, description)
 			flag = false;
 			constants[key] = typeInitialisation(description[key].type);
 			constantsIndexes[key] = index;
-			mainKey = key;
+			if (description[key].notNull) mainKey = key;
 		}
 		else
 		{
 			arrays[key] = [];
 			arraysIndexes[key] = index;
+		}
+	}
+	if (!mainKey) //if noNull is not specified then mainKey can be any of constant key
+	{
+		for (let key in constants)
+		{
+			mainKey = key;
+			break;
 		}
 	}
 	if (flag) throw new Error('You must specify constant fields!');
@@ -202,17 +210,11 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 	return out;
 }
 
-let desc =
-	{
-		customer_id: {constant: true, type: 'string'},
-		product: {constant: false, type: 'string'},
-		name: {constant: true, type: 'string'},
-		price: {constant: false, type: 'number'},
-		closed: {constant: false, type: 'boolean'}
-	};
+/*
 
 let obj = module.exports.csvToObj(data, ';', desc);
 let csv = module.exports.objToCsv(obj, ';');
 console.log(obj);
 console.log();
 console.log(csv);
+*/
