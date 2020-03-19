@@ -1,92 +1,119 @@
 'use strict';
-//module.exports.f = function(a, b) {return a * b}
+const fs = require('fs');
+let data = fs.readFileSync(__dirname + '\\tests\\data_unsort.csv').toString();
 
-const path = require('path');
-//const fs = require('fs');
-//const CSV_PATH = process.argv[2];
-//const OUT_FILE = path.join(path.dirname(CSV_PATH), path.basename(CSV_PATH, '.csv') + '.json');
-const CONSTANTS = process.argv[3].split(','); //Константные параметры.
-const NEW_ROW = '\r\n';
-const CSV_DELIM = ';';
-
-console.log('Reading file ' + CSV_PATH);
-let data = fs.readFileSync(CSV_PATH).toString().split(NEW_ROW);
-let header = data[0].split(CSV_DELIM);
-
-let constants = {};
-let constantsIndexes = {};
-CONSTANTS.forEach((index) => 
-	{
-		constants[header[index]] = '';
-		constantsIndexes[header[index]] = index;
-	});
-
-let arrays = {};
-let arraysIndexes = {};
-for (let i = 0; i < header.length; i++)	
+module.exports.csvToObj = function(data, delimeter, constantFileds)
 {
-	if (!CONSTANTS.includes(String(i)))
+	//Spliting data by rows
 	{
-		arrays[header[i]] = [];
-		arraysIndexes[header[i]] = i;
-	}
-}
-
-let mainKey;
-for (let key in constants)
-{
-	mainKey = key;
-	break;
-}
-
-console.log();
-console.log('constants:');
-for (let key in constants) console.log(key);
-console.log();
-console.log('arrays:');
-for (let key in arrays) console.log(key);
-console.log();
-
-let startRow = 1;
-let index = startRow;
-let mainValueOld;
-let mainValue;
-let row;
-let flag = true;
-let out = [];
-console.log('Converting data');
-
-while(flag)
-{
-	for (let key in arrays) arrays[key] = [];
-	if (index === startRow)
-	{
-		row = data[index].split(CSV_DELIM);
-		mainValueOld = row[constantsIndexes[mainKey]];
-		mainValue = mainValueOld;
-	}
-	for (let key in constants) constants[key] = row[constantsIndexes[key]];
-	while(mainValue === mainValueOld)
-	{
-		for (let key in arrays) arrays[key].push(row[arraysIndexes[key]]);
-		index++;
-		if (index === data.length || !data[index])
+		//Checking row delimeter
+		let newRow;
+		let i = data.indexOf('\n', 0);
+		if (i === -1) throw new Error('No row delimeter found');
+		if (data[i - 1] === '\r')
 		{
-			flag = false;
-			break;
+			newRow = '\r\n';
 		}
-		row = data[index].split(CSV_DELIM);
-		mainValue = row[constantsIndexes[mainKey]];
+		else
+		{
+			newRow = '\n';
+		}
+		//Deleting last empty row
+		data = data.split(newRow);
+		i = data.length - 1;
+		while (data[i] === '') 
+		{
+			data.pop();
+			i--;
+		}
 	}
-	let outElement = {};
-	for (let key in constants) outElement[key] = constants[key];
-	for (let key in arrays) outElement[key] = arrays[key];
-	out.push(outElement);
-	if (flag)
+	let header = data[0].split(delimeter);
+	//Deleting header from data
+	data.shift();
+	//Spliting data by delimeter
 	{
-		mainValueOld = mainValue;
+		let newData = [];
+		for (let row of data)
+		{
+			let arr = row.split(delimeter);
+			newData.push(arr);
+		}
+		data = newData;
+	}
+	
+	let constants = {};
+	let constantsIndexes = {};
+	let mainKey;
+	if (!constantFileds) throw new Error('You must specify constant fields!');
+	constantFileds.forEach((key) => 
+		{
+			constants[key] = '';
+			let index = header.indexOf(key, 0);
+			if (index === -1) throw new Error('Cannnot found selected constant fileds in the header');
+			constantsIndexes[key] = index;
+		});
+	mainKey = constantFileds[0];
+	//Sorting data by mainKey
+	{
+		function compare(index)
+		{
+			return function(a, b)
+			{
+				if (a[index] > b[index]) return 1;
+				if (a[index] === b[index]) return 0;
+				return -1;
+			};
+		}
+		data = data.sort(compare(constantsIndexes[mainKey]));
+	}
+	let arrays = {};
+	let arraysIndexes = {};
+	for (let i = 0; i < header.length; i++)	
+	{
+		if (!constantFileds.includes(header[i]))
+		{
+			arrays[header[i]] = [];
+			arraysIndexes[header[i]] = i;
+		}
+	}
+	
+	let index = 0;
+	let mainValueOld;
+	let mainValue;
+	let flag = true;
+	let out = [];
+	let row;
+	
+	//Converting to obj
+	
+	while(flag)
+	{
+		for (let key in arrays) arrays[key] = [];
+		if (index === 0)
+		{
+			row = data[index];
+			mainValueOld = row[constantsIndexes[mainKey]];
+			mainValue = mainValueOld;
+		}
+		for (let key in constants) constants[key] = row[constantsIndexes[key]];
+		while(mainValue === mainValueOld)
+		{
+			for (let key in arrays) arrays[key].push(row[arraysIndexes[key]]);
+			index++;
+			if (index === data.length || !data[index])
+			{
+				flag = false;
+				break;
+			}
+			row = data[index];
+			mainValue = row[constantsIndexes[mainKey]];
+		}
+		let outElement = {};
+		for (let key in constants) outElement[key] = constants[key];
+		for (let key in arrays) outElement[key] = arrays[key];
+		out.push(outElement);
+		if (flag) mainValueOld = mainValue;
 	}
 }
-console.log('Writing data');
-fs.writeFileSync(OUT_FILE, JSON.stringify(out, null, '\t'));
-console.log(`Count = ${out.length}`);
+
+module.exports.csvToObj(data, ';', ['customer_id', 'name']);
