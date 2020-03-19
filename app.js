@@ -145,6 +145,7 @@ module.exports.csvToObj = function(data, delimeter, description)
 
 	function convertToType(value, type)
 	{
+		if (value === '') return null;
 		switch(type.toLowerCase())
 		{
 			case 'string':
@@ -152,7 +153,19 @@ module.exports.csvToObj = function(data, delimeter, description)
 			case 'number':
 				return Number(value);
 			case 'boolean':
-				return Boolean(value);
+				let val = value.toLowerCase();
+				if (val === "true")
+				{
+					return true;
+				}
+				else if(val === "false")
+				{
+					return false;
+				}
+				else
+				{
+					throw new Error('Cannont convert boolean value');
+				};
 			default:
 				throw new Error('Type is incorrect');
 		}

@@ -82,6 +82,7 @@ describe('Check csvToObj convertion', () =>
 		});
 });
 
+//Function shows where difference between expected object and result object
 function whereNotEqual(expected, result)
 {
 	let flag = false;
@@ -106,8 +107,7 @@ function whereNotEqual(expected, result)
 			{
 				if (expected[i][key] !== result[i][key]) flag = true;
 			}
-			//if (flag) return `Expected ${key}: ${expected[i][key]}, but got ${key}: ${result[i][key]}`;
-			if (flag) return `Expected:\n${JSON.stringify(expected[i][key], null, ' ')}\n\nBut got:\n${JSON.stringify(result[i][key], null, ' ')}`;
+			if (flag) return `Expected:\n${key}: ${JSON.stringify(expected[i][key], null, ' ')}\n\nBut got:\n${key}: ${JSON.stringify(result[i][key], null, ' ')}`;
 		}
 	}
 	return false;
