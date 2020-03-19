@@ -2,7 +2,7 @@
 const fs = require('fs');
 let data = fs.readFileSync(__dirname + '\\tests\\data_unsort.csv').toString();
 
-module.exports.csvToObj = function(data, delimeter, constantFileds)
+module.exports.csvToObj = function(data, delimeter, description)
 {
 	//Spliting data by rows
 	{
@@ -44,15 +44,28 @@ module.exports.csvToObj = function(data, delimeter, constantFileds)
 	let constants = {};
 	let constantsIndexes = {};
 	let mainKey; //One of the constant field
-	if (!constantFileds) throw new Error('You must specify constant fields!');
-	constantFileds.forEach((key) => 
+	let arrays = {};
+	let arraysIndexes = {};
+	let flag = true;
+
+	for (let key in description)
+	{
+		let index = header.indexOf(key, 0); 
+		if (index === -1) throw new Error('Cannnot found selected fileds in the header');
+		if (description[key].constant)
 		{
-			constants[key] = '';
-			let index = header.indexOf(key, 0);
-			if (index === -1) throw new Error('Cannnot found selected constant fileds in the header');
+			flag = false;
+			constants[key] = typeInitialisation(description[key].type);
 			constantsIndexes[key] = index;
-		});
-	mainKey = constantFileds[0];
+			mainKey = key;
+		}
+		else
+		{
+			arrays[key] = [];
+			arraysIndexes[key] = index;
+		}
+	}
+	if (flag) throw new Error('You must specify constant fields!');
 	//Sorting data by mainKey
 	{
 		function compare(index)
@@ -66,23 +79,13 @@ module.exports.csvToObj = function(data, delimeter, constantFileds)
 		}
 		data = data.sort(compare(constantsIndexes[mainKey]));
 	}
-	let arrays = {};
-	let arraysIndexes = {};
-	for (let i = 0; i < header.length; i++)	
-	{
-		if (!constantFileds.includes(header[i]))
-		{
-			arrays[header[i]] = [];
-			arraysIndexes[header[i]] = i;
-		}
-	}
 	
 	let index = 0;
 	let mainValueOld;
 	let mainValue;
-	let flag = true;
 	let out = [];
 	let row;
+	flag = true;
 	
 	//Converting to obj
 	
@@ -98,7 +101,7 @@ module.exports.csvToObj = function(data, delimeter, constantFileds)
 		for (let key in constants) constants[key] = row[constantsIndexes[key]];
 		while(mainValue === mainValueOld)
 		{
-			for (let key in arrays) arrays[key].push(row[arraysIndexes[key]]);
+			for (let key in arrays) arrays[key].push(convertToType(row[arraysIndexes[key]], description[key].type));
 			index++;
 			if (index === data.length || !data[index])
 			{
@@ -109,11 +112,53 @@ module.exports.csvToObj = function(data, delimeter, constantFileds)
 			mainValue = row[constantsIndexes[mainKey]];
 		}
 		let outElement = {};
-		for (let key in constants) outElement[key] = constants[key];
+		for (let key in constants) outElement[key] = convertToType(constants[key], description[key].type);
 		for (let key in arrays) outElement[key] = arrays[key];
 		out.push(outElement);
 		if (flag) mainValueOld = mainValue;
 	}
+
+	return out;
+
+	function typeInitialisation(type)
+	{
+		switch(type.toLowerCase())
+		{
+			case 'string':
+				return '';
+			case 'number':
+				return 0;
+			case 'boolean':
+				return false;
+			default:
+				throw new Error('Type is incorrect');
+		}
+	}
+
+	function convertToType(value, type)
+	{
+		switch(type.toLowerCase())
+		{
+			case 'string':
+				return String(value);
+			case 'number':
+				return Number(value);
+			case 'boolean':
+				return Boolean(value);
+			default:
+				throw new Error('Type is incorrect');
+		}
+	}
 }
 
-module.exports.csvToObj(data, ';', ['customer_id', 'name']);
+let desc =
+	{
+		customer_id: {constant: true, type: 'string'},
+		product: {constant: false, type: 'string'},
+		name: {constant: true, type: 'string'},
+		price: {constant: false, type: 'number'},
+		closed: {constant: false, type: 'boolean'}
+	};
+
+let obj = module.exports.csvToObj(data, ';', desc);
+console.log(obj);
