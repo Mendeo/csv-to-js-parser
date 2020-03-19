@@ -223,11 +223,3 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 	return out;
 }
 
-/*
-
-let obj = module.exports.csvToObj(data, ';', desc);
-let csv = module.exports.objToCsv(obj, ';');
-console.log(obj);
-console.log();
-console.log(csv);
-*/

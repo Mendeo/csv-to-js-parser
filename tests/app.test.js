@@ -64,7 +64,7 @@ const description =
 		closed: {constant: false, type: 'boolean'}
 	};
 
-describe('Check csvToObj convertion', () =>
+describe('Tests for csvToObj convertion', () =>
 {
 	function doTest(csv, expected)
 	{
@@ -72,16 +72,20 @@ describe('Check csvToObj convertion', () =>
 		let msg = whereNotEqual(expected, result);
 		if (msg) throw new Error(msg);
 	}
-	it ('should return correct normal object', () =>
-		{
-			doTest(csv_normal, normal_obj);
-		});
-	it ('should return correct not_normal object', () =>
-		{
-			doTest(csv_not_normal, not_normal_obj);
-		});
+	it ('should return correct normal object', () => doTest(csv_normal, normal_obj));
+	it ('should return correct not_normal object', () => doTest(csv_not_normal, not_normal_obj));
 });
 
+describe('Tests for objToCsv conversion', () =>
+{
+	function doTest(obj, expected)
+	{
+		const result = app.objToCsv(obj, ';', '\r\n');
+		if (result !== expected) throw new Error(`Expected:\n${expected}\n\n But got:\n${result}`);
+	}
+	it('should return correct normal csv', () => doTest(normal_obj, csv_normal));
+	it('should return correct not_normal csv', () => doTest(not_normal_obj, csv_not_normal));
+});
 //Function shows where difference between expected object and result object
 function whereNotEqual(expected, result)
 {
