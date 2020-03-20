@@ -1,7 +1,7 @@
 {
-  "name": "csv-to-json",
+  "name": "csv-to-js-object",
   "version": "1.0.0",
-  "description": "Converting relation format csv data into JSON",
+  "description": "Converting relation format csv data into array of JavaScript objects",
   "main": "app.js",
   "scripts": {
     "test": "mocha tests/*.test.js"
