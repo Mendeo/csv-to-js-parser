@@ -43,7 +43,7 @@ module.exports.csvToObj = function(data, delimeter, description)
 	
 	let constants = {};
 	let constantsIndexes = {};
-	let mainKey; //One of the constant field
+	let mainKey;
 	let arrays = {};
 	let arraysIndexes = {};
 	let flag = true;
@@ -57,7 +57,7 @@ module.exports.csvToObj = function(data, delimeter, description)
 			flag = false;
 			constants[key] = typeInitialisation(description[key].type);
 			constantsIndexes[key] = index;
-			if (description[key].notNull) mainKey = key;
+			if (description[key].mainKey) mainKey = key;
 		}
 		else
 		{
@@ -65,15 +65,8 @@ module.exports.csvToObj = function(data, delimeter, description)
 			arraysIndexes[key] = index;
 		}
 	}
-	if (!mainKey) //if noNull is not specified then mainKey can be any of constant key
-	{
-		for (let key in constants)
-		{
-			mainKey = key;
-			break;
-		}
-	}
 	if (flag) throw new Error('You must specify constant fields!');
+	if (!mainKey) throw new Error('You must specify mainKey field!');
 	//Sorting data by mainKey
 	{
 		function compare(index)

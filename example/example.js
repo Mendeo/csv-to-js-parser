@@ -7,7 +7,7 @@ const data = fs.readFileSync('data.csv').toString();
 
 const description =
 	{
-		customer_id: {constant: true, type: 'number', notNull: true},
+		customer_id: {constant: true, type: 'number', mainKey: true},
 		product: {constant: false, type: 'string'},
 		name: {constant: true, type: 'string'},
 		price: {constant: false, type: 'number'},

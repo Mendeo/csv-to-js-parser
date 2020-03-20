@@ -3,27 +3,27 @@
 const app = require('../app');
 
 const normal_csv =
-`customer_id;name;product;price;closed
-1;Bob;computer;550;true
-1;Bob;monitor;400;false
-1;Bob;mobile phone;970;true
-2;Alice;laptop;1200;true
-2;Alice;mouse;7;false
-3;Eve;microphone;20;true
-3;Eve;router;105;false
-3;Eve;mobile phone;110;false
+`customer_id;name;product;price;closed;status
+1;Bob;computer;550;true;0
+1;Bob;monitor;400;false;0
+1;Bob;mobile phone;970;true;0
+2;Alice;laptop;1200;true;1
+2;Alice;mouse;7;false;1
+3;Eve;microphone;20;true;1
+3;Eve;router;105;false;1
+3;Eve;mobile phone;110;false;1
 `;
 
 const not_normal_csv =
-`customer_id;name;product;price;closed
-3;Eve;router;105;false
-1;Bob;monitor;400;false
-2;Alice;mouse;7;false
-1;Bob;;970;true
-2;Alice;laptop;1200;
-3;Eve;mobile phone;110;false
-1;Bob;computer;;true
-3;Eve;microphone;20;true
+`customer_id;name;product;price;closed;status
+3;Eve;router;105;false;1
+1;Bob;monitor;400;false;0
+2;Alice;mouse;7;false;1
+1;Bob;;970;true;0
+2;Alice;laptop;1200;;1
+3;Eve;mobile phone;110;false;1
+1;Bob;computer;;true;0
+3;Eve;microphone;20;true;1
 
 
 
@@ -31,15 +31,15 @@ const not_normal_csv =
 
 
 const not_normal_csv_sorted =
-`customer_id;name;product;price;closed
-1;Bob;computer;;true
-1;Bob;monitor;400;false
-1;Bob;;970;true
-2;Alice;laptop;1200;
-2;Alice;mouse;7;false
-3;Eve;microphone;20;true
-3;Eve;router;105;false
-3;Eve;mobile phone;110;false
+`customer_id;name;product;price;closed;status
+1;Bob;computer;;true;0
+1;Bob;monitor;400;false;0
+1;Bob;;970;true;0
+2;Alice;laptop;1200;;1
+2;Alice;mouse;7;false;1
+3;Eve;microphone;20;true;1
+3;Eve;router;105;false;1
+3;Eve;mobile phone;110;false;1
 `;
 
 const normal_obj = 
@@ -49,21 +49,24 @@ const normal_obj =
 		name: 'Bob',
 		product: ['computer', 'monitor', 'mobile phone'],
 		price: [550, 400, 970],
-		closed: [true, false, true]
+		closed: [true, false, true],
+		status: 0
 	},
 	{
 		customer_id: 2,
 		name: 'Alice',
 		product: ['laptop', 'mouse'],
 		price: [1200, 7],
-		closed: [true, false]
+		closed: [true, false],
+		status: 1
 	},
 	{
 		customer_id: 3,
 		name: 'Eve',
 		product: ['microphone', 'router', 'mobile phone'],
 		price: [20, 105, 110],
-		closed: [true, false, false]
+		closed: [true, false, false],
+		status: 1
 	}
 ]
 
@@ -74,31 +77,35 @@ const not_normal_obj =
 		name: 'Bob',
 		product: ['computer', 'monitor', null],
 		price: [null, 400, 970],
-		closed: [true, false, true]
+		closed: [true, false, true],
+		status: 0
 	},
 	{
 		customer_id: 2,
 		name: 'Alice',
 		product: ['laptop', 'mouse'],
 		price: [1200, 7],
-		closed: [null, false]
+		closed: [null, false],
+		status: 1
 	},
 	{
 		customer_id: 3,
 		name: 'Eve',
 		product: ['microphone', 'router', 'mobile phone'],
 		price: [20, 105, 110],
-		closed: [true, false, false]
+		closed: [true, false, false],
+		status: 1
 	}
 ]
 
 const description =
 	{
-		customer_id: {constant: true, type: 'number', notNull: true},
+		customer_id: {constant: true, type: 'number', mainKey: true},
 		product: {constant: false, type: 'string'},
 		name: {constant: true, type: 'string'},
 		price: {constant: false, type: 'number'},
-		closed: {constant: false, type: 'boolean'}
+		closed: {constant: false, type: 'boolean'},
+		status: {constant: true, type: 'number'}
 	};
 
 describe('Tests for csvToObj convertion', () =>
