@@ -1,9 +1,46 @@
-let app = require('../app');
+'use strict';
+//const fs = require('fs');
+const app = require('../app');
 
-const path = require('path');
-const fs = require('fs');
-const csv_normal = fs.readFileSync(path.join(__dirname, 'data_normal.csv')).toString();
-const csv_not_normal = fs.readFileSync(path.join(__dirname, 'data_not_normal.csv')).toString();
+const normal_csv =
+`customer_id;name;product;price;closed
+1;Bob;computer;550;true
+1;Bob;monitor;400;false
+1;Bob;mobile phone;970;true
+2;Alice;laptop;1200;true
+2;Alice;mouse;7;false
+3;Eve;microphone;20;true
+3;Eve;router;105;false
+3;Eve;mobile phone;110;false
+`;
+
+const not_normal_csv =
+`customer_id;name;product;price;closed
+3;Eve;router;105;false
+1;Bob;monitor;400;false
+2;Alice;mouse;7;false
+1;Bob;;970;true
+2;Alice;laptop;1200;
+3;Eve;mobile phone;110;false
+1;Bob;computer;;true
+3;Eve;microphone;20;true
+
+
+
+`;
+
+
+const not_normal_csv_sorted =
+`customer_id;name;product;price;closed
+1;Bob;computer;;true
+1;Bob;monitor;400;false
+1;Bob;;970;true
+2;Alice;laptop;1200;
+2;Alice;mouse;7;false
+3;Eve;microphone;20;true
+3;Eve;router;105;false
+3;Eve;mobile phone;110;false
+`;
 
 const normal_obj = 
 [
@@ -72,19 +109,21 @@ describe('Tests for csvToObj convertion', () =>
 		let msg = whereNotEqual(expected, result);
 		if (msg) throw new Error(msg);
 	}
-	it ('should return correct normal object', () => doTest(csv_normal, normal_obj));
-	it ('should return correct not_normal object', () => doTest(csv_not_normal, not_normal_obj));
+	it ('should return normal object', () => doTest(normal_csv, normal_obj));
+	it ('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj));
 });
 
 describe('Tests for objToCsv conversion', () =>
 {
 	function doTest(obj, expected)
 	{
-		const result = app.objToCsv(obj, ';', '\r\n');
-		if (result !== expected) throw new Error(`Expected:\n${expected}\n\n But got:\n${result}`);
+		const result = app.objToCsv(obj, ';');
+		//fs.writeFileSync('expected.csv', expected);
+		//fs.writeFileSync('result.csv', result);
+		if (result !== expected) throw new Error(`Expected:\n${expected}\n\nBut got:\n${result}`);
 	}
-	it('should return correct normal csv', () => doTest(normal_obj, csv_normal));
-	it('should return correct not_normal csv', () => doTest(not_normal_obj, csv_not_normal));
+	it('should return normal_csv', () => doTest(normal_obj, normal_csv));
+	it('should return not_normal_csv_sorted', () => doTest(not_normal_obj, not_normal_csv_sorted));
 });
 //Function shows where difference between expected object and result object
 function whereNotEqual(expected, result)
@@ -96,8 +135,8 @@ function whereNotEqual(expected, result)
 		{
 			if (Array.isArray(expected[i][key]))
 			{
-				let expectedArr = expected[i][key].sort(); //it should not depends from order
-				let resultArr = result[i][key].sort();
+				let expectedArr = expected[i][key].slice().sort(); //it should not depends from order
+				let resultArr = result[i][key].slice().sort();
 				for (let j = 0; j < expectedArr.length; j++)
 				{
 					if (expectedArr[j]!== resultArr[j])

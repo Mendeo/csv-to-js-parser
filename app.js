@@ -213,7 +213,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 				else
 				{
 					let val = elem[keys[j]][i];
-					if (val) out += val.toString();	
+					if (val !== null) out += val.toString();	
 				}
 				if (j !== keys.length - 1) out += delimeter;
 			}
