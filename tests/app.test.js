@@ -1,18 +1,17 @@
 'use strict';
-//const fs = require('fs');
 const app = require('../app');
 
 const normal_csv =
-`customer_id;name;product;price;closed;status;product_id
-1;Bob;computer;550;true;0;1
-1;Bob;monitor;400;false;0;2
-1;Bob;mobile phone;970;true;0;3
-1;Bob;mouse;7;true;0;4
-2;Alice;laptop;1200;true;5
-2;Alice;mouse;7;false;4
-3;Eve;microphone;20;true;6
-3;Eve;router;105;false;7
-3;Eve;laptop;1200;false;5
+`customer_id;name;product;product_id;price;closed;status
+1;Bob;computer;1;550;true;0
+1;Bob;monitor;2;400;false;0
+1;Bob;mobile phone;3;970;true;0
+1;Bob;mouse;4;7;true;0
+2;Alice;laptop;5;1200;true;1
+2;Alice;mouse;4;7;false;1
+3;Eve;microphone;6;20;true;1
+3;Eve;router;7;105;false;1
+3;Eve;laptop;5;1200;false;1
 `;
 
 const not_normal_csv =
@@ -33,7 +32,7 @@ const not_normal_csv =
 
 
 const not_normal_csv_sorted =
-`customer_id;name;product;price;closed;status
+`customer_id;name;product;price;closed;status;product_id
 1;Bob;computer;;true;0;1
 1;Bob;monitor;400;false;0;2
 1;Bob;;970;true;0;3
@@ -82,28 +81,28 @@ const not_normal_obj =
 		customer_id: 1,
 		name: 'Bob',
 		product: ['computer', 'monitor', null, 'mouse'],
-		product_id: [1, 2, 3, 4],
-		price: [null, 400, 970],
-		closed: [true, false, true],
-		status: 0
+		price: [null, 400, 970, 7],
+		closed: [true, false, true, true],
+		status: 0,
+		product_id: [1, 2, 3, 4]
 	},
 	{
 		customer_id: 2,
 		name: 'Alice',
 		product: ['laptop', 'mouse'],
-		product_id: [null, 4],
 		price: [1200, 7],
 		closed: [null, false],
-		status: 1
+		status: 1,
+		product_id: [null, 4]
 	},
 	{
 		customer_id: 3,
 		name: 'Eve',
-		product: ['microphone', 'router', 'mobile phone'],
-		price: [20, 105, 110],
-		product_id: [6, null, 5],
+		product: ['microphone', 'router', 'laptop'],
+		price: [20, 105, 1200],
 		closed: [true, false, false],
-		status: 1
+		status: 1,
+		product_id: [6, null, 5]
 	}
 ]
 
@@ -194,6 +193,7 @@ const description =
 	{
 		customer_id: {constant: true, type: 'number', mainKey: true},
 		product: {constant: false, type: 'string'},
+		product_id:{constant: false, type: 'number'},
 		name: {constant: true, type: 'string'},
 		price: {constant: false, type: 'number'},
 		closed: {constant: false, type: 'boolean'},
