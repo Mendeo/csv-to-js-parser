@@ -3,27 +3,29 @@
 const app = require('../app');
 
 const normal_csv =
-`customer_id;name;product;price;closed;status
-1;Bob;computer;550;true;0
-1;Bob;monitor;400;false;0
-1;Bob;mobile phone;970;true;0
-2;Alice;laptop;1200;true;1
-2;Alice;mouse;7;false;1
-3;Eve;microphone;20;true;1
-3;Eve;router;105;false;1
-3;Eve;mobile phone;110;false;1
+`customer_id;name;product;price;closed;status;product_id
+1;Bob;computer;550;true;0;1
+1;Bob;monitor;400;false;0;2
+1;Bob;mobile phone;970;true;0;3
+1;Bob;mouse;7;true;0;4
+2;Alice;laptop;1200;true;5
+2;Alice;mouse;7;false;4
+3;Eve;microphone;20;true;6
+3;Eve;router;105;false;7
+3;Eve;laptop;1200;false;5
 `;
 
 const not_normal_csv =
-`customer_id;name;product;price;closed;status
-3;Eve;router;105;false;1
-1;Bob;monitor;400;false;0
-2;Alice;mouse;7;false;1
-1;Bob;;970;true;0
-2;Alice;laptop;1200;;1
-3;Eve;mobile phone;110;false;1
-1;Bob;computer;;true;0
-3;Eve;microphone;20;true;1
+`customer_id;name;product;price;closed;status;product_id
+3;Eve;router;105;false;1;
+1;Bob;monitor;400;false;0;2
+2;Alice;mouse;7;false;1;4
+1;Bob;;970;true;0;3
+2;Alice;laptop;1200;;1;
+3;Eve;laptop;1200;false;1;5
+1;Bob;computer;;true;0;1
+3;Eve;microphone;20;true;1;6
+1;Bob;mouse;7;true;0;4
 
 
 
@@ -32,14 +34,15 @@ const not_normal_csv =
 
 const not_normal_csv_sorted =
 `customer_id;name;product;price;closed;status
-1;Bob;computer;;true;0
-1;Bob;monitor;400;false;0
-1;Bob;;970;true;0
-2;Alice;laptop;1200;;1
-2;Alice;mouse;7;false;1
-3;Eve;microphone;20;true;1
-3;Eve;router;105;false;1
-3;Eve;mobile phone;110;false;1
+1;Bob;computer;;true;0;1
+1;Bob;monitor;400;false;0;2
+1;Bob;;970;true;0;3
+1;Bob;mouse;7;true;0;4
+2;Alice;laptop;1200;;1;
+2;Alice;mouse;7;false;1;4
+3;Eve;microphone;20;true;1;6
+3;Eve;router;105;false;1;
+3;Eve;laptop;1200;false;1;5
 `;
 
 const normal_obj = 
@@ -47,15 +50,17 @@ const normal_obj =
 	{
 		customer_id: 1,
 		name: 'Bob',
-		product: ['computer', 'monitor', 'mobile phone'],
-		price: [550, 400, 970],
-		closed: [true, false, true],
+		product: ['computer', 'monitor', 'mobile phone', 'mouse'],
+		product_id: [1, 2, 3, 4],
+		price: [550, 400, 970, 7],
+		closed: [true, false, true, true],
 		status: 0
 	},
 	{
 		customer_id: 2,
 		name: 'Alice',
 		product: ['laptop', 'mouse'],
+		product_id: [5, 4],
 		price: [1200, 7],
 		closed: [true, false],
 		status: 1
@@ -63,8 +68,9 @@ const normal_obj =
 	{
 		customer_id: 3,
 		name: 'Eve',
-		product: ['microphone', 'router', 'mobile phone'],
-		price: [20, 105, 110],
+		product: ['microphone', 'router', 'laptop'],
+		product_id: [6, 7, 5],
+		price: [20, 105, 1200],
 		closed: [true, false, false],
 		status: 1
 	}
@@ -75,7 +81,8 @@ const not_normal_obj =
 	{
 		customer_id: 1,
 		name: 'Bob',
-		product: ['computer', 'monitor', null],
+		product: ['computer', 'monitor', null, 'mouse'],
+		product_id: [1, 2, 3, 4],
 		price: [null, 400, 970],
 		closed: [true, false, true],
 		status: 0
@@ -84,6 +91,7 @@ const not_normal_obj =
 		customer_id: 2,
 		name: 'Alice',
 		product: ['laptop', 'mouse'],
+		product_id: [null, 4],
 		price: [1200, 7],
 		closed: [null, false],
 		status: 1
@@ -93,7 +101,91 @@ const not_normal_obj =
 		name: 'Eve',
 		product: ['microphone', 'router', 'mobile phone'],
 		price: [20, 105, 110],
+		product_id: [6, null, 5],
 		closed: [true, false, false],
+		status: 1
+	}
+]
+
+const expanded_normal_obj = 
+[
+	{
+		customer_id: 1,
+		name: 'Bob',
+		products:
+		[
+			{
+				product_id: 1,
+				product: 'computer',
+				price: 550,
+				closed: true
+			},
+			{
+				product_id: 2,
+				product: 'monitor',
+				price: 400,
+				closed: false
+			},
+			{
+				product_id: 3,
+				product: 'mobile phone',
+				price: 970,
+				closed: true
+			},
+			{
+				product_id: 4,
+				product: 'mouse',
+				price: 7,
+				closed: true
+			}
+		],
+		status: 0
+	},
+	{
+		customer_id: 2,
+		name: 'Alice',
+		products:
+		[
+			{
+				product_id: 5,
+				product: 'laptop',
+				price: 1200,
+				closed: true
+			},
+			{
+				product_id: 4,
+				product: 'mouse',
+				price: 7,
+				closed: false
+			},
+		],
+		status: 1
+	},
+	{
+		customer_id: 3,
+		name: 'Eve',
+		products:
+		[
+			{
+				product_id: 6,
+				product: 'microphone',
+				price: 20,
+				closed: true
+			},
+			{
+				product_id: 7,
+				product: 'router',
+				price: 105,
+				closed: false
+			},
+			{
+				product_id: 5,
+				product: 'laptop',
+				price: 1200,
+				closed: false
+			},
+
+		],
 		status: 1
 	}
 ]

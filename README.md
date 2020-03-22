@@ -2,19 +2,25 @@
 
 Конвертирование csv файлов в массив JavaScript объектов и обратно. Работает с входными таблицами в реляционном формате.
 
-## Пример:
-Пусть у нас есть таблица, с покупателями.:
+## Установка
+```bash
+npm i csv-to-js-object
+```
 
-| customer_id | name  |   product    | price | closed |
-|-------------|-------|--------------|-------|--------|
-|      1      |  Bob  |    computer  |  550  |  true  |
-|      1      |  Bob  |    monitor   |  400  |  false |
-|      1      |  Bob  | mobile phone |  970  |  true  |
-|      2      | Alice |    laptop    |  1200 |  true  |
-|      2      | Alice |     mouse    |   7   |  false |
-|      3      |  Eve  |  microphone  |   20  |  true  |
-|      3      |  Eve  |    router    |  105  |  false |
-|      3      |  Eve  | mobile phone |  110  |  false |
+## Пример
+Пусть у нас есть таблица, с покупателями и товарами, которые они заказали в магазине:
+
+| customer_id |  name | product_id |   product    | price | closed |
+|-------------|-------|------------|--------------|-------|--------|
+|      1      |  Bob  |      1     |    computer  |  550  |  true  |
+|      1      |  Bob  |      2     |    monitor   |  400  |  false |
+|      1      |  Bob  |      3     | mobile phone |  970  |  true  |
+|      1      |  Bob  |      4     |     mouse    |   7   |  true  |
+|      2      | Alice |      5     |    laptop    |  1200 |  true  |
+|      2      | Alice |      4     |     mouse    |   7   |  false |
+|      3      |  Eve  |      6     |  microphone  |   20  |  true  |
+|      3      |  Eve  |      7     |    router    |  105  |  false |
+|      3      |  Eve  |      5     |    laptop    |  1200 |  false |
 
 Каждый покупатель обладает уникальным идентификатором customer_id. Используя данный модуль можно перевести указанную выше таблицу в массив объектов JavaScript, где каждый элемент этого массива - это объект, описывающий параметры конкретного покупателя.
 
