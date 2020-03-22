@@ -106,7 +106,7 @@ const not_normal_obj =
 	}
 ]
 
-const expanded_normal_obj = 
+const normal_obj_with_combine_arrays = 
 [
 	{
 		customer_id: 1,
@@ -224,6 +224,23 @@ describe('Tests for objToCsv conversion', () =>
 	it('should return normal_csv', () => doTest(normal_obj, normal_csv));
 	it('should return not_normal_csv_sorted', () => doTest(not_normal_obj, not_normal_csv_sorted));
 });
+
+describe('Tests for combine arrays in objects', () =>
+{
+	it('should return normal_obj_with_combine_arrays', () =>
+		{
+			const result = app.combineArrays(normal_obj, 'products', ['product_id', 'product', 'prise', 'closed']);
+			let msg = whereNotEqual(normal_obj_with_combine_arrays, result);
+			if (msg) throw new Error(msg);
+		});
+	it('should return normal_obj', () =>
+		{
+			const result = app.decombineArrays(normal_obj_with_combine_arrays, 'products');
+			let msg = whereNotEqual(normal_obj, result);
+			if (msg) throw new Error(msg);
+		});
+});
+
 //Function shows where difference between expected object and result object
 function whereNotEqual(expected, result)
 {
