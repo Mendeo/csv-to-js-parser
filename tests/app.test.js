@@ -235,7 +235,7 @@ describe('Tests for combine arrays in objects', () =>
 		});
 	it('should return normal_obj', () =>
 		{
-			const result = app.decombineArrays(normal_obj_with_combine_arrays, 'products');
+			const result = app.separateArrays(normal_obj_with_combine_arrays, 'products', ['product_id', 'name', 'price', 'closed'], ['product_id', 'product', 'price', 'closed']);
 			let msg = whereNotEqual(normal_obj, result);
 			if (msg) throw new Error(msg);
 		});

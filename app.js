@@ -222,10 +222,11 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 	if (newArrayKeys.length !== arrayKeys.length) throw new Error('Parameters arrayKeys and newArrayKeys should have same length');
 	if (!Array.isArray(obj)) throw new Error ('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
-	const out = obj.slice();
+	const out = new Array(obj.length);
 	for (let index = 0; index < out.length; index++)
 	{
-		const elem = out[index];
+		out[index] = {};
+		const elem = obj[index];
 		if (!Array.isArray(elem[arrayKeys[0]])) throw new Error ('Object array property is not array');
 		let newKeyObj = new Array(elem[arrayKeys[0]].length);
 		for (let i = 0; i < newKeyObj.length; i++) newKeyObj[i] = {};
@@ -240,9 +241,42 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 				if (arr.length !== newKeyObj.length) throw new Error('Arrays have different lengths');
 			}
 			for(let i = 0; i < arr.length; i++)	newKeyObj[i][newKey] = arr[i];
-			delete elem[key];
 		}
-		elem[newKey] = newKeyObj;
+		out[index][newKey] = newKeyObj;
+		for (let key in elem)
+		{
+			if (!arrayKeys.includes(key)) out[index][key] = elem[key];
+		}
+	}
+	return out;
+}
+
+module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKeys)
+{
+	if (!newArrayKeys) newArrayKeys = arrayKeys;
+	if (newArrayKeys.length !== arrayKeys.length) throw new Error('Parameters arrayKeys and newArrayKeys should have same length');
+	if (!Array.isArray(obj)) throw new Error ('Object is not array');
+	if (!obj[0]) throw new Error('Object error');
+	const out = new Array(obj.length);
+	for (let index = 0; index < out.length; index++)
+	{
+		out[index] = {};
+		const elem = obj[index];
+		const objArray = elem[objArrayKey];
+		if (!Array.isArray(objArray)) throw new Error ('Object array property is not array');
+		for (let keyIndex = 0; keyIndex < arrayKeys.length; keyIndex++)
+		{
+			let newObjArray = new Array(objArray.length);
+			out[index][newArrayKeys[keyIndex]] = newObjArray;
+			for (let i = 0; i < objArray.length; i++)
+			{
+				newObjArray[i] = objArray[i][arrayKeys[keyIndex]];
+			}
+		}
+		for (let key in elem)
+		{
+			if (key !== objArrayKey) out[index][key] = elem[key];
+		}
 	}
 	return out;
 }
