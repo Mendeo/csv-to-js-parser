@@ -115,25 +115,25 @@ const normal_obj_with_combine_arrays =
 		[
 			{
 				product_id: 1,
-				product: 'computer',
+				name: 'computer',
 				price: 550,
 				closed: true
 			},
 			{
 				product_id: 2,
-				product: 'monitor',
+				name: 'monitor',
 				price: 400,
 				closed: false
 			},
 			{
 				product_id: 3,
-				product: 'mobile phone',
+				name: 'mobile phone',
 				price: 970,
 				closed: true
 			},
 			{
 				product_id: 4,
-				product: 'mouse',
+				name: 'mouse',
 				price: 7,
 				closed: true
 			}
@@ -147,13 +147,13 @@ const normal_obj_with_combine_arrays =
 		[
 			{
 				product_id: 5,
-				product: 'laptop',
+				name: 'laptop',
 				price: 1200,
 				closed: true
 			},
 			{
 				product_id: 4,
-				product: 'mouse',
+				name: 'mouse',
 				price: 7,
 				closed: false
 			},
@@ -167,19 +167,19 @@ const normal_obj_with_combine_arrays =
 		[
 			{
 				product_id: 6,
-				product: 'microphone',
+				name: 'microphone',
 				price: 20,
 				closed: true
 			},
 			{
 				product_id: 7,
-				product: 'router',
+				name: 'router',
 				price: 105,
 				closed: false
 			},
 			{
 				product_id: 5,
-				product: 'laptop',
+				name: 'laptop',
 				price: 1200,
 				closed: false
 			},
@@ -229,7 +229,7 @@ describe('Tests for combine arrays in objects', () =>
 {
 	it('should return normal_obj_with_combine_arrays', () =>
 		{
-			const result = app.combineArrays(normal_obj, 'products', ['product_id', 'product', 'prise', 'closed']);
+			const result = app.combineArrays(normal_obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
 			let msg = whereNotEqual(normal_obj_with_combine_arrays, result);
 			if (msg) throw new Error(msg);
 		});
@@ -255,10 +255,25 @@ function whereNotEqual(expected, result)
 				let resultArr = result[i][key].slice().sort();
 				for (let j = 0; j < expectedArr.length; j++)
 				{
-					if (expectedArr[j]!== resultArr[j])
+					if (typeof(expectedArr[j]) === 'object')
 					{
-						flag = true;
-						break;
+						for (let key in expectedArr[j])
+						{
+							if (expectedArr[j][key] !== resultArr[j][key])
+							{
+								flag = true;
+								break;
+							}
+							if (flag) break;
+						}
+					}
+					else
+					{
+						if (expectedArr[j]!== resultArr[j])
+						{
+							flag = true;
+							break;
+						}
 					}
 				}
 			}
