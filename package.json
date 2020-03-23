@@ -1,6 +1,6 @@
 {
   "name": "csv-to-js-parser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Converting relation format csv data into array of JavaScript objects",
   "main": "app.js",
   "scripts": {

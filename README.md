@@ -219,3 +219,6 @@ fs.writeFileSync('newData.csv', csv);
 * obj: входной объект (формат должен соответствовать тому, который возвращает csvToObj)..
 * delimeter: разделитель столбцов в выходной таблице.
 * rowDelimeter [optional]: разделитель строк. Если не задан, то по умолчанию используется "LF" (\n). Для windows разумно указывать в этом параметре разделитель "CRLF" (\r\n).
+
+## Лицензия MIT
+https://github.com/Mendeo/csv-to-js-parser/blob/master/LICENSE
