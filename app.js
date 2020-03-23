@@ -51,7 +51,7 @@ module.exports.csvToObj = function(data, delimeter, description)
 	for (let key in description)
 	{
 		let index = header.indexOf(key, 0); 
-		if (index === -1) throw new Error('Cannnot found selected fileds in the header');
+		if (index === -1) throw new Error('Cannnot find selected fileds in the header');
 		if (description[key].constant)
 		{
 			flag = false;
@@ -169,7 +169,18 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 {
 	if (!Array.isArray(obj)) throw new Error ('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
-	if (!rowDelimeter) rowDelimeter = '\n';
+	if (!rowDelimeter)
+	{
+		rowDelimeter = '\n';
+	}
+	else if (rowDelimeter.toLowerCase() === 'lf')
+	{
+		rowDelimeter = '\n';
+	}
+	else if (rowDelimeter.toLowerCase() === 'crlf')
+	{
+		rowDelimeter = '\r\n';
+	}
 	let out = '';
 	let keys = []; //Saving keys order
 	for (let key in obj[0]) keys.push(key);

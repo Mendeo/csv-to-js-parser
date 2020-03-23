@@ -1,9 +1,10 @@
-customer_id;name;product;price;closed
-1;Bob;computer;550;true
-1;Bob;monitor;400;false
-1;Bob;mobile phone;970;true
-2;Alice;laptop;1200;true
-2;Alice;mouse;7;false
-3;Eve;microphone;20;true
-3;Eve;router;105;false
-3;Eve;mobile phone;110;false
+customer_id;customer_name;customer_status;product;product_id;price;closed
+1;Bob;0;computer;1;550;true
+1;Bob;0;monitor;2;400;false
+1;Bob;0;mobile phone;3;970;true
+1;Bob;0;mouse;4;7;true
+2;Alice;1;laptop;5;1200;true
+2;Alice;1;mouse;4;7;false
+3;Eve;1;microphone;6;20;true
+3;Eve;1;router;7;105;false
+3;Eve;1;laptop;5;1200;false
