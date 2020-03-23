@@ -2,7 +2,7 @@
 //const fs = require('fs');
 //let data = fs.readFileSync(__dirname + '\\tests\\data_unsort.csv').toString();
 
-module.exports.csvToObj = function(data, delimeter, description)
+module.exports.csvToObj = function(data, delimeter, description, isSorted)
 {
 	//Spliting data by rows
 	{
@@ -68,6 +68,7 @@ module.exports.csvToObj = function(data, delimeter, description)
 	if (flag) throw new Error('You must specify constant fields!');
 	if (!mainKey) throw new Error('You must specify mainKey field!');
 	//Sorting data by mainKey
+	if (!isSorted)
 	{
 		function compare(index)
 		{
