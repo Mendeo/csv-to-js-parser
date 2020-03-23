@@ -4,11 +4,11 @@
 
 ## Установка
 ```bash
-npm i csv-to-js
+npm i csv-to-js-parser
 ```
 
 ## Пример
-Пусть у нас есть таблица, с покупателями и товарами, которые они заказали в магазине:
+Пусть у нас есть таблица с покупателями и товарами, которые они заказали в магазине:
 
 | customer_id | customer_name | customer_status | product_id |   product    | price | closed |
 |-------------|---------------|-----------------|------------|--------------|-------|--------|
@@ -63,7 +63,7 @@ npm i csv-to-js
 
 ```javascript
 const fs = require('fs');
-const csvToObj = require('csv-to-js').csvToObj;
+const csvToObj = require('csv-to-js-parser').csvToObj;
 
 const data = fs.readFileSync('data.csv').toString();
 
@@ -92,7 +92,7 @@ let obj = csvToObj(data, ';', description);
 Можно заметить, что в выходном объекте obj поля, относящиеся к товарам, содержат массивы одинаковой длины. Данный модуль может преобразовать эти массивы в единственный массив объектов, что в некоторых случаях может быть более естественным представлением данных в JavaScript. Для этого используется функция combineArrays:
 
 ```javascript
-const combineArrays = require('csv-to-js').combineArrays;
+const combineArrays = require('csv-to-js-parser').combineArrays;
 obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
 ```
 Функция combineArrays принимает следующие параметры:
@@ -189,7 +189,7 @@ obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'
 Для обратного преобразования в объект с отдельными массивами можно воспользоваться функцией separateArrays.
 
 ```javascript
-const separateArrays = require('csv-to-js').separateArrays;
+const separateArrays = require('csv-to-js-parser').separateArrays;
 obj = separateArrays(obj, 'products', ['product_id', 'name', 'price', 'closed'], ['product_id', 'product', 'price', 'closed']);
 ```
 
@@ -211,7 +211,7 @@ fs.writeFileSync('data.json', json);
 
 Для обратного преобразования объекта в текстовый csv формат можно воспользоваться функцией objToCsv.
 ```javascript
-const objToCsv = require('csv-to-js').objToCsv;
+const objToCsv = require('csv-to-js-parser').objToCsv;
 const csv = objToCsv(obj, ';');
 fs.writeFileSync('newData.csv', csv);
 ```

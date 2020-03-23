@@ -1,10 +1,14 @@
 {
-  "name": "csv-to-js-object",
+  "name": "csv-to-js-parser",
   "version": "1.0.0",
   "description": "Converting relation format csv data into array of JavaScript objects",
   "main": "app.js",
   "scripts": {
     "test": "mocha tests/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mendeo/csv-to-js"
   },
   "keywords": [
     "csv",
