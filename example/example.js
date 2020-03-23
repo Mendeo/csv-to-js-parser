@@ -1,6 +1,6 @@
 'use strict';
 const fs = require('fs');
-const csvConverter = require('../app');
+const csvConverter = require('csv-to-js-parser');
 const csvToObj =csvConverter.csvToObj;
 const objToCsv = csvConverter.objToCsv;
 const combineArrays = csvConverter.combineArrays;
