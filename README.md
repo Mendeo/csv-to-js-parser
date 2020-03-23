@@ -30,33 +30,33 @@ npm i csv-to-js
 
 ```javascript
 [
-	{
-		customer_id: 1,
-		customer_name: 'Bob',
-		customer_status: 0,
-		product: ['computer', 'monitor', 'mobile phone', 'mouse'],
-		product_id: [1, 2, 3, 4],
-		price: [550, 400, 970, 7],
-		closed: [true, false, true, true]
-	},
-	{
-		customer_id: 2,
-		customer_name: 'Alice',
-		customer_status: 1,
-		product: ['laptop', 'mouse'],
-		product_id: [5, 4],
-		price: [1200, 7],
-		closed: [true, false]
-	},
-	{
-		customer_id: 3,
-		customer_name: 'Eve',
-		customer_status: 1,
-		product: ['microphone', 'router', 'laptop'],
-		product_id: [6, 7, 5],
-		price: [20, 105, 1200],
-		closed: [true, false, false]
-	}
+    {
+        customer_id: 1,
+        customer_name: 'Bob',
+        customer_status: 0,
+        product: ['computer', 'monitor', 'mobile phone', 'mouse'],
+        product_id: [1, 2, 3, 4],
+        price: [550, 400, 970, 7],
+        closed: [true, false, true, true]
+    },
+    {
+        customer_id: 2,
+        customer_name: 'Alice',
+        customer_status: 1,
+        product: ['laptop', 'mouse'],
+        product_id: [5, 4],
+        price: [1200, 7],
+        closed: [true, false]
+    },
+    {
+        customer_id: 3,
+        customer_name: 'Eve',
+        customer_status: 1,
+        product: ['microphone', 'router', 'laptop'],
+        product_id: [6, 7, 5],
+        price: [20, 105, 1200],
+        closed: [true, false, false]
+    }
 ]
 ```
 Рассмотрим исходный код для получения такого объекта. Пусть нужная таблица хранится в файле "data.csv", где разделителями столбцов выступает символ ";".
@@ -68,15 +68,15 @@ const csvToObj = require('csv-to-js').csvToObj;
 const data = fs.readFileSync('data.csv').toString();
 
 const description =
-	{
-		customer_id: {constant: true, type: 'number', mainKey: true},
-		product: {constant: false, type: 'string'},
-		product_id:{constant: false, type: 'number'},
-		customer_name: {constant: true, type: 'string'},
-		price: {constant: false, type: 'number'},
-		closed: {constant: false, type: 'boolean'},
-		customer_status: {constant: true, type: 'number'}
-	};
+    {
+        customer_id: {constant: true, type: 'number', mainKey: true},
+        product: {constant: false, type: 'string'},
+        product_id:{constant: false, type: 'number'},
+        customer_name: {constant: true, type: 'string'},
+        price: {constant: false, type: 'number'},
+        closed: {constant: false, type: 'boolean'},
+        customer_status: {constant: true, type: 'number'}
+    };
 let obj = csvToObj(data, ';', description);
 ```
 Функция csvToObj принимает следующие параметры:
@@ -104,85 +104,85 @@ obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'
 Результат работы функции combineArrays для нашего примера представлен ниже:
 ```javascript
 [
-	{
-		customer_id: 1,
-		customer_name: 'Bob',
-		products:
-		[
-			{
-				product_id: 1,
-				name: 'computer',
-				price: 550,
-				closed: true
-			},
-			{
-				product_id: 2,
-				name: 'monitor',
-				price: 400,
-				closed: false
-			},
-			{
-				product_id: 3,
-				name: 'mobile phone',
-				price: 970,
-				closed: true
-			},
-			{
-				product_id: 4,
-				name: 'mouse',
-				price: 7,
-				closed: true
-			}
-		],
-		customer_status: 0
-	},
-	{
-		customer_id: 2,
-		customer_name: 'Alice',
-		products:
-		[
-			{
-				product_id: 5,
-				name: 'laptop',
-				price: 1200,
-				closed: true
-			},
-			{
-				product_id: 4,
-				name: 'mouse',
-				price: 7,
-				closed: false
-			},
-		],
-		customer_status: 1
-	},
-	{
-		customer_id: 3,
-		customer_name: 'Eve',
-		products:
-		[
-			{
-				product_id: 6,
-				name: 'microphone',
-				price: 20,
-				closed: true
-			},
-			{
-				product_id: 7,
-				name: 'router',
-				price: 105,
-				closed: false
-			},
-			{
-				product_id: 5,
-				name: 'laptop',
-				price: 1200,
-				closed: false
-			},
+    {
+        customer_id: 1,
+        customer_name: 'Bob',
+        products:
+        [
+            {
+                product_id: 1,
+                name: 'computer',
+                price: 550,
+                closed: true
+            },
+            {
+                product_id: 2,
+                name: 'monitor',
+                price: 400,
+                closed: false
+            },
+            {
+                product_id: 3,
+                name: 'mobile phone',
+                price: 970,
+                closed: true
+            },
+            {
+                product_id: 4,
+                name: 'mouse',
+                price: 7,
+                closed: true
+            }
+        ],
+        customer_status: 0
+    },
+    {
+        customer_id: 2,
+        customer_name: 'Alice',
+        products:
+        [
+            {
+                product_id: 5,
+                name: 'laptop',
+                price: 1200,
+                closed: true
+            },
+            {
+                product_id: 4,
+                name: 'mouse',
+                price: 7,
+                closed: false
+            },
+        ],
+        customer_status: 1
+    },
+    {
+        customer_id: 3,
+        customer_name: 'Eve',
+        products:
+        [
+            {
+                product_id: 6,
+                name: 'microphone',
+                price: 20,
+                closed: true
+            },
+            {
+                product_id: 7,
+                name: 'router',
+                price: 105,
+                closed: false
+            },
+            {
+                product_id: 5,
+                name: 'laptop',
+                price: 1200,
+                closed: false
+            },
 
-		],
-		customer_status: 1
-	}
+        ],
+        customer_status: 1
+    }
 ]
 ```
 
