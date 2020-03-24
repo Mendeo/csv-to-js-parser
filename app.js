@@ -1,7 +1,28 @@
-'use strict';
-//const fs = require('fs');
-//let data = fs.readFileSync(__dirname + '\\tests\\data_unsort.csv').toString();
+/*
+The MIT License (MIT)
 
+Copyright (c) Aleksandr Meniailo (Александр Меняйло), Mendeo 2020 (deorathemen@gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+'use strict';
 module.exports.csvToObj = function(data, delimeter, description, isSorted)
 {
 	//Spliting data by rows
@@ -90,7 +111,6 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 	flag = true;
 	
 	//Converting to obj
-	
 	while(flag)
 	{
 		for (let key in arrays) arrays[key] = [];
@@ -218,7 +238,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 				else
 				{
 					let val = elem[keys[j]][i];
-					if (val !== null) out += val.toString();	
+					if (val !== null) out += val.toString();
 				}
 				if (j !== keys.length - 1) out += delimeter;
 			}
