@@ -44,6 +44,96 @@ const not_normal_csv_sorted =
 3;Eve;laptop;1200;false;1;5
 `;
 
+const not_unique_csv =
+`sex;age;person_id
+male;30;1
+male;31;2
+male;31;2
+male;32;3
+female;30;4
+female;30;4
+female;31;5
+female;33;6
+`;
+
+const not_unique_obj_var1 = 
+[
+	{
+		sex: 'male',
+		age: 30,
+		person_id: 1
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: 2
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: 2
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: 3
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: 4
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: 4
+	},
+	{
+		sex: 'female',
+		age: 31,
+		person_id: 5
+	},
+	{
+		sex: 'female',
+		age: 33,
+		person_id: 6
+	}
+];
+
+const not_unique_obj_var2 = 
+[
+	{
+		sex: 'male',
+		age: 30,
+		person_id: [1]
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: [2, 2]
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: [3]
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: [4, 4]
+	},
+	{
+		sex: 'female',
+		age: 31,
+		person_id: [5]
+	},
+	{
+		sex: 'female',
+		age: 33,
+		person_id: [6]
+	}
+];
+
 const normal_obj = 
 [
 	{
@@ -73,7 +163,7 @@ const normal_obj =
 		price: [20, 105, 1200],
 		closed: [true, false, false]
 	}
-]
+];
 
 const not_normal_obj = 
 [
@@ -104,7 +194,7 @@ const not_normal_obj =
 		customer_status: 1,
 		product_id: [6, null, 5]
 	}
-]
+];
 
 const normal_obj_with_combine_arrays = 
 [
@@ -187,9 +277,9 @@ const normal_obj_with_combine_arrays =
 		],
 		customer_status: 1
 	}
-]
+];
 
-const description =
+const normal_description =
 	{
 		customer_id: {constant: true, type: 'number', mainKey: true},
 		product: {constant: false, type: 'string'},
@@ -200,16 +290,33 @@ const description =
 		customer_status: {constant: true, type: 'number'}
 	};
 
+const not_unique_description_var1 = 
+{
+	age: {constant: true, type: 'number', mainKey: true},
+	sex: {constant: true, type: 'string'},
+	person_id:{constant: true, type: 'number'},
+};
+
+const not_unique_description_var2 = 
+{
+	age: {constant: true, type: 'number', mainKey: true},
+	sex: {constant: true, type: 'string'},
+	person_id:{constant: false, type: 'number'},
+};
+
 describe('Tests for csvToObj convertion', () =>
 {
-	function doTest(csv, expected)
+	function doTest(csv, expected, description)
 	{
 		const result = app.csvToObj(csv, ';', description);
+		console.log(result);
 		let msg = whereNotEqual(expected, result);
 		if (msg) throw new Error(msg);
 	}
-	it ('should return normal object', () => doTest(normal_csv, normal_obj));
-	it ('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj));
+	//it ('should return normal object', () => doTest(normal_csv, normal_obj, normal_description));
+	//it ('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj, normal_description));
+	it ('should return not_unique_obj_var1 object', () => doTest(not_unique_csv, not_unique_obj_var1, not_unique_description_var1));
+	//it ('should return not_unique_obj_var2 object', () => doTest(not_unique_csv, not_unique_obj_var2, not_unique_description_var2));
 });
 
 describe('Tests for objToCsv conversion', () =>
@@ -221,10 +328,13 @@ describe('Tests for objToCsv conversion', () =>
 		//fs.writeFileSync('result.csv', result);
 		if (result !== expected) throw new Error(`Expected:\n${expected}\n\nBut got:\n${result}`);
 	}
-	it('should return normal_csv', () => doTest(normal_obj, normal_csv));
-	it('should return not_normal_csv_sorted', () => doTest(not_normal_obj, not_normal_csv_sorted));
+	//it('should return normal_csv', () => doTest(normal_obj, normal_csv));
+	//it('should return not_normal_csv_sorted', () => doTest(not_normal_obj, not_normal_csv_sorted));
+	it('should return not_unique_csv (var 1)', () => doTest(not_unique_obj_var1, not_unique_csv));
+	it('should return not_unique_csv (var 2)', () => doTest(not_unique_obj_var2, not_unique_csv));
 });
 
+/*
 describe('Tests for combine arrays in objects', () =>
 {
 	it('should return normal_obj_with_combine_arrays', () =>
@@ -240,6 +350,7 @@ describe('Tests for combine arrays in objects', () =>
 			if (msg) throw new Error(msg);
 		});
 });
+*/
 
 //Function shows where difference between expected object and result object
 function whereNotEqual(expected, result)
