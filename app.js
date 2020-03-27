@@ -91,7 +91,7 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 			arraysIndexes[key] = index;
 		}
 	}
-	if (flag) throw new Error('You must specify at least one group field!');
+	if (flag) throw new Error('You have to specify at least one group field!');
 	//Sorting data by orders and spliting by all constants
 	{
 		function compare(a, b)
