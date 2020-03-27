@@ -294,20 +294,34 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 			}
 		}
 		//Fill rows
-		for (let i = 0; i < maxArrayLength; i++)
+		if (maxArrayLength) //have array properties
 		{
-			for (let j = 0; j < keys.length; j++)
+			for (let i = 0; i < maxArrayLength; i++)
 			{
-				if (isConstant[j])
+				for (let j = 0; j < keys.length; j++)
 				{
-					out += elem[keys[j]].toString();
+					if (isConstant[j])
+					{
+						let val = elem[keys[j]];
+						if (val !== null) out += val.toString();
+					}
+					else
+					{
+						let val = elem[keys[j]][i];
+						if (val !== null) out += val.toString();
+					}
+					if (j !== keys.length - 1) out += delimeter;
 				}
-				else
-				{
-					let val = elem[keys[j]][i];
-					if (val !== null) out += val.toString();
-				}
-				if (j !== keys.length - 1) out += delimeter;
+				out += rowDelimeter;
+			}
+		}
+		else
+		{
+			for (let i = 0; i < keys.length; i++)
+			{
+				let val = elem[keys[i]];
+				if (val !== null) out += val.toString();
+				if (i !== keys.length - 1) out += delimeter;
 			}
 			out += rowDelimeter;
 		}

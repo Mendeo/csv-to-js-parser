@@ -47,8 +47,66 @@ const not_normal_csv_sorted =
 const not_unique_csv =
 `sex;age;person_id
 male;30;1
+male;30;3
+male;31;6
+male;31;4
+female;31;11
+male;32;7
+male;31;4
+female;31;12
+male;31;5
+male;32;7
+female;30;9
+female;30;10
+female;30;10
+male;30;2
+female;33;13
+female;33;14
+male;32;8
+female;30;9
+male;31;5
+female;33;14
+
+
+
+`;
+
+const not_unique_not_normal_csv =
+`sex;age;person_id
+male;30;1
+male;30;3
+male;31;6
+male;;4
+female;31;11
+;32;7
+male;31;4
+female;31;12
+male;31;5
+male;32;7
+female;30;9
+;30;
+female;30;10
+male;30;2
+female;33;13
+female;33;14
+male;32;8
+female;;9
+male;31;5
+female;33;14
+
+`
+
+const not_unique_csv_sorted_1_2 = 
+`sex;age;person_id
+female;30;9
+female;30;9
+female;30;10
+female;30;10
+male;30;1
 male;30;2
 male;30;3
+female;31;11
+female;31;12
 male;31;4
 male;31;4
 male;31;5
@@ -57,12 +115,54 @@ male;31;6
 male;32;7
 male;32;7
 male;32;8
-female;30;9
+female;33;13
+female;33;14
+female;33;14
+`;
+
+const not_unique_csv_sorted_3 = 
+`person_id;sex;age
+1;male;30
+2;male;30
+3;male;30
+4;male;31
+4;male;31
+5;male;31
+5;male;31
+6;male;31
+7;male;32
+7;male;32
+8;male;32
+9;female;30
+9;female;30
+10;female;30
+10;female;30
+11;female;31
+12;female;31
+13;female;33
+14;female;33
+14;female;33
+`;
+
+const not_unique_not_normal_csv_sorted_1_2 = 
+`sex;age;person_id
+female;;9
+male;;4
+;30;
 female;30;9
 female;30;10
-female;30;10
+male;30;1
+male;30;2
+male;30;3
 female;31;11
 female;31;12
+male;31;4
+male;31;5
+male;31;5
+male;31;6
+male;32;7
+male;32;8
+;32;7
 female;33;13
 female;33;14
 female;33;14
@@ -172,6 +272,112 @@ const not_unique_obj_var1 =
 	}
 ];
 
+const not_unique_not_normal_obj_var1 = 
+[
+	{
+		sex: 'female',
+		age: null,
+		person_id: 9
+	},
+	{
+		sex: 'male',
+		age: null,
+		person_id: 4
+	},
+	{
+		sex: null,
+		age: 30,
+		person_id: null
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: 9
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: 10
+	},
+	{
+		sex: 'male',
+		age: 30,
+		person_id: 1
+	},
+	{
+		sex: 'male',
+		age: 30,
+		person_id: 2
+	},
+	{
+		sex: 'male',
+		age: 30,
+		person_id: 3
+	},
+	{
+		sex: 'female',
+		age: 31,
+		person_id: 11
+	},
+	{
+		sex: 'female',
+		age: 31,
+		person_id: 12
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: 4
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: 5
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: 5
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: 6
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: 7
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: 8
+	},
+	{
+		sex: null,
+		age: 32,
+		person_id: 7
+	},
+	{
+		sex: 'female',
+		age: 33,
+		person_id: 13
+	},
+	{
+		sex: 'female',
+		age: 33,
+		person_id: 14
+	},
+	{
+		sex: 'female',
+		age: 33,
+		person_id: 14
+	}
+];
+
+
+
 const not_unique_obj_var2 = 
 [
 	{
@@ -205,6 +411,61 @@ const not_unique_obj_var2 =
 		person_id: [13, 14, 14]
 	}
 ];
+
+const not_unique_not_normal_obj_var2 = 
+[
+	{
+		sex: 'female',
+		age: null,
+		person_id: [9]
+	},
+	{
+		sex: 'male',
+		age: null,
+		person_id: [4]
+	},
+	{
+		sex: null,
+		age: 30,
+		person_id: [null]
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: [9, 10]
+	},
+	{
+		sex: 'male',
+		age: 30,
+		person_id: [1, 2, 3]
+	},
+	{
+		sex: 'female',
+		age: 31,
+		person_id: [11, 12]
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: [4, 5, 5, 6]
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: [7, 8]
+	},
+	{
+		sex: null,
+		age: 32,
+		person_id: [7]
+	},
+	{
+		sex: 'female',
+		age: 33,
+		person_id: [13, 14, 14]
+	}
+];
+
 
 const not_unique_obj_var3 = 
 [
@@ -426,15 +687,15 @@ const normal_obj_with_combine_arrays =
 ];
 
 const normal_description =
-	{
-		customer_id:     {type: 'number', order: 1},
-		product:         {type: 'string'},
-		product_id:      {type: 'number'},
-		customer_name:   {type: 'string', order: 2},
-		price:           {type: 'number'},
-		closed:          {type: 'boolean'},
-		customer_status: {type: 'number', order: 2}
-	};
+{
+	customer_id:     {type: 'number', order: 1},
+	product:         {type: 'string'},
+	product_id:      {type: 'number'},
+	customer_name:   {type: 'string', order: 2},
+	price:           {type: 'number'},
+	closed:          {type: 'boolean'},
+	customer_status: {type: 'number', order: 2}
+};
 
 const not_unique_description_var1 = 
 {
@@ -484,6 +745,8 @@ describe('Tests for csvToObj convertion', () =>
 		}
 		doTest(not_unique_csv, obj);
 	});
+	it('should return not_unique_not_normal_obj_var1 object', () => doTest(not_unique_not_normal_csv, not_unique_not_normal_obj_var1, not_unique_description_var1));
+	it('should return not_unique_not_normal_obj_var2 object', () => doTest(not_unique_not_normal_csv, not_unique_not_normal_obj_var2, not_unique_description_var2));
 });
 
 describe('Tests for objToCsv conversion', () =>
@@ -495,13 +758,15 @@ describe('Tests for objToCsv conversion', () =>
 		//fs.writeFileSync('result.csv', result);
 		if (result !== expected) throw new Error(`Expected:\n${expected}\n\nBut got:\n${result}`);
 	}
-	//it('should return normal_csv', () => doTest(normal_obj, normal_csv));
-	//it('should return not_normal_csv_sorted', () => doTest(not_normal_obj, not_normal_csv_sorted));
-	//it('should return not_unique_csv (var 1)', () => doTest(not_unique_obj_var1, not_unique_csv));
-	//it('should return not_unique_csv (var 2)', () => doTest(not_unique_obj_var2, not_unique_csv));
+	it('should return normal_csv', () => doTest(normal_obj, normal_csv));
+	it('should return not_normal_csv_sorted', () => doTest(not_normal_obj, not_normal_csv_sorted));
+	it('should return not_unique_csv_sorted_1_2 (var 1)', () => doTest(not_unique_obj_var1, not_unique_csv_sorted_1_2));
+	it('should return not_unique_csv_sorted_1_2 (var 2)', () => doTest(not_unique_obj_var2, not_unique_csv_sorted_1_2));
+	it('should return not_unique_csv_sorted_3 (var 3)', () => doTest(not_unique_obj_var3, not_unique_csv_sorted_3));
+	it('should return not_unique_not_normal_csv_sorted_1_2 (var 1)', () => doTest(not_unique_not_normal_obj_var1, not_unique_not_normal_csv_sorted_1_2));
+	it('should return not_unique_not_normal_csv_sorted_2 (var 3)', () => doTest(not_unique_not_normal_obj_var2, not_unique_not_normal_csv_sorted_1_2));
 });
 
-/*
 describe('Tests for combine arrays in objects', () =>
 {
 	it('should return normal_obj_with_combine_arrays', () =>
@@ -517,7 +782,6 @@ describe('Tests for combine arrays in objects', () =>
 			if (msg) throw new Error(msg);
 		});
 });
-*/
 
 //Function shows where difference between expected object and result object
 function whereNotEqual(expected, result)
