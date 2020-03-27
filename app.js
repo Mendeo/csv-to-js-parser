@@ -156,44 +156,25 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		}
 	}
 
-	/*
-	let index = 0;
-	let mainValueOld;
-	let mainValue;
 	let out = [];
-	let row;
-	flag = true;
-	
-	//Converting to obj
-	while(flag)
+	for (let objAsArr of data)
 	{
-		for (let key in arrays) arrays[key] = [];
-		if (index === 0)
+		let obj = {};
+		for (let key in constants) 
 		{
-			row = data[index];
-			mainValueOld = row[constantsIndexes[mainKey]];
-			mainValue = mainValueOld;
+			let value = objAsArr[0][constantsIndexes[key]];
+			obj[key] = convertToType(value, description[key].type);
 		}
-		for (let key in constants) constants[key] = row[constantsIndexes[key]];
-		while(mainValue === mainValueOld)
+		for (let i = 0; i < objAsArr.length; i++)
 		{
-			for (let key in arrays) arrays[key].push(convertToType(row[arraysIndexes[key]], description[key].type));
-			index++;
-			if (index === data.length || !data[index])
+			for (let key in arrays)	
 			{
-				flag = false;
-				break;
+				let value = objAsArr[i][arraysIndexes[key]];
+				obj[key][i] = convertToType(value, description[key].type);
 			}
-			row = data[index];
-			mainValue = row[constantsIndexes[mainKey]];
 		}
-		let outElement = {};
-		for (let key in constants) outElement[key] = convertToType(constants[key], description[key].type);
-		for (let key in arrays) outElement[key] = arrays[key];
-		out.push(outElement);
-		if (flag) mainValueOld = mainValue;
-	}*/
-
+		out.push(obj);
+	}
 	return out;
 
 	function typeInitialisation(type)

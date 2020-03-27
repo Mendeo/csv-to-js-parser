@@ -313,10 +313,10 @@ describe('Tests for csvToObj convertion', () =>
 		let msg = whereNotEqual(expected, result);
 		if (msg) throw new Error(msg);
 	}
-	//it ('should return normal object', () => doTest(normal_csv, normal_obj, normal_description));
-	//it ('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj, normal_description));
+	it ('should return normal object', () => doTest(normal_csv, normal_obj, normal_description));
+	it ('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj, normal_description));
 	it ('should return not_unique_obj_var1 object', () => doTest(not_unique_csv, not_unique_obj_var1, not_unique_description_var1));
-	//it ('should return not_unique_obj_var2 object', () => doTest(not_unique_csv, not_unique_obj_var2, not_unique_description_var2));
+	it ('should return not_unique_obj_var2 object', () => doTest(not_unique_csv, not_unique_obj_var2, not_unique_description_var2));
 });
 
 describe('Tests for objToCsv conversion', () =>
