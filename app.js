@@ -49,6 +49,15 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		}
 	}
 	let header = data[0].split(delimeter);
+	//Making default description
+	if (!description)
+	{
+		description = {};
+		for (let key of header)
+		{
+			description[key] = {type: 'string', order: 1};
+		}
+	}
 	//Deleting header from data
 	data.shift();
 	//Spliting data by delimeter

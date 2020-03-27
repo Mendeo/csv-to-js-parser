@@ -470,6 +470,20 @@ describe('Tests for csvToObj convertion', () =>
 	it ('should return not_unique_obj_var1 object', () => doTest(not_unique_csv, not_unique_obj_var1, not_unique_description_var1));
 	it ('should return not_unique_obj_var2 object', () => doTest(not_unique_csv, not_unique_obj_var2, not_unique_description_var2));
 	it ('should return not_unique_obj_var3 object', () => doTest(not_unique_csv, not_unique_obj_var3, not_unique_description_var3));
+	it ('should return not_unique_obj_var1 object (no description)', () => 
+	{
+		//Convert all properties of not_unique_description_var1 to String
+		let obj = new Array(not_unique_description_var1.length);
+		for (let i = 0; i < obj.length; i++)
+		{
+			obj[i] = {};
+			for (let key in not_unique_description_var1[i])
+			{
+				obj[i][key] = String(not_unique_description_var1[i][key]);
+			}
+		}
+		doTest(not_unique_csv, obj);
+	});
 });
 
 describe('Tests for objToCsv conversion', () =>
