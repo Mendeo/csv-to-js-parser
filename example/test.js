@@ -12,9 +12,9 @@ const data = fs.readFileSync('test.csv').toString();
 
 const description = 
 {
-	age:       {type: 'number', order: 1},
-	sex:       {type: 'string', order: 1},
-	person_id: {type: 'number'}
+	sex:       {type: 'string', order: 2},
+	person_id: {type: 'number'},
+	age:       {type: 'number', order: 1}
 };
 
 //Csv to JavaScript object

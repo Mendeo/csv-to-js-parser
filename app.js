@@ -101,14 +101,16 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		//Sorting constantOrder
 		constantOrder = constantOrder.sort(compareObjectArray('order'));
 		data = [data];
+		console.log(data);
 		for (let i = 0; i < constantOrder.length; i++)
 		{
-			for (let j = 0; j < data.length - 1; j++)
+			for (let j = 0; j < data.length; j++)
 			{
 				data[j] = data[j].sort(compareObjectArray(constantsIndexes[constantOrder[i].key]));
 			}
 			data = arrayConcat(data);
 			data = split(data, constantsIndexes[constantOrder[i].key]);
+			console.log(data);
 		}
 		function arrayConcat(data) //Concat arrays of arrays into one array
 		{

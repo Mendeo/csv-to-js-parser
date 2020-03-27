@@ -105,9 +105,9 @@ let obj = csvToObj(data, ';', description);
 |  male  | 32  |     7     |
 |  male  | 32  |     7     |
 |  male  | 32  |     8     |
-| female | 30  |     5     |
 | female | 30  |     9     |
 | female | 30  |     9     |
+| female | 30  |     10     |
 | female | 30  |     10    |
 | female | 31  |     11    |
 | female | 31  |     12    |
