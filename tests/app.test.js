@@ -294,14 +294,14 @@ const not_unique_description_var1 =
 {
 	age:       {type: 'number', order: 1},
 	sex:       {type: 'string', order: 2},
-	person_id: {type: 'number', order: 3},
+	person_id: {type: 'number', order: 3}
 };
 
 const not_unique_description_var2 = 
 {
 	age:       {type: 'number', order: 1},
 	sex:       {type: 'string', order: 2},
-	person_id: {type: 'number'},
+	person_id: {type: 'number'}
 };
 
 describe('Tests for csvToObj convertion', () =>
