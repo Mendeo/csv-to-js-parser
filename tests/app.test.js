@@ -47,13 +47,25 @@ const not_normal_csv_sorted =
 const not_unique_csv =
 `sex;age;person_id
 male;30;1
-male;31;2
-male;31;2
-male;32;3
-female;30;4
-female;30;4
-female;31;5
-female;33;6
+male;30;2
+male;30;3
+male;31;4
+male;31;4
+male;31;5
+male;31;5
+male;31;6
+male;32;7
+male;32;7
+male;32;8
+female;30;5
+female;30;9
+female;30;9
+female;30;10
+female;31;11
+female;31;12
+female;33;13
+female;33;14
+female;33;14
 `;
 
 const not_unique_obj_var1 = 
@@ -65,38 +77,98 @@ const not_unique_obj_var1 =
 	},
 	{
 		sex: 'male',
-		age: 31,
+		age: 30,
 		person_id: 2
 	},
 	{
 		sex: 'male',
-		age: 31,
-		person_id: 2
-	},
-	{
-		sex: 'male',
-		age: 32,
+		age: 30,
 		person_id: 3
 	},
 	{
-		sex: 'female',
-		age: 30,
+		sex: 'male',
+		age: 31,
 		person_id: 4
 	},
 	{
-		sex: 'female',
-		age: 30,
+		sex: 'male',
+		age: 31,
 		person_id: 4
 	},
 	{
-		sex: 'female',
+		sex: 'male',
 		age: 31,
 		person_id: 5
 	},
 	{
+		sex: 'male',
+		age: 31,
+		person_id: 5
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: 6
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: 7
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: 7
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: 8
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: 5
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: 9
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: 9
+	},
+	{
+		sex: 'female',
+		age: 30,
+		person_id: 10
+	},
+	{
+		sex: 'female',
+		age: 31,
+		person_id: 11
+	},
+	{
+		sex: 'female',
+		age: 31,
+		person_id: 12
+	},
+	{
 		sex: 'female',
 		age: 33,
-		person_id: 6
+		person_id: 13
+	},
+	{
+		sex: 'female',
+		age: 33,
+		person_id: 14
+	},
+	{
+		sex: 'female',
+		age: 33,
+		person_id: 14
 	}
 ];
 
@@ -105,32 +177,106 @@ const not_unique_obj_var2 =
 	{
 		sex: 'male',
 		age: 30,
-		person_id: [1]
-	},
-	{
-		sex: 'male',
-		age: 31,
-		person_id: [2, 2]
-	},
-	{
-		sex: 'male',
-		age: 32,
-		person_id: [3]
+		person_id: [1, 2, 3]
 	},
 	{
 		sex: 'female',
 		age: 30,
-		person_id: [4, 4]
+		person_id: [9, 9, 10, 10]
+	},
+	{
+		sex: 'male',
+		age: 31,
+		person_id: [4, 4, 5, 5, 6]
 	},
 	{
 		sex: 'female',
 		age: 31,
-		person_id: [5]
+		person_id: [11, 12]
+	},
+	{
+		sex: 'male',
+		age: 32,
+		person_id: [7, 7, 8]
 	},
 	{
 		sex: 'female',
 		age: 33,
-		person_id: [6]
+		person_id: [13, 14, 14]
+	}
+];
+
+const not_unique_obj_var3 = 
+[
+	{
+		person_id: 1,
+		sex: 'male',
+		age: [30]
+	},
+	{
+		person_id: 2,
+		sex: 'male',
+		age: [30]
+	},
+	{
+		person_id: 3,
+		sex: 'male',
+		age: [30]
+	},
+	{
+		person_id: 4,
+		sex: 'male',
+		age: [31, 31]
+	},
+	{
+		person_id: 5,
+		sex: 'male',
+		age: [31, 31]
+	},
+	{
+		person_id: 6,
+		sex: 'male',
+		age: [31]
+	},
+	{
+		person_id: 7,
+		sex: 'male',
+		age: [32, 32]
+	},
+	{
+		person_id: 8,
+		sex: 'male',
+		age: [32]
+	},
+	{
+		person_id: 9,
+		sex: 'female',
+		age: [30, 30]
+	},
+	{
+		person_id: 10,
+		sex: 'female',
+		age: [30, 30]
+	},
+	{
+		person_id: 11,
+		sex: 'female',
+		age: [31]
+	},
+	{
+		person_id: 12,
+		sex: 'female',
+		age: [31]
+	},
+	{
+		person_id: 13,
+		sex: 'female',
+		age: [33]
+	},
+	{
+		person_id: 14,
+		sex: 'female',
+		age: [33, 33]
 	}
 ];
 
@@ -304,6 +450,13 @@ const not_unique_description_var2 =
 	person_id: {type: 'number'}
 };
 
+const not_unique_description_var3 = 
+{
+	age:       {type: 'number'},
+	sex:       {type: 'string', order: 2},
+	person_id: {type: 'number', order: 1}
+};
+
 describe('Tests for csvToObj convertion', () =>
 {
 	function doTest(csv, expected, description)
@@ -317,6 +470,7 @@ describe('Tests for csvToObj convertion', () =>
 	it ('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj, normal_description));
 	it ('should return not_unique_obj_var1 object', () => doTest(not_unique_csv, not_unique_obj_var1, not_unique_description_var1));
 	it ('should return not_unique_obj_var2 object', () => doTest(not_unique_csv, not_unique_obj_var2, not_unique_description_var2));
+	it ('should return not_unique_obj_var3 object', () => doTest(not_unique_csv, not_unique_obj_var3, not_unique_description_var2));
 });
 
 describe('Tests for objToCsv conversion', () =>

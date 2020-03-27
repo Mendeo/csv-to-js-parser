@@ -62,10 +62,8 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		data = newData;
 	}
 	
-	let constants = {};
 	let constantsIndexes = {};
 	let constantOrder = [];
-	let arrays = {};
 	let arraysIndexes = {};
 	let flag = true;
 
@@ -76,17 +74,15 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		if (Number(description[key].order) > 0)
 		{
 			flag = false;
-			constants[key] = typeInitialisation(description[key].type);
 			constantsIndexes[key] = index;
 			constantOrder.push({order: description[key].order, key: key});
 		}
 		else
 		{
-			arrays[key] = [];
 			arraysIndexes[key] = index;
 		}
 	}
-	if (flag) throw new Error('You must specify group fields!');
+	if (flag) throw new Error('You must specify at least one group field!');
 	//Sorting data by orders and spliting by all constants
 	{
 		function compareNumbers(a, b)
@@ -157,20 +153,24 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 	}
 
 	let out = [];
-	for (let objAsArr of data)
+	for (let i = 0; i < data.length; i++)
 	{
 		let obj = {};
-		for (let key in constants) 
+		for (let key in constantsIndexes) 
 		{
-			let value = objAsArr[0][constantsIndexes[key]];
+			let value = data[i][0][constantsIndexes[key]];
 			obj[key] = convertToType(value, description[key].type);
 		}
-		for (let i = 0; i < objAsArr.length; i++)
+		for (let key in arraysIndexes)
 		{
-			for (let key in arrays)	
+			obj[key] = new Array(data[i].length);
+		}
+		for (let j = 0; j < data[i].length; j++)
+		{
+			for (let key in arraysIndexes)
 			{
-				let value = objAsArr[i][arraysIndexes[key]];
-				obj[key][i] = convertToType(value, description[key].type);
+				let value = data[i][j][arraysIndexes[key]];
+				obj[key][j] = convertToType(value, description[key].type);
 			}
 		}
 		out.push(obj);
