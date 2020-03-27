@@ -1,6 +1,6 @@
 {
   "name": "csv-to-js-parser",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Converting csv data into array of JavaScript objects. This module can group data from input tables.",
   "main": "app.js",
   "scripts": {
