@@ -39,8 +39,8 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		{
 			newRow = '\n';
 		}
-		//Deleting last empty row
 		data = data.split(newRow);
+		//Deleting last empty row
 		i = data.length - 1;
 		while (data[i] === '') 
 		{
@@ -64,7 +64,7 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 	
 	let constants = {};
 	let constantsIndexes = {};
-	let mainKey;
+	let constantOrder = [];
 	let arrays = {};
 	let arraysIndexes = {};
 	let flag = true;
@@ -73,12 +73,12 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 	{
 		let index = header.indexOf(key, 0); 
 		if (index === -1) throw new Error('Cannnot find selected fileds in the header');
-		if (description[key].constant)
+		if (Number(description[key].order) > 0)
 		{
 			flag = false;
 			constants[key] = typeInitialisation(description[key].type);
 			constantsIndexes[key] = index;
-			if (description[key].mainKey) mainKey = key;
+			constantOrder.push({order: description[key].order, key: key});
 		}
 		else
 		{
@@ -86,23 +86,77 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 			arraysIndexes[key] = index;
 		}
 	}
-	if (flag) throw new Error('You must specify constant fields!');
-	if (!mainKey) throw new Error('You must specify mainKey field!');
-	//Sorting data by mainKey
-	if (!isSorted)
+	if (flag) throw new Error('You must specify group fields!');
+	//Sorting data by orders and spliting by all constants
 	{
-		function compare(index)
+		function compareNumbers(a, b)
+		{
+			if (a > b) return 1;
+			if (a === b) return 0;
+			return -1;
+		}
+		function compareObjectArray(key)
 		{
 			return function(a, b)
 			{
-				if (a[index] > b[index]) return 1;
-				if (a[index] === b[index]) return 0;
-				return -1;
-			};
+				return	compareNumbers(a[key], b[key]);
+			}
 		}
-		data = data.sort(compare(constantsIndexes[mainKey]));
+		//Sorting constantOrder
+		constantOrder = constantOrder.sort(compareObjectArray('order'));
+		data = [data];
+		for (let i = 0; i < constantOrder.length; i++)
+		{
+			for (let j = 0; j < data.length - 1; j++)
+			{
+				data[j] = data[j].sort(compareObjectArray(constantsIndexes[constantOrder[i].key]));
+			}
+			data = arrayConcat(data);
+			data = split(data, constantsIndexes[constantOrder[i].key]);
+		}
+		function arrayConcat(data) //Concat arrays of arrays into one array
+		{
+			let out = [];
+			for (let i = 0; i < data.length; i++)
+			{
+				for (let j = 0; j < data[i].length; j++)
+				{
+					out.push(data[i][j]);
+				}
+			}
+			return out;
+		}
+		function split(data, columnIndex) //Splits array to blocks with equal values in specified column
+		{
+			let out = [];
+			let flag = true;
+			let index = 0;
+			let row = data[0];
+			let keyValue = row[columnIndex];
+			let keyValueOld = keyValue;
+			while (flag)
+			{
+				let auxArr = [];
+				while (keyValue === keyValueOld)
+				{
+					auxArr.push(row);
+					index++;
+					if (index === data.length || !data[index])
+					{
+						flag = false;
+						break;
+					}
+					row = data[index];
+					keyValue = row[columnIndex];
+				}
+				out.push(auxArr);
+				if (flag) keyValueOld = keyValue;
+			}
+			return out;
+		}
 	}
-	
+
+	/*
 	let index = 0;
 	let mainValueOld;
 	let mainValue;
@@ -138,7 +192,7 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		for (let key in arrays) outElement[key] = arrays[key];
 		out.push(outElement);
 		if (flag) mainValueOld = mainValue;
-	}
+	}*/
 
 	return out;
 
