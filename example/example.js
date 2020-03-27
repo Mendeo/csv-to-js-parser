@@ -9,15 +9,15 @@ const separateArrays = csvConverter.separateArrays;
 const data = fs.readFileSync('data.csv').toString();
 
 const description =
-	{
-		customer_id: {constant: true, type: 'number', mainKey: true},
-		product: {constant: false, type: 'string'},
-		product_id:{constant: false, type: 'number'},
-		customer_name: {constant: true, type: 'string'},
-		price: {constant: false, type: 'number'},
-		closed: {constant: false, type: 'boolean'},
-		customer_status: {constant: true, type: 'number'}
-	};
+{
+	customer_id:     {type: 'number', order: 1},
+	product:         {type: 'string'},
+	product_id:      {type: 'number'},
+	customer_name:   {type: 'string', order: 2},
+	price:           {type: 'number'},
+	closed:          {type: 'boolean'},
+	customer_status: {type: 'number', order: 2}
+};
 
 //Csv to JavaScript object
 let obj;
