@@ -85,32 +85,33 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 	if (flag) throw new Error('You must specify at least one group field!');
 	//Sorting data by orders and spliting by all constants
 	{
-		function compareNumbers(a, b)
+		function compare(a, b)
 		{
 			if (a > b) return 1;
 			if (a === b) return 0;
 			return -1;
 		}
-		function compareObjectArray(key)
+		function compareObjectArray(key, type)
 		{
 			return function(a, b)
 			{
-				return	compareNumbers(a[key], b[key]);
+				a = convertToType(a[key], type);
+				b = convertToType(b[key], type);
+				return compare(a, b);
 			}
 		}
 		//Sorting constantOrder
-		constantOrder = constantOrder.sort(compareObjectArray('order'));
+		constantOrder = constantOrder.sort(compareObjectArray('order', 'number'));
 		data = [data];
-		console.log(data);
 		for (let i = 0; i < constantOrder.length; i++)
 		{
+			let auxArr = [];
 			for (let j = 0; j < data.length; j++)
 			{
-				data[j] = data[j].sort(compareObjectArray(constantsIndexes[constantOrder[i].key]));
+				data[j] = data[j].sort(compareObjectArray(constantsIndexes[constantOrder[i].key], description[constantOrder[i].key].type));
+				auxArr.push(split(data[j], constantsIndexes[constantOrder[i].key]));
 			}
-			data = arrayConcat(data);
-			data = split(data, constantsIndexes[constantOrder[i].key]);
-			console.log(data);
+			data = arrayConcat(auxArr);
 		}
 		function arrayConcat(data) //Concat arrays of arrays into one array
 		{
@@ -155,27 +156,47 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 	}
 
 	let out = [];
-	for (let i = 0; i < data.length; i++)
+	
+	if (Object.keys(arraysIndexes).length) //If we have not group columns then we need create arrays in every object. Else we need put equal rows to separate objects.
 	{
-		let obj = {};
-		for (let key in constantsIndexes) 
+		for (let i = 0; i < data.length; i++)
 		{
-			let value = data[i][0][constantsIndexes[key]];
-			obj[key] = convertToType(value, description[key].type);
-		}
-		for (let key in arraysIndexes)
-		{
-			obj[key] = new Array(data[i].length);
-		}
-		for (let j = 0; j < data[i].length; j++)
-		{
+			let obj = {};
+			for (let key in constantsIndexes) 
+			{
+				let value = data[i][0][constantsIndexes[key]];
+				obj[key] = convertToType(value, description[key].type);
+			}
 			for (let key in arraysIndexes)
 			{
-				let value = data[i][j][arraysIndexes[key]];
-				obj[key][j] = convertToType(value, description[key].type);
+				obj[key] = new Array(data[i].length);
+			}
+			for (let j = 0; j < data[i].length; j++)
+			{
+				for (let key in arraysIndexes)
+				{
+					let value = data[i][j][arraysIndexes[key]];
+					obj[key][j] = convertToType(value, description[key].type);
+				}
+			}
+			out.push(obj);
+		}
+	}
+	else
+	{
+		for (let i = 0; i < data.length; i++)
+		{
+			for (let j = 0; j < data[i].length; j++)
+			{
+				let obj = {};
+				for (let key in constantsIndexes) 
+				{
+					let value = data[i][j][constantsIndexes[key]];
+					obj[key] = convertToType(value, description[key].type);
+				}
+				out.push(obj);
 			}
 		}
-		out.push(obj);
 	}
 	return out;
 
