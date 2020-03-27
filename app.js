@@ -209,6 +209,7 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 	}
 	return out;
 
+/*
 	function typeInitialisation(type)
 	{
 		switch(type.toLowerCase())
@@ -223,6 +224,7 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 				throw new Error('Type is incorrect');
 		}
 	}
+*/
 
 	function convertToType(value, type)
 	{
