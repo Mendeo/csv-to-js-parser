@@ -70,7 +70,7 @@ const csvToObj = require('csv-to-js-parser').csvToObj;
 
 const data = fs.readFileSync('data.csv').toString();
 
-const normal_description =
+const description =
     {
         customer_id:     {type: 'number', order: 1},
         product:         {type: 'string'},
