@@ -72,13 +72,13 @@ const data = fs.readFileSync('data.csv').toString();
 
 const description =
     {
-        customer_id:     {type: 'number', order: 1},
+        customer_id:     {type: 'number', group: 1},
         product:         {type: 'string'},
         product_id:      {type: 'number'},
-        customer_name:   {type: 'string', order: 2},
+        customer_name:   {type: 'string', group: 2},
         price:           {type: 'number'},
         closed:          {type: 'boolean'},
-        customer_status: {type: 'number', order: 2}
+        customer_status: {type: 'number', group: 2}
     };
 let obj = csvToObj(data, ';', description);
 ```
@@ -90,7 +90,7 @@ let obj = csvToObj(data, ';', description);
 В параметре description описывается входная таблица:
 * type: описывается тип значений столбца. Поддерживаются три варианта: "number", "string" и "boolean".
 
-* order: порядок группировки. Задаётся только для тех столбцов, которые нужно группировать. Таким должен быть хотя бы один столбец. Значения этого свойства показывают в каком порядке нужно группировать столбцы. Группировка идёт в порядке возрастания значения order. То есть сначала группируются столбцы с order: 1, потом внутри первой группировки группируются столбцы с order: 2 и т. д. Можно воспринимать свойство order аналогично конструкции Group By в языке SQL.
+* group: порядок группировки. Задаётся только для тех столбцов, которые нужно группировать. Таким должен быть хотя бы один столбец. Значения этого свойства показывают в каком порядке нужно группировать столбцы. Группировка идёт в порядке возрастания значения group. То есть сначала группируются столбцы с group: 1, потом внутри первой группировки группируются столбцы с group: 2 и т. д. Можно воспринимать свойство group аналогично конструкции Group By в языке SQL.
 
   Если параметр description не задан, то всем столбцам входной таблицы приписывается строковый тип и группировка производится по всем столбцам. Это значит, что каждая строка входной таблицы преобразуется в отдельный объект JavaScript.
 
@@ -112,7 +112,7 @@ let obj = csvToObj(data, ';', description);
 |  male  | 32  |     8     |
 | female | 30  |     9     |
 | female | 30  |     9     |
-| female | 30  |     10     |
+| female | 30  |     10    |
 | female | 30  |     10    |
 | female | 31  |     11    |
 | female | 31  |     12    |
@@ -125,8 +125,8 @@ let obj = csvToObj(data, ';', description);
 ```javascript
 const description = 
 {
-    age:       {type: 'number', order: 1},
-    sex:       {type: 'string', order: 2},
+    age:       {type: 'number', group: 1},
+    sex:       {type: 'string', group: 2},
     person_id: {type: 'number'}
 };
 ```

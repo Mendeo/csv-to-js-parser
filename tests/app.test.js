@@ -688,34 +688,34 @@ const normal_obj_with_combine_arrays =
 
 const normal_description =
 {
-	customer_id:     {type: 'number', order: 1},
+	customer_id:     {type: 'number', group: 1},
 	product:         {type: 'string'},
 	product_id:      {type: 'number'},
-	customer_name:   {type: 'string', order: 2},
+	customer_name:   {type: 'string', group: 2},
 	price:           {type: 'number'},
 	closed:          {type: 'boolean'},
-	customer_status: {type: 'number', order: 2}
+	customer_status: {type: 'number', group: 2}
 };
 
 const not_unique_description_var1 = 
 {
-	age:       {type: 'number', order: 1},
-	sex:       {type: 'string', order: 2},
-	person_id: {type: 'number', order: 3}
+	age:       {type: 'number', group: 1},
+	sex:       {type: 'string', group: 2},
+	person_id: {type: 'number', group: 3}
 };
 
 const not_unique_description_var2 = 
 {
-	age:       {type: 'number', order: 1},
-	sex:       {type: 'string', order: 2},
+	age:       {type: 'number', group: 1},
+	sex:       {type: 'string', group: 2},
 	person_id: {type: 'number'}
 };
 
 const not_unique_description_var3 = 
 {
 	age:       {type: 'number'},
-	sex:       {type: 'string', order: 2},
-	person_id: {type: 'number', order: 1}
+	sex:       {type: 'string', group: 2},
+	person_id: {type: 'number', group: 1}
 };
 
 describe('Tests for csvToObj convertion', () =>

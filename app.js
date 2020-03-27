@@ -55,7 +55,7 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		description = {};
 		for (let key of header)
 		{
-			description[key] = {type: 'string', order: 1};
+			description[key] = {type: 'string', group: 1};
 		}
 	}
 	//Deleting header from data
@@ -80,11 +80,11 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 	{
 		let index = header.indexOf(key, 0); 
 		if (index === -1) throw new Error('Cannnot find selected fileds in the header');
-		if (Number(description[key].order) > 0)
+		if (Number(description[key].group) > 0)
 		{
 			flag = false;
 			constantsIndexes[key] = index;
-			constantOrder.push({order: description[key].order, key: key});
+			constantOrder.push({group: description[key].group, key: key});
 		}
 		else
 		{
@@ -92,7 +92,7 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 		}
 	}
 	if (flag) throw new Error('You have to specify at least one group field!');
-	//Sorting data by orders and spliting by all constants
+	//Sorting data by groups and spliting by all constants
 	{
 		function compare(a, b)
 		{
@@ -110,7 +110,7 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 			}
 		}
 		//Sorting constantOrder
-		constantOrder = constantOrder.sort(compareObjectArray('order', 'number'));
+		constantOrder = constantOrder.sort(compareObjectArray('group', 'number'));
 		data = [data];
 		for (let i = 0; i < constantOrder.length; i++)
 		{
