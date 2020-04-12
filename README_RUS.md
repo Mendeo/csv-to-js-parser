@@ -62,6 +62,7 @@ npm i csv-to-js-parser
     }
 ]
 ```
+
 Рассмотрим исходный код для получения такого объекта. Пусть нужная таблица хранится в файле "data.csv", где разделителями столбцов выступает символ ";".
 
 ```javascript
@@ -82,6 +83,7 @@ const description =
     };
 let obj = csvToObj(data, ';', description);
 ```
+
 Функция csvToObj принимает следующие параметры:
 * data: csv таблица в виде строки.
 * delimeter: разделитель столбцов во входной таблице.
@@ -130,7 +132,9 @@ const description =
     person_id: {type: 'number'}
 };
 ```
+
 Результат работы csvToObj будет таким:
+
 ```javascript
 [
     {
@@ -166,16 +170,16 @@ const description =
 ]
 ```
 
-
-
 ### Функция combineArrays
 
 Можно заметить, что в объектах, которые возвращает функция csvToObj, свойства, отвечающие за не сгруппированные столбцы, содержат массивы одинаковой длины. Используя функцию combineArrays, можно преобразовать эти массивы в единственный массив объектов, что в некоторых случаях может быть более естественным представлением данных в JavaScript.
+
 
 ```javascript
 const combineArrays = require('csv-to-js-parser').combineArrays;
 obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
 ```
+
 Функция combineArrays принимает следующие параметры:
 * obj: входной объект (обычно полученный из csvToObj).
 * newKey: имя свойства, в котором будут объединены массивы.
@@ -183,6 +187,7 @@ obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'
 * newArrayKeys [optional]: если задан, то имена свойств, которые переопределят свойства из arrayKeys, то есть в выходном объекте вместо свойств arrayKeys будут свойства newArrayKeys.
 
 Результат работы функции combineArrays для нашего примера из таблицы 1 представлен ниже:
+
 ```javascript
 [
     {
@@ -294,8 +299,6 @@ const json = JSON.stringify(obj, null, ' ');
 fs.writeFileSync('data.json', json);
 ```
 
-
-
 ### Функция objToCsv
 
 Для обратного преобразования массива объектов из csvToObj в текстовый csv формат можно воспользоваться функцией objToCsv.
@@ -305,6 +308,7 @@ const objToCsv = require('csv-to-js-parser').objToCsv;
 const csv = objToCsv(obj, ';');
 fs.writeFileSync('newData.csv', csv);
 ```
+
 Функция objToCsv принимает следующие параметры:
 * obj: входной массив объектов (формат должен соответствовать тому, который возвращает csvToObj).
 * delimeter: разделитель столбцов в выходной таблице.

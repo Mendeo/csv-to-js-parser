@@ -28,8 +28,6 @@ Suppose we have a table with customers and the goods they ordered in the store (
 
 Here, each customer has a unique identifier: "customer_id".
 
-Таблица 1 интересна тем, что в ней есть столбцы, в которых по строкам встречаются повторяющиеся значения. Например, customer_id будет одинаковый в первых четырёх строках, так как эти строки описывают покупки одного и того же покупателя. В таких ситуациях обычно не требуется преобразовывать каждую строку в отдельный объект JavaScript, а нужно, чтобы был один объект на одного покупателя.
-
 Table 1 has columns where repeated values occur in rows. For example, customer_id will be the same in the first four lines, as these lines describe the purchases of the same customer. In these situations, you usually don't need to convert each row to a separate JavaScript object, but it is necessary that there is one object per customer.
 
 Using this module, you can convert the above table into an array, where each element of this array is a JavaScript object that describes the parameters of a particular customer and his purchase.
@@ -97,8 +95,6 @@ The description object describes the input table:
 * group: the order of grouping. Have to be set only for the columns that need to be grouped. There must be at least one such column. The values of this property indicate the order in which the columns should be grouped. For example columns with "group: 1" are grouped first, then columns with "group: 2" are grouped inside the first grouping and so on. You can perceive the group property in the same way as a "Group By" construct in SQL.
 
 If the description parameter is not specified, then a string type is assigned to all columns of the input table and grouping is performed by all columns. This means that each row of the input table will be converted to a separate JavaScript object.
-
-Рассмотрим другой пример, где можно лучше увидеть как работает группировка. Пусть в качестве входных данных выступает таблица 2.
 
 Consider another example where you can better see how grouping works. Let the input data be table 2.
 
@@ -183,6 +179,7 @@ You can notice that in the objects that the csvToObj function returns, the prope
 const combineArrays = require('csv-to-js-parser').combineArrays;
 obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
 ```
+
 The combineArrays function takes the following parameters:
 * obj: input object (usually from csvToObj).
 * newKey: the name of the property in which the arrays will be combined.
@@ -190,6 +187,7 @@ The combineArrays function takes the following parameters:
 * newArrayKeys [optional]: if specified: the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties.
 
 The result of the combineArrays function for example from table 1 is shown below:
+
 ```javascript
 [
     {
@@ -273,8 +271,6 @@ The result of the combineArrays function for example from table 1 is shown below
     }
 ]
 ```
-
-
 
 ### separateArrays function
 
