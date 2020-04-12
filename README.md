@@ -1,35 +1,38 @@
-# Преобразование данных csv в объекты JavaScript
+# Convert csv data to an array of JavaScript objects
 
-Конвертирование csv файлов в массив JavaScript объектов и обратно. Может проводить группировку входных данных.
+Converting csv files to an array of JavaScript objects and vice versa. Can group input data.
 
-## Установка
+## Installation
 ```bash
 npm i csv-to-js-parser
 ```
 
-## Пример
+## Example
 
-### Функция csvToObj
-Пусть у нас есть таблица с покупателями и товарами, которые они заказали в магазине (Таблица 1).
+### csvToObj function
+Suppose we have a table with customers and the goods they ordered in the store (Table 1).
 
-**Таблица 1**
+**Table 1**
+
 | customer_id | customer_name | customer_status | product_id |   product    | price | closed |
-|-------------|---------------|-----------------|------------|--------------|-------|--------|
-|      1      |       Bob     |        0        |      1     |    computer  |  550  |  true  |
-|      1      |       Bob     |        0        |      2     |    monitor   |  400  |  false |
-|      1      |       Bob     |        0        |      3     | mobile phone |  970  |  true  |
-|      1      |       Bob     |        0        |      4     |     mouse    |   7   |  true  |
-|      2      |      Alice    |        1        |      5     |    laptop    |  1200 |  true  |
-|      2      |      Alice    |        1        |      4     |     mouse    |   7   |  false |
-|      3      |       Eve     |        1        |      6     |  microphone  |   20  |  true  |
-|      3      |       Eve     |        1        |      7     |    router    |  105  |  false |
-|      3      |       Eve     |        1        |      5     |    laptop    |  1200 |  false |
+|:-----------:|:-------------:|:---------------:|:----------:|:------------:|:-----:|:------:|
+|      1      |      Bob      |        0        |      1     |   computer   |  550  |  true  |
+|      1      |      Bob      |        0        |      2     |    monitor   |  400  |  false |
+|      1      |      Bob      |        0        |      3     | mobile phone |  970  |  true  |
+|      1      |      Bob      |        0        |      4     |     mouse    |   7   |  true  |
+|      2      |      lice     |        1        |      5     |    laptop    |  1200 |  true  |
+|      2      |     Alice     |        1        |      4     |     mouse    |   7   |  false |
+|      3      |      Eve      |        1        |      6     |  microphone  |   20  |  true  |
+|      3      |      Eve      |        1        |      7     |    router    |  105  |  false |
+|      3      |      Eve      |        1        |      5     |    laptop    |  1200 |  false |
 
-Здесь каждый покупатель обладает уникальным идентификатором customer_id.
+Here, each customer has a unique identifier: "customer_id".
 
 Таблица 1 интересна тем, что в ней есть столбцы, в которых по строкам встречаются повторяющиеся значения. Например, customer_id будет одинаковый в первых четырёх строках, так как эти строки описывают покупки одного и того же покупателя. В таких ситуациях обычно не требуется преобразовывать каждую строку в отдельный объект JavaScript, а нужно, чтобы был один объект на одного покупателя.
 
-Используя данный модуль, можно перевести указанную выше таблицу в массив, где каждый элемент этого массива - это объект JavaScript, описывающий параметры конкретного покупателя и его покупки.
+Table 1 has columns where repeated values occur in rows. For example, customer_id will be the same in the first four lines, as these lines describe the purchases of the same customer. In these situations, you usually don't need to convert each row to a separate JavaScript object, but it is necessary that there is one object per customer.
+
+Using this module, you can convert the above table into an array, where each element of this array is a JavaScript object that describes the parameters of a particular customer and his purchase.
 
 ```javascript
 [
@@ -62,7 +65,8 @@ npm i csv-to-js-parser
     }
 ]
 ```
-Рассмотрим исходный код для получения такого объекта. Пусть нужная таблица хранится в файле "data.csv", где разделителями столбцов выступает символ ";".
+
+Let's look at the source code for getting such result. Let the input table be stored in the "data.csv" file, where the column separators are the ";".
 
 ```javascript
 const fs = require('fs');
@@ -82,23 +86,26 @@ const description =
     };
 let obj = csvToObj(data, ';', description);
 ```
-Функция csvToObj принимает следующие параметры:
-* data: csv таблица в виде строки.
-* delimeter: разделитель столбцов во входной таблице.
-* description [optional]: описание входной таблицы.
 
-В параметре description описывается входная таблица:
-* type: описывается тип значений столбца. Поддерживаются три варианта: "number", "string" и "boolean".
+The csvToObj function accepts the following parameters:
+* data: csv table as a string.
+* delimeter: column separator in the input table.
+* description [optional]: description of the input table.
 
-* group: порядок группировки. Задаётся только для тех столбцов, которые нужно группировать. Таким должен быть хотя бы один столбец. Значения этого свойства показывают в каком порядке нужно группировать столбцы. Группировка идёт в порядке возрастания значения group. То есть сначала группируются столбцы с group: 1, потом внутри первой группировки группируются столбцы с group: 2 и т. д. Можно воспринимать свойство group аналогично конструкции Group By в языке SQL.
+The description object describes the input table:
+* type: describes the type of column values. Three options are supported: "number", "string" and "boolean".
+* group: the order of grouping. Have to be set only for the columns that need to be grouped. There must be at least one such column. The values of this property indicate the order in which the columns should be grouped. For example columns with "group: 1" are grouped first, then columns with "group: 2" are grouped inside the first grouping and so on. You can perceive the group property in the same way as a "Group By" construct in SQL.
 
-  Если параметр description не задан, то всем столбцам входной таблицы приписывается строковый тип и группировка производится по всем столбцам. Это значит, что каждая строка входной таблицы преобразуется в отдельный объект JavaScript.
+If the description parameter is not specified, then a string type is assigned to all columns of the input table and grouping is performed by all columns. This means that each row of the input table will be converted to a separate JavaScript object.
 
 Рассмотрим другой пример, где можно лучше увидеть как работает группировка. Пусть в качестве входных данных выступает таблица 2.
 
-**Таблица 2**
+Consider another example where you can better see how grouping works. Let the input data be table 2.
+
+**Table 2**
+
 |  sex   | age | person_id |
-|--------|-----|-----------|
+|:------:|:---:|:---------:|
 |  male  | 30  |     1     |
 |  male  | 30  |     2     |
 |  male  | 30  |     3     |
@@ -120,7 +127,7 @@ let obj = csvToObj(data, ';', description);
 | female | 33  |     14    |
 | female | 33  |     14    |
 
-Требуется получить массив объектов JavaScript, в котором данные из таблицы 2 будут сгруппированы сначала по возрасту, а затем по полу. В этом случае description будет таким:
+We need to get an array of JavaScript objects in which the data from table 2 will be grouped first by age and then by sex. In this case, the description object will be as follows:
 
 ```javascript
 const description = 
@@ -130,7 +137,9 @@ const description =
     person_id: {type: 'number'}
 };
 ```
-Результат работы csvToObj будет таким:
+
+The output from csvToObj founction will be as follows:
+
 ```javascript
 [
     {
@@ -166,23 +175,21 @@ const description =
 ]
 ```
 
+### combineArrays function
 
-
-### Функция combineArrays
-
-Можно заметить, что в объектах, которые возвращает функция csvToObj, свойства, отвечающие за не сгруппированные столбцы, содержат массивы одинаковой длины. Используя функцию combineArrays, можно преобразовать эти массивы в единственный массив объектов, что в некоторых случаях может быть более естественным представлением данных в JavaScript.
+You can notice that in the objects that the csvToObj function returns, the properties that are responsible for non-grouped columns contain arrays of the same length. Using the combineArrays function, you can convert these arrays to a single array of objects, which in some cases may be a more natural representation of data in JavaScript.
 
 ```javascript
 const combineArrays = require('csv-to-js-parser').combineArrays;
 obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
 ```
-Функция combineArrays принимает следующие параметры:
-* obj: входной объект (обычно полученный из csvToObj).
-* newKey: имя свойства, в котором будут объединены массивы.
-* arrayKeys: имена свойств во входном объекте, которые являются массивами.
-* newArrayKeys [optional]: если задан, то имена свойств, которые переопределят свойства из arrayKeys, то есть в выходном объекте вместо свойств arrayKeys будут свойства newArrayKeys.
+The combineArrays function takes the following parameters:
+* obj: input object (usually from csvToObj).
+* newKey: the name of the property in which the arrays will be combined.
+* arrayKeys: the names of the properties in the input object that are arrays.
+* newArrayKeys [optional]: if specified: the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties.
 
-Результат работы функции combineArrays для нашего примера из таблицы 1 представлен ниже:
+The result of the combineArrays function for example from table 1 is shown below:
 ```javascript
 [
     {
@@ -269,50 +276,47 @@ obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'
 
 
 
-### Функция separateArrays
+### separateArrays function
 
-Для обратного преобразования в объект с отдельными массивами можно воспользоваться функцией separateArrays.
+To reverse conversion to an object with separate arrays, you can use the separateArrays function.
 
 ```javascript
 const separateArrays = require('csv-to-js-parser').separateArrays;
 obj = separateArrays(obj, 'products', ['product_id', 'name', 'price', 'closed'], ['product_id', 'product', 'price', 'closed']);
 ```
 
-В этой функции параметры, аналогичны тем, что используются в combineArrays:
+In this function, parameters are similar to those used in combineArrays:
 
-* obj: входной объект (обычно, полученный из combineArrays).
-* objArrayKey: имя свойства, в котором объединены массивы.
-* arrayKeys: имена свойств во входном объекте, которые нужно сделать отдельными массивами .
-* newArrayKeys [optional]: если задан, то имена свойств, которые переопределят свойства из arrayKeys, то есть в выходном объекте вместо свойств arrayKeys будут свойства newArrayKeys.
+* obj: input object (usually from combineArrays).
+* objArrayKey: name of the property where the arrays are combined.
+* arrayKeys: names of properties in the input object to convert it to separate arrays .
+* newArrayKeys [optional]: if specified, the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties.
 
-Результатом работы этой функции будет первоначальный объект, полученный из csvToObj.
+The result of this function will be the initial object obtained from csvToObj.
 
+### Saving in JSON format
 
-
-### Сохранение в формате JSON
-
-Для сохранения объектов, полученных в результате работы функций csvToObj или combineArrays в файл, можно воспользоваться встроенной в node.js функцией JSON.stringify();
+To save objects obtained from csvToObj or combineArrays functions to a file, you can use the built-in node.js function JSON.stringify().
 
 ```javascript
 const json = JSON.stringify(obj, null, ' ');
 fs.writeFileSync('data.json', json);
 ```
 
+### objToCsv function
 
-
-### Функция objToCsv
-
-Для обратного преобразования объекта в текстовый csv формат можно воспользоваться функцией objToCsv.
+You can use the objToCsv function to reverse convert an array of objects from csvToObj to CSV text format.
 
 ```javascript
 const objToCsv = require('csv-to-js-parser').objToCsv;
 const csv = objToCsv(obj, ';');
 fs.writeFileSync('newData.csv', csv);
 ```
-Функция objToCsv принимает следующие параметры:
-* obj: входной объект (формат должен соответствовать тому, который возвращает csvToObj).
-* delimeter: разделитель столбцов в выходной таблице.
-* rowDelimeter [optional]: разделитель строк. Если не задан, то по умолчанию используется "LF" (\n). Для windows разумно указывать в этом параметре разделитель "CRLF" (\r\n).
 
-## Лицензия MIT
+The objToCsv function accepts the following parameters:
+* obj: input array of objectc (the format must match the one returned by csvToObj).
+* delimeter: column delimiter in the output table.
+* rowDelimeter [optional]: line separator. If not specified, then the default is "LF" (\n). For windows, it is reasonable to specify the "CRLF" delimiter (\r\n).
+
+## MIT License
 https://github.com/Mendeo/csv-to-js-parser/blob/master/LICENSE
