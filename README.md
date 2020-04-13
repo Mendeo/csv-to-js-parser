@@ -175,6 +175,8 @@ The output from csvToObj founction will be as follows:
 
 You can notice that in the objects that the csvToObj function returns, the properties that are responsible for non-grouped columns contain arrays of the same length. Using the combineArrays function, you can convert these arrays to a single array of objects, which in some cases may be a more natural representation of data in JavaScript.
 
+The code for working with this function for the example from table 1:
+
 ```javascript
 const combineArrays = require('csv-to-js-parser').combineArrays;
 obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
@@ -288,11 +290,11 @@ In this function, parameters are similar to those used in combineArrays:
 * arrayKeys: names of properties in the input object to convert it to separate arrays .
 * newArrayKeys [optional]: if specified, the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties.
 
-The result of this function will be the initial object obtained from csvToObj.
+The result of this function will be the initial array of objects obtained from csvToObj.
 
 ### Saving in JSON format
 
-To save objects obtained from csvToObj or combineArrays functions to a file, you can use the built-in node.js function JSON.stringify().
+To save objects from csvToObj or combineArrays functions to a file, you can use the built-in node.js function JSON.stringify().
 
 ```javascript
 const json = JSON.stringify(obj, null, ' ');
@@ -312,7 +314,7 @@ fs.writeFileSync('newData.csv', csv);
 The objToCsv function accepts the following parameters:
 * obj: input array of objectc (the format must match the one returned by csvToObj).
 * delimeter: column delimiter in the output table.
-* rowDelimeter [optional]: line separator. If not specified, then the default is "LF" (\n). For windows, it is reasonable to specify the "CRLF" delimiter (\r\n).
+* rowDelimeter [optional]: rows separator. If not specified, then the default is "LF" (\n). For windows, it is reasonable to specify the "CRLF" delimiter (\r\n).
 
 ## MIT License
 https://github.com/Mendeo/csv-to-js-parser/blob/master/LICENSE
