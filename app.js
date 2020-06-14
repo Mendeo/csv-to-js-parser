@@ -303,6 +303,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 {
 	if (!Array.isArray(obj)) throw new Error ('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
+	if (!delimeter) delimeter = ',';
 	if (!rowDelimeter)
 	{
 		rowDelimeter = '\n';
