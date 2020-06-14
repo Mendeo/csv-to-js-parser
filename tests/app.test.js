@@ -722,9 +722,16 @@ describe('Tests for csvToObj convertion', () =>
 {
 	function doTest(csv, expected, description)
 	{
-		const result = app.csvToObj(csv, ';', description);
-		let msg = whereNotEqual(expected, result);
-		if (msg) throw new Error(msg);
+		const result1 = app.csvToObj(csv, ';', description);
+		const result2 = app.csvToObj(csv, description, ';');
+		const result3 = app.csvToObj(csv.replace(/;/g, ','), description);
+		let msg;
+		msg = whereNotEqual(expected, result1);
+		if (msg) throw new Error(msg) + ' explicit params one order';
+		msg = whereNotEqual(expected, result2);
+		if (msg) throw new Error(msg) + ' explicit params other order';
+		msg = whereNotEqual(expected, result3);
+		if (msg) throw new Error(msg) + ' implicit  delimeter';
 	}
 	it ('should return normal object', () => doTest(normal_csv, normal_obj, normal_description));
 	it ('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj, normal_description));
@@ -754,9 +761,14 @@ describe('Tests for objToCsv conversion', () =>
 	function doTest(obj, expected)
 	{
 		const result = app.objToCsv(obj, ';');
+		
+		const result1 = app.objToCsv(obj, ';');
+		const result2 = app.objToCsv(obj);
 		//fs.writeFileSync('expected.csv', expected);
 		//fs.writeFileSync('result.csv', result);
-		if (result !== expected) throw new Error(`Expected:\n${expected}\n\nBut got:\n${result}`);
+		if (result1 !== expected) throw new Error(`Expected (explicit delimeter):\n${expected}\n\nBut got:\n${result}`);
+		let commaExpected = expected.replace(/;/g, ',');
+		if (result2 !== commaExpected) throw new Error(`Expected (implicit delimeter):\n${commaExpected}\n\nBut got:\n${result}`);
 	}
 	it('should return normal_csv', () => doTest(normal_obj, normal_csv));
 	it('should return not_normal_csv_sorted', () => doTest(not_normal_obj, not_normal_csv_sorted));
