@@ -10,13 +10,13 @@ const data = fs.readFileSync('data.csv').toString();
 
 const description =
 {
-	customer_id:     {type: 'number', order: 1},
+	customer_id:     {type: 'number', group: 1},
 	product:         {type: 'string'},
 	product_id:      {type: 'number'},
-	customer_name:   {type: 'string', order: 2},
+	customer_name:   {type: 'string', group: 2},
 	price:           {type: 'number'},
 	closed:          {type: 'boolean'},
-	customer_status: {type: 'number', order: 2}
+	customer_status: {type: 'number', group: 2}
 };
 
 //Csv to JavaScript object
