@@ -23,8 +23,46 @@ SOFTWARE.
 */
 
 'use strict';
-module.exports.csvToObj = function(data, delimeter, description, isSorted)
+module.exports.csvToObj = function(data, param1, param2)
 {
+	if (typeof data !== 'string' || 
+		(typeof param1 === 'object' && typeof param2 === 'object') ||
+		(typeof param1 === 'string' && typeof param2 === 'string') ||
+		(param1 && (typeof param1 !== 'object' && typeof param1 !== 'string')) ||
+		(param2 && (typeof param2 !== 'object' && typeof param2 !== 'string')))
+		throw new Error('Incorrect parameters');
+
+	let description;
+	let delimeter;
+	if (param1 || param2)
+	{
+		if (param1)
+		{
+			if (typeof param1 === 'string')
+			{
+				delimeter = param1;
+			}
+			else 
+			{
+				description = param1;
+			}
+		
+		}
+		if (param2)
+		{
+			if (typeof param2 === 'string')
+			{
+				delimeter = param2;
+			}
+			else
+			{
+				description = param2;
+			}
+		}
+	}
+
+	if (!delimeter) delimeter = ',';
+
 	//Spliting data by rows
 	{
 		//Checking row delimeter
@@ -58,6 +96,12 @@ module.exports.csvToObj = function(data, delimeter, description, isSorted)
 			description[key] = {type: 'string', group: 1};
 		}
 	}
+
+	/*
+	console.log(delimeter);
+	console.log(description);
+	*/
+
 	//Deleting header from data
 	data.shift();
 	//Spliting data by delimeter
