@@ -87,7 +87,9 @@ let obj = csvToObj(data, ';', description);
 
 The csvToObj function accepts the following parameters:
 * data: csv table as a string.
-* delimeter: column separator in the input table.
+
+* delimeter [optional]: column separator in the input table. If not specified, then the default is comma ",".
+
 * description [optional]: description of the input table.
 
 The description object describes the input table:
@@ -95,6 +97,8 @@ The description object describes the input table:
 * group: the order of grouping. Have to be set only for the columns that need to be grouped. There must be at least one such column. The values of this property indicate the order in which the columns should be grouped. For example columns with "group: 1" are grouped first, then columns with "group: 2" are grouped inside the first grouping and so on. You can perceive the group property in the same way as a "Group By" construct in SQL.
 
 If the description parameter is not specified, then a string type is assigned to all columns of the input table and grouping is performed by all columns. This means that each row of the input table will be converted to a separate JavaScript object.
+
+The  delimeter and description parameters can be set in a different order: first description, then delimeter.
 
 Consider another example where you can better see how grouping works. Let the input data be table 2.
 
@@ -313,7 +317,7 @@ fs.writeFileSync('newData.csv', csv);
 
 The objToCsv function accepts the following parameters:
 * obj: input array of objectc (the format must match the one returned by csvToObj).
-* delimeter: column delimiter in the output table.
+* delimeter [optional]: column delimiter in the output table. If not specified, then the default is comma ",".
 * rowDelimeter [optional]: rows separator. If not specified, then the default is "LF" (\n). For windows, it is reasonable to specify the "CRLF" delimiter (\r\n).
 
 ## MIT License
