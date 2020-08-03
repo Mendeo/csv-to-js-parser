@@ -69,14 +69,7 @@ module.exports.csvToObj = function(data, param1, param2)
 		let newRow;
 		let i = data.indexOf('\n', 0);
 		if (i === -1) throw new Error('No row delimeter found');
-		if (data[i - 1] === '\r')
-		{
-			newRow = '\r\n';
-		}
-		else
-		{
-			newRow = '\n';
-		}
+		newRow = (data[i - 1] === '\r') ? '\r\n' : '\n';
 		data = data.split(newRow);
 		//Deleting last empty row
 		i = data.length - 1;
