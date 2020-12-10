@@ -290,7 +290,7 @@ module.exports.csvToObj = function(data, param1, param2)
 				throw new Error('Type is incorrect');
 		}
 	}
-}
+};
 
 module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 {
@@ -315,7 +315,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 	let isConstant = new Array(keys.length);
 	for (let i = 0; i < keys.length; i++)
 	{
-		out += keys[i]
+		out += keys[i];
 		if (i !== keys.length - 1) out += delimeter;
 		isConstant[i] = !Array.isArray(obj[0][keys[i]]);
 	}
@@ -367,7 +367,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 		}
 	}
 	return out;
-}
+};
 
 module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 {
@@ -402,7 +402,7 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 		}
 	}
 	return out;
-}
+};
 
 module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKeys)
 {
@@ -432,4 +432,4 @@ module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKe
 		}
 	}
 	return out;
-}
+};
