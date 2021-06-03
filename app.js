@@ -116,7 +116,7 @@ module.exports.csvToObj = function(data, param1, param2)
 	for (let key in description)
 	{
 		let index = header.indexOf(key, 0); 
-		if (index === -1) throw new Error('Cannnot find selected fileds in the header');
+		if (index === -1) throw new Error('Cannnot find selected fields in the header');
 		if (Number(description[key].group) > 0)
 		{
 			flag = false;
