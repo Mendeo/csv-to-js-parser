@@ -764,8 +764,6 @@ describe('Tests for objToCsv conversion', () =>
 		
 		const result1 = app.objToCsv(obj, ';');
 		const result2 = app.objToCsv(obj);
-		//fs.writeFileSync('expected.csv', expected);
-		//fs.writeFileSync('result.csv', result);
 		if (result1 !== expected) throw new Error(`Expected (explicit delimeter):\n${expected}\n\nBut got:\n${result}`);
 		let commaExpected = expected.replace(/;/g, ',');
 		if (result2 !== commaExpected) throw new Error(`Expected (implicit delimeter):\n${commaExpected}\n\nBut got:\n${result}`);
@@ -793,6 +791,42 @@ describe('Tests for combine arrays in objects', () =>
 			let msg = whereNotEqual(normal_obj, result);
 			if (msg) throw new Error(msg);
 		});
+});
+
+describe('Double quotes specification test (rfc4180)', () =>
+{
+	const csv =
+`"aaa",bb""b,ccc
+"xxx","yyy""a""y","zzz,a,z"
+xxx,"yyy
+ay",zzz
+xxx,yyy"a"y,zz z
+`;
+const expected =
+[
+	{
+		aaa: 'xxx',
+		'bb"b': 'yyy"a"y',
+		ccc: 'zzz,a,z'
+	},
+	{
+		aaa: 'xxx',
+		'bb"b': 'yyy\r\nay',
+		ccc: 'zzz'
+	},
+	{
+		aaa: 'xxx',
+		'bb"b': 'yyy"a"y',
+		ccc: 'zz z'
+	}
+];
+	it('should handle double quotes correctly according to rfc 4180', () =>
+	{
+		const result = app.csvToObj(csv);
+		console.log(result);
+		const msg = whereNotEqual(expected, result);
+		if (msg) throw new Error(msg);
+	});
 });
 
 //Function shows where difference between expected object and result object
