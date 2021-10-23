@@ -30,7 +30,6 @@ const not_normal_csv =
 
 `;
 
-
 const not_normal_csv_sorted =
 `customer_id;customer_name;product;price;closed;customer_status;product_id
 1;Bob;computer;;true;0;1
@@ -94,9 +93,9 @@ female;;9
 male;31;5
 female;33;14
 
-`
+`;
 
-const not_unique_csv_sorted_1_2 = 
+const not_unique_csv_sorted_1_2 =
 `sex;age;person_id
 female;30;9
 female;30;9
@@ -120,7 +119,7 @@ female;33;14
 female;33;14
 `;
 
-const not_unique_csv_sorted_3 = 
+const not_unique_csv_sorted_3 =
 `person_id;sex;age
 1;male;30
 2;male;30
@@ -144,7 +143,7 @@ const not_unique_csv_sorted_3 =
 14;female;33
 `;
 
-const not_unique_not_normal_csv_sorted_1_2 = 
+const not_unique_not_normal_csv_sorted_1_2 =
 `sex;age;person_id
 female;;9
 male;;4
@@ -168,7 +167,7 @@ female;33;14
 female;33;14
 `;
 
-const not_unique_obj_var1 = 
+const not_unique_obj_var1 =
 [
 	{
 		sex: 'female',
@@ -272,7 +271,7 @@ const not_unique_obj_var1 =
 	}
 ];
 
-const not_unique_not_normal_obj_var1 = 
+const not_unique_not_normal_obj_var1 =
 [
 	{
 		sex: 'female',
@@ -376,9 +375,7 @@ const not_unique_not_normal_obj_var1 =
 	}
 ];
 
-
-
-const not_unique_obj_var2 = 
+const not_unique_obj_var2 =
 [
 	{
 		sex: 'female',
@@ -412,7 +409,7 @@ const not_unique_obj_var2 =
 	}
 ];
 
-const not_unique_not_normal_obj_var2 = 
+const not_unique_not_normal_obj_var2 =
 [
 	{
 		sex: 'female',
@@ -466,8 +463,7 @@ const not_unique_not_normal_obj_var2 =
 	}
 ];
 
-
-const not_unique_obj_var3 = 
+const not_unique_obj_var3 =
 [
 	{
 		person_id: 1,
@@ -541,7 +537,7 @@ const not_unique_obj_var3 =
 	}
 ];
 
-const normal_obj = 
+const normal_obj =
 [
 	{
 		customer_id: 1,
@@ -572,7 +568,7 @@ const normal_obj =
 	}
 ];
 
-const not_normal_obj = 
+const not_normal_obj =
 [
 	{
 		customer_id: 1,
@@ -603,7 +599,7 @@ const not_normal_obj =
 	}
 ];
 
-const normal_obj_with_combine_arrays = 
+const normal_obj_with_combine_arrays =
 [
 	{
 		customer_id: 1,
@@ -688,34 +684,34 @@ const normal_obj_with_combine_arrays =
 
 const normal_description =
 {
-	customer_id:     {type: 'number', group: 1},
-	product:         {type: 'string'},
-	product_id:      {type: 'number'},
-	customer_name:   {type: 'string', group: 2},
-	price:           {type: 'number'},
-	closed:          {type: 'boolean'},
-	customer_status: {type: 'number', group: 2}
+	customer_id:     { type: 'number', group: 1 },
+	product:         { type: 'string' },
+	product_id:      { type: 'number' },
+	customer_name:   { type: 'string', group: 2 },
+	price:           { type: 'number' },
+	closed:          { type: 'boolean' },
+	customer_status: { type: 'number', group: 2 }
 };
 
-const not_unique_description_var1 = 
+const not_unique_description_var1 =
 {
-	age:       {type: 'number', group: 1},
-	sex:       {type: 'string', group: 2},
-	person_id: {type: 'number', group: 3}
+	age:       { type: 'number', group: 1 },
+	sex:       { type: 'string', group: 2 },
+	person_id: { type: 'number', group: 3 }
 };
 
-const not_unique_description_var2 = 
+const not_unique_description_var2 =
 {
-	age:       {type: 'number', group: 1},
-	sex:       {type: 'string', group: 2},
-	person_id: {type: 'number'}
+	age:       { type: 'number', group: 1 },
+	sex:       { type: 'string', group: 2 },
+	person_id: { type: 'number' }
 };
 
-const not_unique_description_var3 = 
+const not_unique_description_var3 =
 {
-	age:       {type: 'number'},
-	sex:       {type: 'string', group: 2},
-	person_id: {type: 'number', group: 1}
+	age:       { type: 'number' },
+	sex:       { type: 'string', group: 2 },
+	person_id: { type: 'number', group: 1 }
 };
 
 describe('Tests for csvToObj convertion', () =>
@@ -733,12 +729,12 @@ describe('Tests for csvToObj convertion', () =>
 		msg = whereNotEqual(expected, result3);
 		if (msg) throw new Error(msg) + ' implicit  delimeter';
 	}
-	it ('should return normal object', () => doTest(normal_csv, normal_obj, normal_description));
-	it ('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj, normal_description));
-	it ('should return not_unique_obj_var1 object', () => doTest(not_unique_csv, not_unique_obj_var1, not_unique_description_var1));
-	it ('should return not_unique_obj_var2 object', () => doTest(not_unique_csv, not_unique_obj_var2, not_unique_description_var2));
-	it ('should return not_unique_obj_var3 object', () => doTest(not_unique_csv, not_unique_obj_var3, not_unique_description_var3));
-	it ('should return not_unique_obj_var1 object (no description)', () => 
+	it('should return normal object', () => doTest(normal_csv, normal_obj, normal_description));
+	it('should return not_normal object', () => doTest(not_normal_csv, not_normal_obj, normal_description));
+	it('should return not_unique_obj_var1 object', () => doTest(not_unique_csv, not_unique_obj_var1, not_unique_description_var1));
+	it('should return not_unique_obj_var2 object', () => doTest(not_unique_csv, not_unique_obj_var2, not_unique_description_var2));
+	it('should return not_unique_obj_var3 object', () => doTest(not_unique_csv, not_unique_obj_var3, not_unique_description_var3));
+	it('should return not_unique_obj_var1 object (no description)', () =>
 	{
 		//Convert all properties of not_unique_description_var1 to String
 		let obj = new Array(not_unique_description_var1.length);
@@ -761,7 +757,7 @@ describe('Tests for objToCsv conversion', () =>
 	function doTest(obj, expected)
 	{
 		const result = app.objToCsv(obj, ';');
-		
+
 		const result1 = app.objToCsv(obj, ';');
 		const result2 = app.objToCsv(obj);
 		if (result1 !== expected) throw new Error(`Expected (explicit delimeter):\n${expected}\n\nBut got:\n${result}`);
@@ -780,46 +776,46 @@ describe('Tests for objToCsv conversion', () =>
 describe('Tests for combine arrays in objects', () =>
 {
 	it('should return normal_obj_with_combine_arrays', () =>
-		{
-			const result = app.combineArrays(normal_obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
-			let msg = whereNotEqual(normal_obj_with_combine_arrays, result);
-			if (msg) throw new Error(msg);
-		});
+	{
+		const result = app.combineArrays(normal_obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
+		let msg = whereNotEqual(normal_obj_with_combine_arrays, result);
+		if (msg) throw new Error(msg);
+	});
 	it('should return normal_obj', () =>
-		{
-			const result = app.separateArrays(normal_obj_with_combine_arrays, 'products', ['product_id', 'name', 'price', 'closed'], ['product_id', 'product', 'price', 'closed']);
-			let msg = whereNotEqual(normal_obj, result);
-			if (msg) throw new Error(msg);
-		});
+	{
+		const result = app.separateArrays(normal_obj_with_combine_arrays, 'products', ['product_id', 'name', 'price', 'closed'], ['product_id', 'product', 'price', 'closed']);
+		let msg = whereNotEqual(normal_obj, result);
+		if (msg) throw new Error(msg);
+	});
 });
 
 describe('Double quotes specification test (rfc4180)', () =>
 {
 	const csv =
-`"aaa",bb""b,ccc
-"xxx","yyy""a""y","zzz,a,z"
-xxx,"yyy
-ay",zzz
-xxx,yyy"a"y,zz z
+`"aaa","bb""b",ccc
+"xxx"   ,"yyy""a"", y","zzz,a,z"
+xxx,  "yyy
+ay",""
+xx x,yyy"a"y,
 `;
-const expected =
-[
-	{
-		aaa: 'xxx',
-		'bb"b': 'yyy"a"y',
-		ccc: 'zzz,a,z'
-	},
-	{
-		aaa: 'xxx',
-		'bb"b': 'yyy\r\nay',
-		ccc: 'zzz'
-	},
-	{
-		aaa: 'xxx',
-		'bb"b': 'yyy"a"y',
-		ccc: 'zz z'
-	}
-];
+	const expected =
+	[
+		{
+			aaa: 'xxx',
+			'bb"b': 'yyy"a", y',
+			ccc: 'zzz,a,z'
+		},
+		{
+			aaa: 'xxx',
+			'bb"b': 'yyy\r\nay',
+			ccc: ''
+		},
+		{
+			aaa: 'xx x',
+			'bb"b': 'yyy"a"y',
+			ccc: ''
+		}
+	];
 	it('should handle double quotes correctly according to rfc 4180', () =>
 	{
 		const result = app.csvToObj(csv);
@@ -843,7 +839,7 @@ function whereNotEqual(expected, result)
 				let resultArr = result[i][key].slice().sort();
 				for (let j = 0; j < expectedArr.length; j++)
 				{
-					if (typeof(expectedArr[j]) === 'object')
+					if (typeof (expectedArr[j]) === 'object')
 					{
 						for (let key in expectedArr[j])
 						{
@@ -857,7 +853,7 @@ function whereNotEqual(expected, result)
 					}
 					else
 					{
-						if (expectedArr[j]!== resultArr[j])
+						if (expectedArr[j] !== resultArr[j])
 						{
 							flag = true;
 							break;
