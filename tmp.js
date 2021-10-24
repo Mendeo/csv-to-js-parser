@@ -1,10 +1,10 @@
 'use strict';
-const row = '"qw", "a""s"   ,  er  ,  "zx, "" y", "", a,';
+const row = '"qw", "a""s"   ,  e""r  ,  "zx, "" y", "", a,';
+
 //Split by delimeter, taking into account double quotes according to rfc4180
 function splitTiaQuotes(row, delimeter)
 {
-	let out = [];
-
+	let rowArray = [];
 	let startIndex = 0;
 	for (;;)
 	{
@@ -15,7 +15,7 @@ function splitTiaQuotes(row, delimeter)
 		{
 			if (qPlaceOpen === -1) //last field without quotes
 			{
-				out.push(row.slice(startIndex, row.length));
+				rowArray.push(row.slice(startIndex, row.length));
 				break;
 			}
 			else if(qPlaceClosed > qPlaceOpen) //last field has more then one qotes
@@ -24,18 +24,22 @@ function splitTiaQuotes(row, delimeter)
 				{
 					qPlaceClosed = row.indexOf('"', qPlaceClosed + 2);
 				}
-				out.push(row.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+				for (let i = qPlaceClosed + 1; i < row.length; i++) //After closing quotes and before delimeter we have not space simbols
+				{
+					if (row.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes in last row: ' + row);
+				}
+				rowArray.push(row.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
 				break;
 			}
 			else //last field has only one qoute
 			{
-				out.push(row.slice(startIndex, row.length));
+				rowArray.push(row.slice(startIndex, row.length));
 				break;
 			}
 		}
 		else if (qPlaceOpen === -1) //no quotes in field;
 		{
-			out.push(row.slice(startIndex, dPlace));
+			rowArray.push(row.slice(startIndex, dPlace));
 			startIndex = dPlace + 1;
 		}
 		else if (qPlaceOpen < dPlace) //field has quotes
@@ -47,6 +51,7 @@ function splitTiaQuotes(row, delimeter)
 			}
 			else
 			{
+				fieldStartsFromQuote = true;
 				for (let i = startIndex; i < qPlaceOpen; i++)
 				{
 					if (row.slice(i, i + 1) !== ' ')
@@ -55,7 +60,6 @@ function splitTiaQuotes(row, delimeter)
 						break;
 					}
 				}
-				fieldStartsFromQuote = true;
 			}
 			if (fieldStartsFromQuote) //filed start from quote
 			{
@@ -75,23 +79,22 @@ function splitTiaQuotes(row, delimeter)
 				{
 					if (row.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes in row: ' + row);
 				}
-				out.push(row.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+				rowArray.push(row.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
 				startIndex = dPlace + 1;
 			}
 			else //filed has quote, but not start from quote
 			{
-				out.push(row.slice(startIndex, dPlace));
+				rowArray.push(row.slice(startIndex, dPlace));
 				startIndex = dPlace + 1;
 			}
 		}
 		else //filed has not quotes
 		{
-			out.push(row.slice(startIndex, dPlace));
+			rowArray.push(row.slice(startIndex, dPlace));
 			startIndex = dPlace + 1;
 		}
 	}
-	return out;
-	//return row.split(delimeter);
+	return rowArray;
 }
 console.log(splitTiaQuotes(row, ','));
 console.log(row);
