@@ -3,3 +3,4 @@
 *.swo
 *.*~
 package-lock.json
+/.vscode
