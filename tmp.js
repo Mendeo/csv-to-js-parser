@@ -20,16 +20,9 @@ function splitTiaQuotes(row, delimeter)
 			}
 			else if(qPlaceClosed > qPlaceOpen) //last field has more then one qotes
 			{
-				for (;;)
+				while (row.slice(qPlaceClosed + 1, qPlaceClosed + 2) === '"') //qPlaceClosed refer to escape simbol of "
 				{
-					if (row.slice(qPlaceClosed + 1, qPlaceClosed + 2) === '"') //qPlaceClosed refer to escape simbol of "
-					{
-						qPlaceClosed = row.indexOf('"', qPlaceClosed + 2);
-					}
-					else
-					{
-						break;
-					}
+					qPlaceClosed = row.indexOf('"', qPlaceClosed + 2);
 				}
 				out.push(row.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
 				break;
