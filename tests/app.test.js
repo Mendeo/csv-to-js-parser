@@ -794,9 +794,11 @@ describe('Double quotes specification test (rfc4180)', () =>
 	const csv =
 `"aaa","bb""b",ccc
 "xxx"   ,"yyy""a"", y","zzz,a,z"
-xxx,  "yyy
-ay",""
+xxx,  "yyy""v,v
+ay","a, """
 xx x,yyy"a"y,
+a"aa,"bbb,",",x,"",y
+z","yyy"
 `;
 	const expected =
 	[
@@ -807,13 +809,20 @@ xx x,yyy"a"y,
 		},
 		{
 			aaa: 'xxx',
-			'bb"b': 'yyy\r\nay',
-			ccc: ''
+			'bb"b': `yyy"v,v
+ay`,
+			ccc: 'a, "'
 		},
 		{
 			aaa: 'xx x',
 			'bb"b': 'yyy"a"y',
 			ccc: ''
+		},
+		{
+			aaa: 'a"aa',
+			'bb"b': 'bbb,',
+			ccc: `,x,",y
+z`
 		}
 	];
 	it('should handle double quotes correctly according to rfc 4180', () =>
