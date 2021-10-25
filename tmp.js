@@ -1,60 +1,76 @@
 'use strict';
-const row = '"qw", "a""s"   ,  e""r  ,  "zx, "" y", "", a,';
+//const row = '"qw", "a""s"   ,  e""r  ,  "zx, "" y", "", a,';
+const data = `"xxx, """
+"rr", a"aa,"bbb,",",x,"",y
+z","yyy"
+zzz,ccc,vvv,mmm
+`;
 
 //Split by delimeter, taking into account double quotes according to rfc4180
-function splitTiaQuotes(row, delimeter)
+function splitTiaQuotes(data, delimeter)
 {
-	let rowArray = [];
-	let startIndex = 0;
+	const fullArray = [];
+	let dataIndex = 0;
+	let qPlaceOpen = 0;
+	let dOrnPlace = 0;
+	let dPlace = 0;
+	let rnPlace = 0;
+	let qPlaceClosed = -1;
+	let row = '';
 	for (;;)
 	{
-		let qPlaceOpen = row.indexOf('"', startIndex);
-		let qPlaceClosed = qPlaceOpen === -1 ? -1 : row.indexOf('"', qPlaceOpen + 1);
-		let dPlace = row.indexOf(delimeter, startIndex);
-		if (dPlace === -1) //last field
+		if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimeter, dataIndex);
+		if (rnPlace >= 0 && rnPlace <= dOrnPlace) rnPlace = data.indexOf('\n', dataIndex);
+		set_dOrnPlace();
+		if (qPlaceOpen <= dOrnPlace)
+		{
+			qPlaceOpen = data.indexOf('"', dataIndex);
+			qPlaceClosed = qPlaceOpen === -1 ? -1 : data.indexOf('"', qPlaceOpen + 1);
+		}
+		if (dOrnPlace === -1) //last field
 		{
 			if (qPlaceOpen === -1) //last field without quotes
 			{
-				rowArray.push(row.slice(startIndex, row.length));
+				fullArray.push(data.slice(dataIndex, data.length));
 				break;
 			}
-			else if(qPlaceClosed > qPlaceOpen) //last field has more then one qotes
+			else if(qPlaceClosed > qPlaceOpen) //last field has more then one quotes
 			{
-				while (row.slice(qPlaceClosed + 1, qPlaceClosed + 2) === '"') //qPlaceClosed refer to escape simbol of "
+				while (data.slice(qPlaceClosed + 1, qPlaceClosed + 2) === '"') //qPlaceClosed refer to escape simbol of "
 				{
-					qPlaceClosed = row.indexOf('"', qPlaceClosed + 2);
+					qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
 				}
-				for (let i = qPlaceClosed + 1; i < row.length; i++) //After closing quotes and before delimeter we have not space simbols
+				for (let i = qPlaceClosed + 1; i < data.length; i++) //After closing quotes and before delimeter we have not space simbols
 				{
-					if (row.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes in last row: ' + row);
+					if (data.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes (1): ' + data.slice(qPlaceOpen, data.length));
 				}
-				rowArray.push(row.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+				fullArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
 				break;
 			}
 			else //last field has only one qoute
 			{
-				rowArray.push(row.slice(startIndex, row.length));
+				fullArray.push(data.slice(dataIndex, data.length));
 				break;
 			}
 		}
 		else if (qPlaceOpen === -1) //no quotes in field;
 		{
-			rowArray.push(row.slice(startIndex, dPlace));
-			startIndex = dPlace + 1;
+			fullArray.push(data.slice(dataIndex, dOrnPlace));
+			dataIndex = dOrnPlace + 1;
 		}
-		else if (qPlaceOpen < dPlace) //field has quotes
+		else if (qPlaceOpen < dOrnPlace) //field has quotes
 		{
 			let fieldStartsFromQuote;
-			if (qPlaceOpen === startIndex)
+			if (qPlaceOpen === dataIndex)
 			{
 				fieldStartsFromQuote = true;
 			}
 			else
 			{
 				fieldStartsFromQuote = true;
-				for (let i = startIndex; i < qPlaceOpen; i++)
+				for (let i = dataIndex; i < qPlaceOpen; i++)
 				{
-					if (row.slice(i, i + 1) !== ' ')
+					if (data.slice(i, i + 1) !== ' ')
 					{
 						fieldStartsFromQuote = false;
 						break;
@@ -65,36 +81,63 @@ function splitTiaQuotes(row, delimeter)
 			{
 				for (;;)
 				{
-					if (row.slice(qPlaceClosed + 1, qPlaceClosed + 2) === '"') //qPlaceClosed refer to escape simbol of "
+					if (data.slice(qPlaceClosed + 1, qPlaceClosed + 2) === '"') //qPlaceClosed refer to escape simbol of "
 					{
-						qPlaceClosed = row.indexOf('"', qPlaceClosed + 2);
+						qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
 					}
 					else
 					{
-						if (dPlace < qPlaceClosed) dPlace = row.indexOf(delimeter, qPlaceClosed + 1); //dPlace refer to delimeter into escaped filed, for example ""aa, aa
+						if (dOrnPlace < qPlaceClosed) //dOrnPlace refer to delimeter into escaped filed, for example ""aa, aa
+						{
+							if (dPlace < qPlaceClosed) dPlace = data.indexOf(delimeter, qPlaceClosed + 1);
+							if (rnPlace < qPlaceClosed) rnPlace = data.indexOf('\n', qPlaceClosed + 1);
+							set_dOrnPlace();
+						}
 						break;
 					}
 				}
-				for (let i = qPlaceClosed + 1; i < dPlace; i++) //After closing quotes and before delimeter we have not space simbols
+				for (let i = qPlaceClosed + 1; i < dOrnPlace; i++) //After closing quotes and before delimeter we have not space simbols
 				{
-					if (row.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes in row: ' + row);
+					if (data.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes (2): ' + data.slice(qPlaceOpen, qPlaceClosed + 1));
 				}
-				rowArray.push(row.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
-				startIndex = dPlace + 1;
+				fullArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+				dataIndex = dOrnPlace + 1;
 			}
 			else //filed has quote, but not start from quote
 			{
-				rowArray.push(row.slice(startIndex, dPlace));
-				startIndex = dPlace + 1;
+				fullArray.push(data.slice(dataIndex, dOrnPlace));
+				dataIndex = dOrnPlace + 1;
 			}
 		}
 		else //filed has not quotes
 		{
-			rowArray.push(row.slice(startIndex, dPlace));
-			startIndex = dPlace + 1;
+			fullArray.push(data.slice(dataIndex, dOrnPlace));
+			dataIndex = dOrnPlace + 1;
 		}
 	}
-	return rowArray;
+
+	const out = [];
+	return fullArray;
+
+	function set_dOrnPlace()
+	{
+		if (dPlace === -1)
+		{
+			dOrnPlace = rnPlace;
+		}
+		else if (rnPlace === -1)
+		{
+			dOrnPlace = dPlace;
+		}
+		else if (rnPlace < dPlace)
+		{
+			dOrnPlace = rnPlace;
+		}
+		else
+		{
+			dOrnPlace = dPlace;
+		}
+	}
 }
-console.log(splitTiaQuotes(row, ','));
-console.log(row);
+console.log(splitTiaQuotes(data, ','));
+console.log(data);
