@@ -1,9 +1,13 @@
 'use strict';
 //const row = '"qw", "a""s"   ,  e""r  ,  "zx, "" y", "", a,';
-const data = `"xxx, """
-"rr", a"aa,"bbb,",",x,"",y
+const data =
+`"aaa","bb""b",ccc
+"xxx"   ,"yyy""a"", y","zzz,a,z"
+xxx,  "yyy""v,v
+ay","a, """
+xx x,yyy"a"y,
+a"aa,"bbb,",",x,"",y
 z","yyy"
-zzz,ccc,vvv,mmm
 `;
 
 //Split by delimeter, taking into account double quotes according to rfc4180
@@ -23,7 +27,7 @@ function splitTiaQuotes(data, delimeter)
 		if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimeter, dataIndex);
 		if (rnPlace >= 0 && rnPlace <= dOrnPlace) rnPlace = data.indexOf('\n', dataIndex);
 		set_dOrnPlace();
-		if (qPlaceOpen <= dOrnPlace)
+		if ((dOrnPlace >= 0 && qPlaceOpen <= dOrnPlace) || dOrnPlace === -1)
 		{
 			qPlaceOpen = data.indexOf('"', dataIndex);
 			qPlaceClosed = qPlaceOpen === -1 ? -1 : data.indexOf('"', qPlaceOpen + 1);

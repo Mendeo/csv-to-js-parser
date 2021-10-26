@@ -262,7 +262,7 @@ module.exports.csvToObj = function(data, param1, param2)
 			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimeter, dataIndex);
 			if (rnPlace >= 0 && rnPlace <= dOrnPlace) rnPlace = data.indexOf('\n', dataIndex);
 			set_dOrnPlace();
-			if (qPlaceOpen <= dOrnPlace)
+			if ((dOrnPlace >= 0 && qPlaceOpen <= dOrnPlace) || dOrnPlace === -1)
 			{
 				qPlaceOpen = data.indexOf('"', dataIndex);
 				qPlaceClosed = qPlaceOpen === -1 ? -1 : data.indexOf('"', qPlaceOpen + 1);
