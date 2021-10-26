@@ -10,7 +10,7 @@ zzz,ccc,vvv,mmm
 function splitTiaQuotes(data, delimeter)
 {
 	const out = [];
-	let fullArray = [];
+	let rowArray = [];
 	let dataIndex = 0;
 	let qPlaceOpen = 0;
 	let dOrnPlace = 0;
@@ -31,9 +31,9 @@ function splitTiaQuotes(data, delimeter)
 		{
 			if (qPlaceOpen === -1) //last field without quotes
 			{
-				fullArray.push(data.slice(dataIndex, data.length));
-				out.push(fullArray);
-				fullArray = [];
+				rowArray.push(data.slice(dataIndex, data.length));
+				out.push(rowArray);
+				rowArray = [];
 				break;
 			}
 			else if(qPlaceClosed > qPlaceOpen) //last field has more then one quotes
@@ -46,27 +46,27 @@ function splitTiaQuotes(data, delimeter)
 				{
 					if (data.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes (1): ' + data.slice(qPlaceOpen, data.length));
 				}
-				fullArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
-				out.push(fullArray);
-				fullArray = [];
+				rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+				out.push(rowArray);
+				rowArray = [];
 				break;
 			}
 			else //last field has only one qoute
 			{
-				fullArray.push(data.slice(dataIndex, data.length));
-				out.push(fullArray);
-				fullArray = [];
+				rowArray.push(data.slice(dataIndex, data.length));
+				out.push(rowArray);
+				rowArray = [];
 				break;
 			}
 		}
 		else if (qPlaceOpen === -1) //no quotes in field;
 		{
-			fullArray.push(data.slice(dataIndex, dOrnPlace));
+			rowArray.push(data.slice(dataIndex, dOrnPlace));
 			dataIndex = dOrnPlace + 1;
 			if (dOrnPlace === rnPlace)
 			{
-				out.push(fullArray);
-				fullArray = [];
+				out.push(rowArray);
+				rowArray = [];
 			}
 		}
 		else if (qPlaceOpen < dOrnPlace) //field has quotes
@@ -111,33 +111,33 @@ function splitTiaQuotes(data, delimeter)
 				{
 					if (data.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes (2): ' + data.slice(qPlaceOpen, qPlaceClosed + 1));
 				}
-				fullArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+				rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
 				dataIndex = dOrnPlace + 1;
 				if (dOrnPlace === rnPlace)
 				{
-					out.push(fullArray);
-					fullArray = [];
+					out.push(rowArray);
+					rowArray = [];
 				}
 			}
 			else //filed has quote, but not start from quote
 			{
-				fullArray.push(data.slice(dataIndex, dOrnPlace));
+				rowArray.push(data.slice(dataIndex, dOrnPlace));
 				dataIndex = dOrnPlace + 1;
 				if (dOrnPlace === rnPlace)
 				{
-					out.push(fullArray);
-					fullArray = [];
+					out.push(rowArray);
+					rowArray = [];
 				}
 			}
 		}
 		else //filed has not quotes
 		{
-			fullArray.push(data.slice(dataIndex, dOrnPlace));
+			rowArray.push(data.slice(dataIndex, dOrnPlace));
 			dataIndex = dOrnPlace + 1;
 			if (dOrnPlace === rnPlace)
 			{
-				out.push(fullArray);
-				fullArray = [];
+				out.push(rowArray);
+				rowArray = [];
 			}
 		}
 	}
