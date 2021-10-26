@@ -260,13 +260,13 @@ module.exports.csvToObj = function(data, param1, param2)
 		let rowIndex = 0;
 		for (;;)
 		{
-			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimeter, dataIndex);
-			if (rnPlace >= 0 && rnPlace <= dOrnPlace) rnPlace = data.indexOf('\n', dataIndex);
+			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = getNearestIndex(data, delimeter, dataIndex);
+			if (rnPlace >= 0 && rnPlace <= dOrnPlace) rnPlace = getNearestIndex(data, '\n', dataIndex);
 			set_dOrnPlace();
 			if ((dOrnPlace >= 0 && qPlaceOpen <= dOrnPlace) || dOrnPlace === -1)
 			{
-				qPlaceOpen = data.indexOf('"', dataIndex);
-				qPlaceClosed = qPlaceOpen === -1 ? -1 : data.indexOf('"', qPlaceOpen + 1);
+				qPlaceOpen = getNearestIndex(data, '"', dataIndex);
+				qPlaceClosed = qPlaceOpen === -1 ? -1 : getNearestIndex(data, '"', qPlaceOpen + 1);
 			}
 			if (dOrnPlace === -1) //last field
 			{
@@ -280,7 +280,7 @@ module.exports.csvToObj = function(data, param1, param2)
 				{
 					while (data[qPlaceClosed + 1] === '"') //qPlaceClosed refer to escape simbol of "
 					{
-						qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
+						qPlaceClosed = getNearestIndex(data, '"', qPlaceClosed + 2);
 					}
 					for (let i = qPlaceClosed + 1; i < data.length; i++) //After closing quotes and before delimeter we have not space simbols
 					{
@@ -328,14 +328,14 @@ module.exports.csvToObj = function(data, param1, param2)
 					{
 						if (data[qPlaceClosed + 1] === '"') //qPlaceClosed refer to escape simbol of "
 						{
-							qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
+							qPlaceClosed = getNearestIndex(data, '"', qPlaceClosed + 2);
 						}
 						else
 						{
 							if (dOrnPlace < qPlaceClosed) //dOrnPlace refer to delimeter into escaped filed, for example ""aa, aa
 							{
-								if (dPlace < qPlaceClosed) dPlace = data.indexOf(delimeter, qPlaceClosed + 1);
-								if (rnPlace < qPlaceClosed) rnPlace = data.indexOf('\n', qPlaceClosed + 1);
+								if (dPlace < qPlaceClosed) dPlace = getNearestIndex(data, delimeter, qPlaceClosed + 1);
+								if (rnPlace < qPlaceClosed) rnPlace = getNearestIndex(data, '\n', qPlaceClosed + 1);
 								set_dOrnPlace();
 							}
 							break;
@@ -423,6 +423,15 @@ module.exports.csvToObj = function(data, param1, param2)
 			{
 				dOrnPlace = dPlace;
 			}
+		}
+
+		function getNearestIndex(data, simbol, startFrom)
+		{
+			for (let i = startFrom; i < data.length; i++)
+			{
+				if (data[i] === simbol) return i;
+			}
+			return -1;
 		}
 	}
 };
