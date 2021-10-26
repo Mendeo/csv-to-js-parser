@@ -514,11 +514,9 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 
 	function needQuotesCheck(val)
 	{
-		const hasQuotes = new RegExp('"', 'g');
-		const hasOther = new RegExp(`[\\n${delimeter}]`, 'g');
-		if (val.match(hasQuotes) === null)
+		if (val.indexOf('"') === -1)
 		{
-			if (val.match(hasOther) === null) return val;
+			if (val.indexOf(delimeter) === -1 && val.indexOf('\n') === -1) return val;
 		}
 		else
 		{
