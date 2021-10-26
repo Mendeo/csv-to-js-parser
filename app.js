@@ -257,13 +257,13 @@ module.exports.csvToObj = function(data, param1, param2)
 		let dPlace = 0;
 		let rnPlace = 0;
 		let qPlaceClosed = -1;
-		let rowIndex = 0;
+		//let rowIndex = 0;
 		for (;;)
 		{
 			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = getNearestIndex(data, delimeter, dataIndex);
 			if (rnPlace >= 0 && rnPlace <= dOrnPlace) rnPlace = getNearestIndex(data, '\n', dataIndex);
 			set_dOrnPlace();
-			if ((dOrnPlace >= 0 && qPlaceOpen <= dOrnPlace) || dOrnPlace === -1)
+			if (qPlaceOpen !== -1 && ((dOrnPlace >= 0 && qPlaceOpen <= dOrnPlace) || dOrnPlace === -1))
 			{
 				qPlaceOpen = getNearestIndex(data, '"', dataIndex);
 				qPlaceClosed = qPlaceOpen === -1 ? -1 : getNearestIndex(data, '"', qPlaceOpen + 1);
@@ -400,8 +400,8 @@ module.exports.csvToObj = function(data, param1, param2)
 					dataArray.push(rowArray);
 				}
 				rowArray = [];
-				rowIndex++;
-				if (rowIndex % 1000 === 0) console.log(rowIndex);
+				//rowIndex++;
+				//if (rowIndex % 1000 === 0) console.log(rowIndex);
 			}
 		}
 
