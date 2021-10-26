@@ -427,11 +427,14 @@ module.exports.csvToObj = function(data, param1, param2)
 
 		function getNearestIndex(data, simbol, startFrom)
 		{
+			return data.indexOf(simbol, startFrom);
+			/*
 			for (let i = startFrom; i < data.length; i++)
 			{
 				if (data[i] === simbol) return i;
 			}
 			return -1;
+			*/
 		}
 	}
 };
