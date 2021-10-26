@@ -803,6 +803,17 @@ z","yyy"
 	const expected =
 	[
 		{
+			aaa: 'a"aa',
+			'bb"b': 'bbb,',
+			ccc: `,x,",y
+z`
+		},
+		{
+			aaa: 'xx x',
+			'bb"b': 'yyy"a"y',
+			ccc: null
+		},
+		{
 			aaa: 'xxx',
 			'bb"b': 'yyy"a", y',
 			ccc: 'zzz,a,z'
@@ -812,23 +823,11 @@ z","yyy"
 			'bb"b': `yyy"v,v
 ay`,
 			ccc: 'a, "'
-		},
-		{
-			aaa: 'xx x',
-			'bb"b': 'yyy"a"y',
-			ccc: ''
-		},
-		{
-			aaa: 'a"aa',
-			'bb"b': 'bbb,',
-			ccc: `,x,",y
-z`
 		}
 	];
 	it('should handle double quotes correctly according to rfc 4180', () =>
 	{
 		const result = app.csvToObj(csv);
-		console.log(result);
 		const msg = whereNotEqual(expected, result);
 		if (msg) throw new Error(msg);
 	});
