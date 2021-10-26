@@ -9,7 +9,8 @@ zzz,ccc,vvv,mmm
 //Split by delimeter, taking into account double quotes according to rfc4180
 function splitTiaQuotes(data, delimeter)
 {
-	const out = [];
+	const dataArray = [];
+	let header = null;
 	let rowArray = [];
 	let dataIndex = 0;
 	let qPlaceOpen = 0;
@@ -32,8 +33,7 @@ function splitTiaQuotes(data, delimeter)
 			if (qPlaceOpen === -1) //last field without quotes
 			{
 				rowArray.push(data.slice(dataIndex, data.length));
-				out.push(rowArray);
-				rowArray = [];
+				addRowToArray();
 				break;
 			}
 			else if(qPlaceClosed > qPlaceOpen) //last field has more then one quotes
@@ -47,15 +47,13 @@ function splitTiaQuotes(data, delimeter)
 					if (data.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes (1): ' + data.slice(qPlaceOpen, data.length));
 				}
 				rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
-				out.push(rowArray);
-				rowArray = [];
+				addRowToArray();
 				break;
 			}
 			else //last field has only one qoute
 			{
 				rowArray.push(data.slice(dataIndex, data.length));
-				out.push(rowArray);
-				rowArray = [];
+				addRowToArray();
 				break;
 			}
 		}
@@ -63,11 +61,7 @@ function splitTiaQuotes(data, delimeter)
 		{
 			rowArray.push(data.slice(dataIndex, dOrnPlace));
 			dataIndex = dOrnPlace + 1;
-			if (dOrnPlace === rnPlace)
-			{
-				out.push(rowArray);
-				rowArray = [];
-			}
+			addRowToArray();
 		}
 		else if (qPlaceOpen < dOrnPlace) //field has quotes
 		{
@@ -113,36 +107,40 @@ function splitTiaQuotes(data, delimeter)
 				}
 				rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
 				dataIndex = dOrnPlace + 1;
-				if (dOrnPlace === rnPlace)
-				{
-					out.push(rowArray);
-					rowArray = [];
-				}
+				addRowToArray();
 			}
 			else //filed has quote, but not start from quote
 			{
 				rowArray.push(data.slice(dataIndex, dOrnPlace));
 				dataIndex = dOrnPlace + 1;
-				if (dOrnPlace === rnPlace)
-				{
-					out.push(rowArray);
-					rowArray = [];
-				}
+				addRowToArray();
 			}
 		}
 		else //filed has not quotes
 		{
 			rowArray.push(data.slice(dataIndex, dOrnPlace));
 			dataIndex = dOrnPlace + 1;
-			if (dOrnPlace === rnPlace)
-			{
-				out.push(rowArray);
-				rowArray = [];
-			}
+			addRowToArray();
 		}
 	}
 
-	return out;
+	return [header, dataArray];
+
+	function addRowToArray()
+	{
+		if (dOrnPlace === rnPlace)
+		{
+			if (header === null)
+			{
+				header = rowArray;
+			}
+			else
+			{
+				dataArray.push(rowArray);
+			}
+			rowArray = [];
+		}
+	}
 
 	function set_dOrnPlace()
 	{
