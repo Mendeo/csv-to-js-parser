@@ -459,7 +459,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 	let isConstant = new Array(keys.length);
 	for (let i = 0; i < keys.length; i++)
 	{
-		out += needQoutesCheck(keys[i].toString());
+		out += needQuotesCheck(keys[i].toString());
 		if (i !== keys.length - 1) out += delimeter;
 		isConstant[i] = !Array.isArray(obj[0][keys[i]]);
 	}
@@ -487,12 +487,12 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 					if (isConstant[j])
 					{
 						let val = elem[keys[j]];
-						if (val !== null) out += needQoutesCheck(val.toString());
+						if (val !== null) out += needQuotesCheck(val.toString());
 					}
 					else
 					{
 						let val = elem[keys[j]][i];
-						if (val !== null) out += needQoutesCheck(val.toString());
+						if (val !== null) out += needQuotesCheck(val.toString());
 					}
 					if (j !== keys.length - 1) out += delimeter;
 				}
@@ -504,7 +504,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 			for (let i = 0; i < keys.length; i++)
 			{
 				let val = elem[keys[i]];
-				if (val !== null) out += needQoutesCheck(val.toString());
+				if (val !== null) out += needQuotesCheck(val.toString());
 				if (i !== keys.length - 1) out += delimeter;
 			}
 			out += rowDelimeter;
@@ -512,7 +512,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 	}
 	return out;
 
-	function needQoutesCheck(val)
+	function needQuotesCheck(val)
 	{
 		const hasQuotes = new RegExp('"', 'g');
 		const hasOther = new RegExp(`[\\n${delimeter}]`, 'g');
