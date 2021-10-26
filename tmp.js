@@ -123,7 +123,15 @@ function splitTiaQuotes(data, delimeter)
 			addRowToArray();
 		}
 	}
-
+	//Deleting last empty rows
+	{
+		let i = dataArray.length - 1;
+		while (dataArray[i].length === 1 && dataArray[i][0] === '')
+		{
+			dataArray.pop();
+			i--;
+		}
+	}
 	return [header, dataArray];
 
 	function addRowToArray()
