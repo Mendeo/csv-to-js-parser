@@ -25,12 +25,14 @@ SOFTWARE.
 'use strict';
 module.exports.csvToObj = function(data, param1, param2)
 {
-	if (typeof data !== 'string' || 
+	if (typeof data !== 'string' ||
 		(typeof param1 === 'object' && typeof param2 === 'object') ||
 		(typeof param1 === 'string' && typeof param2 === 'string') ||
 		(param1 && (typeof param1 !== 'object' && typeof param1 !== 'string')) ||
 		(param2 && (typeof param2 !== 'object' && typeof param2 !== 'string')))
+	{
 		throw new Error('Incorrect parameters');
+	}
 
 	let description;
 	let delimeter;
@@ -42,11 +44,10 @@ module.exports.csvToObj = function(data, param1, param2)
 			{
 				delimeter = param1;
 			}
-			else 
+			else
 			{
 				description = param1;
 			}
-		
 		}
 		if (param2)
 		{
@@ -84,13 +85,13 @@ module.exports.csvToObj = function(data, param1, param2)
 
 	for (let key in description)
 	{
-		let index = header.indexOf(key, 0); 
+		let index = header.indexOf(key, 0);
 		if (index === -1) throw new Error('Cannnot find selected fields in the header');
 		if (Number(description[key].group) > 0)
 		{
 			flag = false;
 			constantsIndexes[key] = index;
-			constantOrder.push({group: description[key].group, key: key});
+			constantOrder.push({ group: description[key].group, key: key });
 		}
 		else
 		{
@@ -113,7 +114,7 @@ module.exports.csvToObj = function(data, param1, param2)
 				a = convertToType(a[key], type);
 				b = convertToType(b[key], type);
 				return compare(a, b);
-			}
+			};
 		}
 		//Sorting constantOrder
 		constantOrder = constantOrder.sort(compareObjectArray('group', 'number'));
@@ -171,13 +172,13 @@ module.exports.csvToObj = function(data, param1, param2)
 	}
 
 	let out = [];
-	
+
 	if (Object.keys(arraysIndexes).length) //If we have not group columns then we need create arrays in every object. Else we need put equal rows to separate objects.
 	{
 		for (let i = 0; i < data.length; i++)
 		{
 			let obj = {};
-			for (let key in constantsIndexes) 
+			for (let key in constantsIndexes)
 			{
 				let value = data[i][0][constantsIndexes[key]];
 				obj[key] = convertToType(value, description[key].type);
@@ -204,7 +205,7 @@ module.exports.csvToObj = function(data, param1, param2)
 			for (let j = 0; j < data[i].length; j++)
 			{
 				let obj = {};
-				for (let key in constantsIndexes) 
+				for (let key in constantsIndexes)
 				{
 					let value = data[i][j][constantsIndexes[key]];
 					obj[key] = convertToType(value, description[key].type);
@@ -215,48 +216,33 @@ module.exports.csvToObj = function(data, param1, param2)
 	}
 	return out;
 
-/*
-	function typeInitialisation(type)
-	{
-		switch(type.toLowerCase())
-		{
-			case 'string':
-				return '';
-			case 'number':
-				return 0;
-			case 'boolean':
-				return false;
-			default:
-				throw new Error('Type is incorrect');
-		}
-	}
-*/
-
 	function convertToType(value, type)
 	{
 		if (value === '') return null;
 		switch(type.toLowerCase())
 		{
-			case 'string':
-				return String(value);
-			case 'number':
-				return Number(value);
-			case 'boolean':
-				let val = value.toLowerCase();
-				if (val === "true")
-				{
-					return true;
-				}
-				else if(val === "false")
-				{
-					return false;
-				}
-				else
-				{
-					throw new Error('Cannont convert boolean value');
-				};
-			default:
-				throw new Error('Type is incorrect');
+		case 'string':
+			return String(value);
+		case 'number':
+			return Number(value);
+		case 'boolean':
+		{
+			let val = value.toLowerCase();
+			if (val === 'true')
+			{
+				return true;
+			}
+			else if(val === 'false')
+			{
+				return false;
+			}
+			else
+			{
+				throw new Error('Cannont convert boolean value');
+			}
+		}
+		default:
+			throw new Error('Type is incorrect');
 		}
 	}
 	//Split by delimeter, taking into account double quotes according to rfc4180
@@ -427,7 +413,7 @@ module.exports.csvToObj = function(data, param1, param2)
 
 module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 {
-	if (!Array.isArray(obj)) throw new Error ('Object is not array');
+	if (!Array.isArray(obj)) throw new Error('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
 	if (!delimeter) delimeter = ',';
 	if (!rowDelimeter)
@@ -463,7 +449,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 			if (!isConstant[i])
 			{
 				let ln = elem[keys[i]].length;
-			 	if (maxArrayLength < ln) maxArrayLength = ln;
+				if (maxArrayLength < ln) maxArrayLength = ln;
 			}
 		}
 		//Fill rows
@@ -506,14 +492,14 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 {
 	if (!newArrayKeys) newArrayKeys = arrayKeys;
 	if (newArrayKeys.length !== arrayKeys.length) throw new Error('Parameters arrayKeys and newArrayKeys should have same length');
-	if (!Array.isArray(obj)) throw new Error ('Object is not array');
+	if (!Array.isArray(obj)) throw new Error('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
 	const out = new Array(obj.length);
 	for (let index = 0; index < out.length; index++)
 	{
 		out[index] = {};
 		const elem = obj[index];
-		if (!Array.isArray(elem[arrayKeys[0]])) throw new Error ('Object array property is not array');
+		if (!Array.isArray(elem[arrayKeys[0]])) throw new Error('Object array property is not array');
 		let newKeyObj = new Array(elem[arrayKeys[0]].length);
 		for (let i = 0; i < newKeyObj.length; i++) newKeyObj[i] = {};
 		for (let keyIndex = 0; keyIndex < arrayKeys.length; keyIndex++)
@@ -523,7 +509,7 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 			let arr = elem[key];
 			if (keyIndex > 0)
 			{
-				if (!Array.isArray(arr)) throw new Error ('Object array property is not array');
+				if (!Array.isArray(arr)) throw new Error('Object array property is not array');
 				if (arr.length !== newKeyObj.length) throw new Error('Arrays have different lengths');
 			}
 			for(let i = 0; i < arr.length; i++)	newKeyObj[i][newKey] = arr[i];
@@ -541,7 +527,7 @@ module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKe
 {
 	if (!newArrayKeys) newArrayKeys = arrayKeys;
 	if (newArrayKeys.length !== arrayKeys.length) throw new Error('Parameters arrayKeys and newArrayKeys should have same length');
-	if (!Array.isArray(obj)) throw new Error ('Object is not array');
+	if (!Array.isArray(obj)) throw new Error('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
 	const out = new Array(obj.length);
 	for (let index = 0; index < out.length; index++)
@@ -549,7 +535,7 @@ module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKe
 		out[index] = {};
 		const elem = obj[index];
 		const objArray = elem[objArrayKey];
-		if (!Array.isArray(objArray)) throw new Error ('Object array property is not array');
+		if (!Array.isArray(objArray)) throw new Error('Object array property is not array');
 		for (let keyIndex = 0; keyIndex < arrayKeys.length; keyIndex++)
 		{
 			let newObjArray = new Array(objArray.length);
