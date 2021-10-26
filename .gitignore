@@ -2,5 +2,4 @@
 *.swp
 *.swo
 *.*~
-package-lock.json
 /.vscode
