@@ -434,7 +434,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 	let isConstant = new Array(keys.length);
 	for (let i = 0; i < keys.length; i++)
 	{
-		out += keys[i];
+		out += needQoutesCheck(keys[i].toString());
 		if (i !== keys.length - 1) out += delimeter;
 		isConstant[i] = !Array.isArray(obj[0][keys[i]]);
 	}
@@ -462,12 +462,12 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 					if (isConstant[j])
 					{
 						let val = elem[keys[j]];
-						if (val !== null) out += val.toString();
+						if (val !== null) out += needQoutesCheck(val.toString());
 					}
 					else
 					{
 						let val = elem[keys[j]][i];
-						if (val !== null) out += val.toString();
+						if (val !== null) out += needQoutesCheck(val.toString());
 					}
 					if (j !== keys.length - 1) out += delimeter;
 				}
@@ -479,13 +479,28 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 			for (let i = 0; i < keys.length; i++)
 			{
 				let val = elem[keys[i]];
-				if (val !== null) out += val.toString();
+				if (val !== null) out += needQoutesCheck(val.toString());
 				if (i !== keys.length - 1) out += delimeter;
 			}
 			out += rowDelimeter;
 		}
 	}
 	return out;
+
+	function needQoutesCheck(val)
+	{
+		const hasQuotes = new RegExp('"', 'g');
+		const hasOther = new RegExp(`[\\n${delimeter}]`, 'g');
+		if (val.match(hasQuotes) === null)
+		{
+			if (val.match(hasOther) === null) return val;
+		}
+		else
+		{
+			val = val.replace(/"/g, '""');
+		}
+		return `"${val}"`;
+	}
 };
 
 module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)

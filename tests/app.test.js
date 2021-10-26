@@ -791,22 +791,14 @@ describe('Tests for combine arrays in objects', () =>
 
 describe('Double quotes specification test (rfc4180)', () =>
 {
-	const csv =
-`"aaa","bb""b",ccc
-"xxx"   ,"yyy""a"", y","zzz,a,z"
-xxx,  "yyy""v,v
-ay","a, """
-xx x,yyy"a"y,
-a"aa,"bbb,",",x,"",y
-z","yyy"
-`;
-	const expected =
+	const csv_for_csvToObj = '"aaa","bb""b",ccc\r\na"aa,"bbb,",",x,"",y\r\nz","yyy"\r\nxx x,yyy"a"y,\r\n"xxx"   ,"yyy""a"", y","zzz,a,z"\r\nxxx,  "yyy""v,v\r\nay","a, """\r\n';
+	const csv_for_objToCsv = 'aaa,"bb""b",ccc\r\n"a""aa","bbb,",",x,"",y\r\nz"\r\nxx x,"yyy""a""y",\r\nxxx,"yyy""a"", y","zzz,a,z"\r\nxxx,"yyy""v,v\r\nay","a, """\r\n';
+	const obj =
 	[
 		{
 			aaa: 'a"aa',
 			'bb"b': 'bbb,',
-			ccc: `,x,",y
-z`
+			ccc: ',x,",y\r\nz'
 		},
 		{
 			aaa: 'xx x',
@@ -820,16 +812,21 @@ z`
 		},
 		{
 			aaa: 'xxx',
-			'bb"b': `yyy"v,v
-ay`,
+			'bb"b': 'yyy"v,v\r\nay',
 			ccc: 'a, "'
 		}
 	];
-	it('should handle double quotes correctly according to rfc 4180', () =>
+	it('csvToObj should handle double quotes correctly according to rfc 4180', () =>
 	{
-		const result = app.csvToObj(csv);
-		const msg = whereNotEqual(expected, result);
+		const result = app.csvToObj(csv_for_csvToObj);
+		console.log(result);
+		const msg = whereNotEqual(obj, result);
 		if (msg) throw new Error(msg);
+	});
+	it('objToCsv should handle double quotes correctly according to rfc 4180', () =>
+	{
+		const result = app.objToCsv(obj, ',', 'crlf');
+		if (result !== csv_for_objToCsv) throw new Error('Returned csv is incorrect.');
 	});
 });
 
