@@ -819,7 +819,6 @@ describe('Double quotes specification test (rfc4180)', () =>
 	it('csvToObj should handle double quotes correctly according to rfc 4180', () =>
 	{
 		const result = app.csvToObj(csv_for_csvToObj);
-		console.log(result);
 		const msg = whereNotEqual(obj, result);
 		if (msg) throw new Error(msg);
 	});

@@ -1,14 +1,8 @@
 'use strict';
 //const row = '"qw", "a""s"   ,  e""r  ,  "zx, "" y", "", a,';
-const data =
-`"aaa","bb""b",ccc
-"xxx"   ,"yyy""a"", y","zzz,a,z"
-xxx,  "yyy""v,v
-ay","a, """
-xx x,yyy"a"y,
-a"aa,"bbb,",",x,"",y
-z","yyy"
-`;
+const csv_for_csvToObj = '"aaa","bb""b",ccc\r\na"aa,"bbb,",",x,"",y\r\nz","yyy"\r\nxx x,yyy"a"y,\r\n"xxx"   ,"yyy""a"", y","zzz,a,z"\r\nxxx,  "yyy""v,v\r\nay","a, """\r\n';
+console.log(splitTiaQuotes(csv_for_csvToObj, ','));
+console.log(csv_for_csvToObj);
 
 //Split by delimeter, taking into account double quotes according to rfc4180
 function splitTiaQuotes(data, delimeter)
@@ -63,7 +57,7 @@ function splitTiaQuotes(data, delimeter)
 		}
 		else if (qPlaceOpen === -1) //no quotes in field;
 		{
-			rowArray.push(data.slice(dataIndex, dOrnPlace));
+			addFieldWithNoQuotes();
 			dataIndex = dOrnPlace + 1;
 			addRowToArray();
 		}
@@ -107,7 +101,8 @@ function splitTiaQuotes(data, delimeter)
 				}
 				for (let i = qPlaceClosed + 1; i < dOrnPlace; i++) //After closing quotes and before delimeter we have not space simbols
 				{
-					if (data.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes (2): ' + data.slice(qPlaceOpen, qPlaceClosed + 1));
+					let s = data.slice(i, i + 1);
+					if (!(s === ' ' || s === '\r')) throw new Error('Incorrect using of quotes (2): ' + data.slice(qPlaceOpen, qPlaceClosed + 1));
 				}
 				rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
 				dataIndex = dOrnPlace + 1;
@@ -115,14 +110,14 @@ function splitTiaQuotes(data, delimeter)
 			}
 			else //filed has quote, but not start from quote
 			{
-				rowArray.push(data.slice(dataIndex, dOrnPlace));
+				addFieldWithNoQuotes();
 				dataIndex = dOrnPlace + 1;
 				addRowToArray();
 			}
 		}
 		else //filed has not quotes
 		{
-			rowArray.push(data.slice(dataIndex, dOrnPlace));
+			addFieldWithNoQuotes();
 			dataIndex = dOrnPlace + 1;
 			addRowToArray();
 		}
@@ -137,6 +132,18 @@ function splitTiaQuotes(data, delimeter)
 		}
 	}
 	return [header, dataArray];
+
+	function addFieldWithNoQuotes()
+	{
+		if (dOrnPlace === rnPlace && data.slice(dOrnPlace - 1, dOrnPlace) === '\r')
+		{
+			rowArray.push(data.slice(dataIndex, dOrnPlace - 1));
+		}
+		else
+		{
+			rowArray.push(data.slice(dataIndex, dOrnPlace));
+		}
+	}
 
 	function addRowToArray()
 	{
@@ -174,5 +181,3 @@ function splitTiaQuotes(data, delimeter)
 		}
 	}
 }
-console.log(splitTiaQuotes(data, ','));
-console.log(data);
