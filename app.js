@@ -278,13 +278,13 @@ module.exports.csvToObj = function(data, param1, param2)
 				}
 				else if(qPlaceClosed > qPlaceOpen) //last field has more then one quotes
 				{
-					while (data.slice(qPlaceClosed + 1, qPlaceClosed + 2) === '"') //qPlaceClosed refer to escape simbol of "
+					while (data[qPlaceClosed + 1] === '"') //qPlaceClosed refer to escape simbol of "
 					{
 						qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
 					}
 					for (let i = qPlaceClosed + 1; i < data.length; i++) //After closing quotes and before delimeter we have not space simbols
 					{
-						if (data.slice(i, i + 1) !== ' ') throw new Error('Incorrect using of quotes (1): ' + data.slice(qPlaceOpen, data.length));
+						if (data[i] !== ' ') throw new Error('Incorrect using of quotes (1): ' + data.slice(qPlaceOpen, data.length));
 					}
 					rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
 					addRowToArray();
@@ -315,7 +315,7 @@ module.exports.csvToObj = function(data, param1, param2)
 					fieldStartsFromQuote = true;
 					for (let i = dataIndex; i < qPlaceOpen; i++)
 					{
-						if (data.slice(i, i + 1) !== ' ')
+						if (data[i] !== ' ')
 						{
 							fieldStartsFromQuote = false;
 							break;
@@ -326,7 +326,7 @@ module.exports.csvToObj = function(data, param1, param2)
 				{
 					for (;;)
 					{
-						if (data.slice(qPlaceClosed + 1, qPlaceClosed + 2) === '"') //qPlaceClosed refer to escape simbol of "
+						if (data[qPlaceClosed + 1] === '"') //qPlaceClosed refer to escape simbol of "
 						{
 							qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
 						}
@@ -343,7 +343,7 @@ module.exports.csvToObj = function(data, param1, param2)
 					}
 					for (let i = qPlaceClosed + 1; i < dOrnPlace; i++) //After closing quotes and before delimeter we have not space simbols
 					{
-						let s = data.slice(i, i + 1);
+						let s = data[i];
 						if (!(s === ' ' || s === '\r')) throw new Error('Incorrect using of quotes (2): ' + data.slice(qPlaceOpen, qPlaceClosed + 1));
 					}
 					rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
@@ -377,7 +377,7 @@ module.exports.csvToObj = function(data, param1, param2)
 
 		function addFieldWithNoQuotes()
 		{
-			if (dOrnPlace === rnPlace && data.slice(dOrnPlace - 1, dOrnPlace) === '\r')
+			if (dOrnPlace === rnPlace && data[dOrnPlace - 1] === '\r')
 			{
 				rowArray.push(data.slice(dataIndex, dOrnPlace - 1));
 			}
