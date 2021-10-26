@@ -257,6 +257,7 @@ module.exports.csvToObj = function(data, param1, param2)
 		let dPlace = 0;
 		let rnPlace = 0;
 		let qPlaceClosed = -1;
+		let rowIndex = 0;
 		for (;;)
 		{
 			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimeter, dataIndex);
@@ -399,6 +400,8 @@ module.exports.csvToObj = function(data, param1, param2)
 					dataArray.push(rowArray);
 				}
 				rowArray = [];
+				rowIndex++;
+				if (rowIndex % 1000 === 0) console.log(rowIndex);
 			}
 		}
 
