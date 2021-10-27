@@ -257,10 +257,6 @@ module.exports.csvToObj = function(data, param1, param2)
 		let dPlace = 0;
 		let rnPlace = 0;
 		let qPlaceClosed = -1;
-<<<<<<< HEAD
-=======
-		//let rowIndex = 0;
->>>>>>> 8548b4b4fc7a77e2739b2eedd829636937e6d224
 		for (;;)
 		{
 			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimeter, dataIndex);
@@ -403,11 +399,6 @@ module.exports.csvToObj = function(data, param1, param2)
 					dataArray.push(rowArray);
 				}
 				rowArray = [];
-<<<<<<< HEAD
-=======
-				//rowIndex++;
-				//if (rowIndex % 1000 === 0) console.log(rowIndex);
->>>>>>> 8548b4b4fc7a77e2739b2eedd829636937e6d224
 			}
 		}
 
