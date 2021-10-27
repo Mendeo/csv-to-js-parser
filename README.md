@@ -1,3 +1,15 @@
+## Version 2.3. What's new?
+The new version added correct handling of double quotes (") according to [rfc4180](https://datatracker.ietf.org/doc/html/rfc4180).
+* Values in fields can now be surrounded by quotes, for example  
+"aaa","bbb"
+* Now you can use separator character or even line breaks inside quotes:  
+"aaa,aa","bbb  
+bb"
+* Also, the field can contain the symbol (") itself, but it must be escaped:  
+"aaa""aa","bbb""aaa""bb"
+* Fields that are not surrounded by double quotes, but containing this characters will also be processed correctly:  
+aa"aa,bb"aaa"bbb  
+
 # Convert csv data to an array of JavaScript objects
 
 Converting csv files to an array of JavaScript objects and vice versa. Can group input data.
