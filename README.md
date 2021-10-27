@@ -1,13 +1,13 @@
 ## Version 2.3. What's new?
-The new version added correct handling of double quotes (") according to [rfc4180](https://datatracker.ietf.org/doc/html/rfc4180).
-* Values in fields can now be surrounded by quotes, for example  
+In the new version, the correct handling of double quotes (") has been added in accordance with [rfc4180](https://datatracker.ietf.org/doc/html/rfc4180).
+* Values in fields can now be enclosed by double quotes, for example  
 "aaa","bbb"
-* Now you can use separator character or even line breaks inside quotes:  
+* Now you can use separator character or even line breaks inside double quotes:  
 "aaa,aa","bbb  
 bb"
 * Also, the field can contain the symbol (") itself, but it must be escaped:  
 "aaa""aa","bbb""aaa""bb"
-* Fields that are not surrounded by double quotes, but containing this characters will also be processed correctly:  
+* Fields that are not enclosed by double quotes, but containing this characters will also be processed correctly:  
 aa"aa,bb"aaa"bbb  
 
 # Convert csv data to an array of JavaScript objects
