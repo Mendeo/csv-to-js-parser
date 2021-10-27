@@ -257,6 +257,7 @@ module.exports.csvToObj = function(data, param1, param2)
 		let dPlace = 0;
 		let rnPlace = 0;
 		let qPlaceClosed = -1;
+		let hasNotSpaceSimbolAfterClosingQuotes;
 		for (;;)
 		{
 			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimeter, dataIndex);
@@ -281,11 +282,23 @@ module.exports.csvToObj = function(data, param1, param2)
 					{
 						qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
 					}
+					hasNotSpaceSimbolAfterClosingQuotes = false;
 					for (let i = qPlaceClosed + 1; i < data.length; i++) //After closing quotes and before delimeter we have not space simbols
 					{
-						if (data[i] !== ' ') throw new Error('Incorrect using of quotes (1): ' + data.slice(qPlaceOpen, data.length));
+						if (data[i] !== ' ')
+						{
+							hasNotSpaceSimbolAfterClosingQuotes = true;
+							break;
+						}
 					}
-					rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+					if (hasNotSpaceSimbolAfterClosingQuotes)
+					{
+						rowArray.push(data.slice(dataIndex, data.length));
+					}
+					else
+					{
+						rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+					}
 					addRowToArray();
 					break;
 				}
@@ -340,12 +353,24 @@ module.exports.csvToObj = function(data, param1, param2)
 							break;
 						}
 					}
+					hasNotSpaceSimbolAfterClosingQuotes = false;
 					for (let i = qPlaceClosed + 1; i < dOrnPlace; i++) //After closing quotes and before delimeter we have not space simbols
 					{
 						let s = data[i];
-						if (!(s === ' ' || s === '\r')) throw new Error('Incorrect using of quotes (2): ' + data.slice(qPlaceOpen, qPlaceClosed + 1));
+						if (!(s === ' ' || s === '\r'))
+						{
+							hasNotSpaceSimbolAfterClosingQuotes = true;
+							break;
+						}
 					}
-					rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+					if (hasNotSpaceSimbolAfterClosingQuotes)
+					{
+						rowArray.push(data.slice(dataIndex, dOrnPlace));
+					}
+					else
+					{
+						rowArray.push(data.slice(qPlaceOpen + 1, qPlaceClosed).replace(/""/g, '"'));
+					}
 					dataIndex = dOrnPlace + 1;
 					addRowToArray();
 				}

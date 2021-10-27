@@ -791,8 +791,8 @@ describe('Tests for combine arrays in objects', () =>
 
 describe('Double quotes specification test (rfc4180)', () =>
 {
-	const csv_for_csvToObj = '"aaa","bb""b",ccc\r\na"aa,"bbb,",",x,"",y\r\nz","yyy"\r\nxx x,yyy"a"y,\r\n"xxx"   ,"yyy""a"", y","zzz,a,z"\r\nxxx,  "yyy""v,v\r\nay","a, """\r\n';
-	const csv_for_objToCsv = 'aaa,"bb""b",ccc\r\n"a""aa","bbb,",",x,"",y\r\nz"\r\nxx x,"yyy""a""y",\r\nxxx,"yyy""a"", y","zzz,a,z"\r\nxxx,"yyy""v,v\r\nay","a, """\r\n';
+	const csv_for_csvToObj = '"aaa","bb""b",ccc\r\na"aa,"bbb,",",x,"",y\r\nz","yyy"\r\nxx x,yyy"a"y,\r\n"xxx"   ,"yyy""a"", y","zzz,a,z"\r\nxxx,  "yyy""v,v\r\nay","a, """\r\nzzz,"zz""aaa"z,"zzz"\r\n';
+	const csv_for_objToCsv = 'aaa,"bb""b",ccc\r\n"a""aa","bbb,",",x,"",y\r\nz"\r\nxx x,"yyy""a""y",\r\nxxx,"yyy""a"", y","zzz,a,z"\r\nxxx,"yyy""v,v\r\nay","a, """\r\nzzz,"""zz""""aaa""z",zzz\r\n';
 	const obj =
 	[
 		{
@@ -814,7 +814,12 @@ describe('Double quotes specification test (rfc4180)', () =>
 			aaa: 'xxx',
 			'bb"b': 'yyy"v,v\r\nay',
 			ccc: 'a, "'
-		}
+		},
+		{
+			aaa: 'zzz',
+			'bb"b': '"zz""aaa"z',
+			ccc: 'zzz'
+		},
 	];
 	it('csvToObj should handle double quotes correctly according to rfc 4180', () =>
 	{
