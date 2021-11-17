@@ -35,14 +35,14 @@ module.exports.csvToObj = function(data, param1, param2)
 	}
 
 	let description;
-	let delimeter;
+	let delimiter;
 	if (param1 || param2)
 	{
 		if (param1)
 		{
 			if (typeof param1 === 'string')
 			{
-				delimeter = param1;
+				delimiter = param1;
 			}
 			else
 			{
@@ -53,7 +53,7 @@ module.exports.csvToObj = function(data, param1, param2)
 		{
 			if (typeof param2 === 'string')
 			{
-				delimeter = param2;
+				delimiter = param2;
 			}
 			else
 			{
@@ -62,9 +62,9 @@ module.exports.csvToObj = function(data, param1, param2)
 		}
 	}
 
-	if (!delimeter) delimeter = ',';
+	if (!delimiter) delimiter = ',';
 
-	const dataSplited = splitTiaQuotes(data, delimeter);
+	const dataSplited = splitTiaQuotes(data, delimiter);
 	let header = dataSplited[0];
 	data = dataSplited[1];
 
@@ -86,7 +86,7 @@ module.exports.csvToObj = function(data, param1, param2)
 	for (let key in description)
 	{
 		let index = header.indexOf(key, 0);
-		if (index === -1) throw new Error('Cannnot find selected fields in the header');
+		if (index === -1) throw new Error('Can\'t find selected fields in the header');
 		if (Number(description[key].group) > 0)
 		{
 			flag = false;
@@ -173,7 +173,7 @@ module.exports.csvToObj = function(data, param1, param2)
 
 	let out = [];
 
-	if (Object.keys(arraysIndexes).length) //If we have not group columns then we need create arrays in every object. Else we need put equal rows to separate objects.
+	if (Object.keys(arraysIndexes).length) //If we don't have group columns then we need create arrays in every object. Else we need put equal rows to separate objects.
 	{
 		for (let i = 0; i < data.length; i++)
 		{
@@ -238,15 +238,15 @@ module.exports.csvToObj = function(data, param1, param2)
 			}
 			else
 			{
-				throw new Error('Cannont convert boolean value');
+				throw new Error('Can\'t convert boolean value');
 			}
 		}
 		default:
 			throw new Error('Type is incorrect');
 		}
 	}
-	//Split by delimeter, taking into account double quotes according to rfc4180
-	function splitTiaQuotes(data, delimeter)
+	//Split by delimiter, taking into account double quotes according to rfc4180
+	function splitTiaQuotes(data, delimiter)
 	{
 		const dataArray = [];
 		let header = null;
@@ -257,10 +257,10 @@ module.exports.csvToObj = function(data, param1, param2)
 		let dPlace = 0;
 		let rnPlace = 0;
 		let qPlaceClosed = -1;
-		let hasNotSpaceSimbolAfterClosingQuotes;
+		let hasNotSpaceSymbolAfterClosingQuotes;
 		for (;;)
 		{
-			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimeter, dataIndex);
+			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimiter, dataIndex);
 			if (rnPlace >= 0 && rnPlace <= dOrnPlace) rnPlace = data.indexOf('\n', dataIndex);
 			set_dOrnPlace();
 			if (qPlaceOpen !== -1 && ((dOrnPlace >= 0 && qPlaceOpen <= dOrnPlace) || dOrnPlace === -1))
@@ -278,20 +278,20 @@ module.exports.csvToObj = function(data, param1, param2)
 				}
 				else if(qPlaceClosed > qPlaceOpen) //last field has more then one quotes
 				{
-					while (data[qPlaceClosed + 1] === '"') //qPlaceClosed refer to escape simbol of "
+					while (data[qPlaceClosed + 1] === '"') //qPlaceClosed refer to escape symbol of "
 					{
 						qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
 					}
-					hasNotSpaceSimbolAfterClosingQuotes = false;
-					for (let i = qPlaceClosed + 1; i < data.length; i++) //After closing quotes and before delimeter we have not space simbols
+					hasNotSpaceSymbolAfterClosingQuotes = false;
+					for (let i = qPlaceClosed + 1; i < data.length; i++) //After closing quotes and before delimiter we don't have space symbols
 					{
 						if (data[i] !== ' ')
 						{
-							hasNotSpaceSimbolAfterClosingQuotes = true;
+							hasNotSpaceSymbolAfterClosingQuotes = true;
 							break;
 						}
 					}
-					if (hasNotSpaceSimbolAfterClosingQuotes)
+					if (hasNotSpaceSymbolAfterClosingQuotes)
 					{
 						rowArray.push(data.slice(dataIndex, data.length));
 					}
@@ -334,36 +334,36 @@ module.exports.csvToObj = function(data, param1, param2)
 						}
 					}
 				}
-				if (fieldStartsFromQuote) //filed start from quote
+				if (fieldStartsFromQuote) //field starts from quote
 				{
 					for (;;)
 					{
-						if (data[qPlaceClosed + 1] === '"') //qPlaceClosed refer to escape simbol of "
+						if (data[qPlaceClosed + 1] === '"') //qPlaceClosed refer to escape symbol of "
 						{
 							qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
 						}
 						else
 						{
-							if (dOrnPlace < qPlaceClosed) //dOrnPlace refer to delimeter into escaped filed, for example ""aa, aa
+							if (dOrnPlace < qPlaceClosed) //dOrnPlace refer to delimiter into escaped field, for example ""aa, aa
 							{
-								if (dPlace < qPlaceClosed) dPlace = data.indexOf(delimeter, qPlaceClosed + 1);
+								if (dPlace < qPlaceClosed) dPlace = data.indexOf(delimiter, qPlaceClosed + 1);
 								if (rnPlace < qPlaceClosed) rnPlace = data.indexOf('\n', qPlaceClosed + 1);
 								set_dOrnPlace();
 							}
 							break;
 						}
 					}
-					hasNotSpaceSimbolAfterClosingQuotes = false;
-					for (let i = qPlaceClosed + 1; i < dOrnPlace; i++) //After closing quotes and before delimeter we have not space simbols
+					hasNotSpaceSymbolAfterClosingQuotes = false;
+					for (let i = qPlaceClosed + 1; i < dOrnPlace; i++) //After closing quotes and before delimiter we don't have space symbols
 					{
 						let s = data[i];
 						if (!(s === ' ' || s === '\r'))
 						{
-							hasNotSpaceSimbolAfterClosingQuotes = true;
+							hasNotSpaceSymbolAfterClosingQuotes = true;
 							break;
 						}
 					}
-					if (hasNotSpaceSimbolAfterClosingQuotes)
+					if (hasNotSpaceSymbolAfterClosingQuotes)
 					{
 						rowArray.push(data.slice(dataIndex, dOrnPlace));
 					}
@@ -374,14 +374,14 @@ module.exports.csvToObj = function(data, param1, param2)
 					dataIndex = dOrnPlace + 1;
 					addRowToArray();
 				}
-				else //filed has quote, but not start from quote
+				else //field has quotes but does not start from quote
 				{
 					addFieldWithNoQuotes();
 					dataIndex = dOrnPlace + 1;
 					addRowToArray();
 				}
 			}
-			else //filed has not quotes
+			else //no quotes in the field
 			{
 				addFieldWithNoQuotes();
 				dataIndex = dOrnPlace + 1;
@@ -449,22 +449,22 @@ module.exports.csvToObj = function(data, param1, param2)
 	}
 };
 
-module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
+module.exports.objToCsv = function(obj, delimiter, rowDelimiter)
 {
-	if (!Array.isArray(obj)) throw new Error('Object is not array');
+	if (!Array.isArray(obj)) throw new Error('Object is not an array');
 	if (!obj[0]) throw new Error('Object error');
-	if (!delimeter) delimeter = ',';
-	if (!rowDelimeter)
+	if (!delimiter) delimiter = ',';
+	if (!rowDelimiter)
 	{
-		rowDelimeter = '\n';
+		rowDelimiter = '\n';
 	}
-	else if (rowDelimeter.toLowerCase() === 'lf')
+	else if (rowDelimiter.toLowerCase() === 'lf')
 	{
-		rowDelimeter = '\n';
+		rowDelimiter = '\n';
 	}
-	else if (rowDelimeter.toLowerCase() === 'crlf')
+	else if (rowDelimiter.toLowerCase() === 'crlf')
 	{
-		rowDelimeter = '\r\n';
+		rowDelimiter = '\r\n';
 	}
 	let out = '';
 	let keys = []; //Saving keys order
@@ -473,10 +473,10 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 	for (let i = 0; i < keys.length; i++)
 	{
 		out += needQuotesCheck(keys[i].toString());
-		if (i !== keys.length - 1) out += delimeter;
+		if (i !== keys.length - 1) out += delimiter;
 		isConstant[i] = !Array.isArray(obj[0][keys[i]]);
 	}
-	out += rowDelimeter;
+	out += rowDelimiter;
 	//Body
 	for (let elem of obj)
 	{
@@ -490,7 +490,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 				if (maxArrayLength < ln) maxArrayLength = ln;
 			}
 		}
-		//Fill rows
+		//Filling rows
 		if (maxArrayLength) //have array properties
 		{
 			for (let i = 0; i < maxArrayLength; i++)
@@ -507,9 +507,9 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 						let val = elem[keys[j]][i];
 						if (val !== null) out += needQuotesCheck(val.toString());
 					}
-					if (j !== keys.length - 1) out += delimeter;
+					if (j !== keys.length - 1) out += delimiter;
 				}
-				out += rowDelimeter;
+				out += rowDelimiter;
 			}
 		}
 		else
@@ -518,9 +518,9 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 			{
 				let val = elem[keys[i]];
 				if (val !== null) out += needQuotesCheck(val.toString());
-				if (i !== keys.length - 1) out += delimeter;
+				if (i !== keys.length - 1) out += delimiter;
 			}
-			out += rowDelimeter;
+			out += rowDelimiter;
 		}
 	}
 	return out;
@@ -529,7 +529,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 	{
 		if (val.indexOf('"') === -1)
 		{
-			if (val.indexOf(delimeter) === -1 && val.indexOf('\n') === -1) return val;
+			if (val.indexOf(delimiter) === -1 && val.indexOf('\n') === -1) return val;
 		}
 		else
 		{
@@ -542,7 +542,7 @@ module.exports.objToCsv = function(obj, delimeter, rowDelimeter)
 module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 {
 	if (!newArrayKeys) newArrayKeys = arrayKeys;
-	if (newArrayKeys.length !== arrayKeys.length) throw new Error('Parameters arrayKeys and newArrayKeys should have same length');
+	if (newArrayKeys.length !== arrayKeys.length) throw new Error('Parameters "arrayKeys" and "newArrayKeys" should have same length');
 	if (!Array.isArray(obj)) throw new Error('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
 	const out = new Array(obj.length);
@@ -577,7 +577,7 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKeys)
 {
 	if (!newArrayKeys) newArrayKeys = arrayKeys;
-	if (newArrayKeys.length !== arrayKeys.length) throw new Error('Parameters arrayKeys and newArrayKeys should have same length');
+	if (newArrayKeys.length !== arrayKeys.length) throw new Error('Parameters "arrayKeys" and "newArrayKeys" should have same length');
 	if (!Array.isArray(obj)) throw new Error('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
 	const out = new Array(obj.length);
