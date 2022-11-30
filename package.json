@@ -14,7 +14,11 @@
     "csv",
     "json"
   ],
-  "author": "Mendeo",
+  "author": {
+    "name": "Aleksandr Menyaylo",
+    "email": "deorathemen@gmail.com",
+    "url": "https://mendeo.ru"
+  },
   "license": "MIT",
   "devDependencies": {
     "mocha": "^9.1.3"
