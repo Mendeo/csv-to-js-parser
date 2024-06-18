@@ -6,5 +6,5 @@
 /.vscode
 .eslintrc.json
 .editorconfig
-.eslint.config.js
+eslint.config.js
 jsdoc.sh
