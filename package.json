@@ -21,6 +21,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.5.0",
+    "globals": "^15.6.0",
     "mocha": "^10.4.0"
   }
 }
