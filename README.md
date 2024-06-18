@@ -1,15 +1,3 @@
-## Version 2.3. What's new?
-In the new version, the correct handling of double quotes (") has been added in accordance with [rfc4180](https://datatracker.ietf.org/doc/html/rfc4180).
-* Values in fields can now be enclosed by double quotes, for example  
-"aaa","bbb"
-* Now you can use separator character or even line breaks inside double quotes:  
-"aaa,aa","bbb  
-bb"
-* Also, the field can contain the symbol (") itself, but it must be escaped:  
-"aaa""aa","bbb""aaa""bb"
-* Fields that are not enclosed by double quotes, but containing this characters will also be processed correctly:  
-aa"aa,bb"aaa"bbb  
-
 # Convert csv data to an array of JavaScript objects
 
 Converting csv files to an array of JavaScript objects and vice versa. Can group input data.
@@ -328,7 +316,7 @@ fs.writeFileSync('newData.csv', csv);
 ```
 
 The objToCsv function accepts the following parameters:
-* obj: input array of objectc (the format must match the one returned by csvToObj).
+* obj: input array of objects (the format must match the one returned by csvToObj).
 * delimeter [optional]: column delimiter in the output table. If not specified, then the default is comma ",".
 * rowDelimeter [optional]: rows separator. If not specified, then the default is "LF" (\n). For windows, it is reasonable to specify the "CRLF" delimiter (\r\n).
 

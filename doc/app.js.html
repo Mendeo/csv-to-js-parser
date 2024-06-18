@@ -1,4 +1,32 @@
-/*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
 The MIT License (MIT)
 
 Copyright (c) Aleksandr Meniailo (Александр Меняйло), Mendeo 2024 (deorathemen@gmail.com)
@@ -32,15 +60,15 @@ SOFTWARE.
  * @param {...object} param2.columnName - the name of this property must match the column header in the input data.
  * @param {string} param2.columnName.type - describes the type of column values. Three options are supported: "number", "string" and "boolean".
  * @param {number} param2.columnName.group - the order of grouping. Have to be set only for the columns that need to be grouped. There must be at least one such column. The values of this property indicate the order in which the columns should be grouped. For example columns with "group: 1" are grouped first, then columns with "group: 2" are grouped inside the first grouping and so on. You can perceive the group property in the same way as a "Group By" construct in SQL.
- * @returns {Array.<object>}
+ * @returns {Array.&lt;object>}
  */
 module.exports.csvToObj = function(data, param1, param2)
 {
 	if (typeof data !== 'string' ||
-		(typeof param1 === 'object' && typeof param2 === 'object') ||
-		(typeof param1 === 'string' && typeof param2 === 'string') ||
-		(param1 && (typeof param1 !== 'object' && typeof param1 !== 'string')) ||
-		(param2 && (typeof param2 !== 'object' && typeof param2 !== 'string')))
+		(typeof param1 === 'object' &amp;&amp; typeof param2 === 'object') ||
+		(typeof param1 === 'string' &amp;&amp; typeof param2 === 'string') ||
+		(param1 &amp;&amp; (typeof param1 !== 'object' &amp;&amp; typeof param1 !== 'string')) ||
+		(param2 &amp;&amp; (typeof param2 !== 'object' &amp;&amp; typeof param2 !== 'string')))
 	{
 		throw new Error('Incorrect parameters');
 	}
@@ -130,10 +158,10 @@ module.exports.csvToObj = function(data, param1, param2)
 		//Sorting constantOrder
 		constantOrder = constantOrder.sort(compareObjectArray('group', 'number'));
 		data = [data];
-		for (let i = 0; i < constantOrder.length; i++)
+		for (let i = 0; i &lt; constantOrder.length; i++)
 		{
 			let auxArr = [];
-			for (let j = 0; j < data.length; j++)
+			for (let j = 0; j &lt; data.length; j++)
 			{
 				data[j] = data[j].sort(compareObjectArray(constantsIndexes[constantOrder[i].key], description[constantOrder[i].key].type));
 				auxArr.push(split(data[j], constantsIndexes[constantOrder[i].key]));
@@ -143,9 +171,9 @@ module.exports.csvToObj = function(data, param1, param2)
 		function arrayConcat(data) //Concat arrays of arrays into one array
 		{
 			let out = [];
-			for (let i = 0; i < data.length; i++)
+			for (let i = 0; i &lt; data.length; i++)
 			{
-				for (let j = 0; j < data[i].length; j++)
+				for (let j = 0; j &lt; data[i].length; j++)
 				{
 					out.push(data[i][j]);
 				}
@@ -186,7 +214,7 @@ module.exports.csvToObj = function(data, param1, param2)
 
 	if (Object.keys(arraysIndexes).length) //If we don't have group columns then we need create arrays in every object. Else we need put equal rows to separate objects.
 	{
-		for (let i = 0; i < data.length; i++)
+		for (let i = 0; i &lt; data.length; i++)
 		{
 			let obj = {};
 			for (let key in constantsIndexes)
@@ -198,7 +226,7 @@ module.exports.csvToObj = function(data, param1, param2)
 			{
 				obj[key] = new Array(data[i].length);
 			}
-			for (let j = 0; j < data[i].length; j++)
+			for (let j = 0; j &lt; data[i].length; j++)
 			{
 				for (let key in arraysIndexes)
 				{
@@ -211,9 +239,9 @@ module.exports.csvToObj = function(data, param1, param2)
 	}
 	else
 	{
-		for (let i = 0; i < data.length; i++)
+		for (let i = 0; i &lt; data.length; i++)
 		{
-			for (let j = 0; j < data[i].length; j++)
+			for (let j = 0; j &lt; data[i].length; j++)
 			{
 				let obj = {};
 				for (let key in constantsIndexes)
@@ -271,10 +299,10 @@ module.exports.csvToObj = function(data, param1, param2)
 		let hasNotSpaceSymbolAfterClosingQuotes;
 		for (;;)
 		{
-			if (dPlace >= 0 && dPlace <= dOrnPlace) dPlace = data.indexOf(delimiter, dataIndex);
-			if (rnPlace >= 0 && rnPlace <= dOrnPlace) rnPlace = data.indexOf('\n', dataIndex);
+			if (dPlace >= 0 &amp;&amp; dPlace &lt;= dOrnPlace) dPlace = data.indexOf(delimiter, dataIndex);
+			if (rnPlace >= 0 &amp;&amp; rnPlace &lt;= dOrnPlace) rnPlace = data.indexOf('\n', dataIndex);
 			set_dOrnPlace();
-			if (qPlaceOpen !== -1 && ((dOrnPlace >= 0 && qPlaceOpen <= dOrnPlace) || dOrnPlace === -1))
+			if (qPlaceOpen !== -1 &amp;&amp; ((dOrnPlace >= 0 &amp;&amp; qPlaceOpen &lt;= dOrnPlace) || dOrnPlace === -1))
 			{
 				qPlaceOpen = data.indexOf('"', dataIndex);
 				qPlaceClosed = qPlaceOpen === -1 ? -1 : data.indexOf('"', qPlaceOpen + 1);
@@ -294,7 +322,7 @@ module.exports.csvToObj = function(data, param1, param2)
 						qPlaceClosed = data.indexOf('"', qPlaceClosed + 2);
 					}
 					hasNotSpaceSymbolAfterClosingQuotes = false;
-					for (let i = qPlaceClosed + 1; i < data.length; i++) //After closing quotes and before delimiter we don't have space symbols
+					for (let i = qPlaceClosed + 1; i &lt; data.length; i++) //After closing quotes and before delimiter we don't have space symbols
 					{
 						if (data[i] !== ' ')
 						{
@@ -326,7 +354,7 @@ module.exports.csvToObj = function(data, param1, param2)
 				dataIndex = dOrnPlace + 1;
 				addRowToArray();
 			}
-			else if (qPlaceOpen < dOrnPlace) //field has quotes
+			else if (qPlaceOpen &lt; dOrnPlace) //field has quotes
 			{
 				let fieldStartsFromQuote;
 				if (qPlaceOpen === dataIndex)
@@ -336,7 +364,7 @@ module.exports.csvToObj = function(data, param1, param2)
 				else
 				{
 					fieldStartsFromQuote = true;
-					for (let i = dataIndex; i < qPlaceOpen; i++)
+					for (let i = dataIndex; i &lt; qPlaceOpen; i++)
 					{
 						if (data[i] !== ' ')
 						{
@@ -355,17 +383,17 @@ module.exports.csvToObj = function(data, param1, param2)
 						}
 						else
 						{
-							if (dOrnPlace < qPlaceClosed) //dOrnPlace refer to delimiter into escaped field, for example ""aa, aa
+							if (dOrnPlace &lt; qPlaceClosed) //dOrnPlace refer to delimiter into escaped field, for example ""aa, aa
 							{
-								if (dPlace < qPlaceClosed) dPlace = data.indexOf(delimiter, qPlaceClosed + 1);
-								if (rnPlace < qPlaceClosed) rnPlace = data.indexOf('\n', qPlaceClosed + 1);
+								if (dPlace &lt; qPlaceClosed) dPlace = data.indexOf(delimiter, qPlaceClosed + 1);
+								if (rnPlace &lt; qPlaceClosed) rnPlace = data.indexOf('\n', qPlaceClosed + 1);
 								set_dOrnPlace();
 							}
 							break;
 						}
 					}
 					hasNotSpaceSymbolAfterClosingQuotes = false;
-					for (let i = qPlaceClosed + 1; i < dOrnPlace; i++) //After closing quotes and before delimiter we don't have space symbols
+					for (let i = qPlaceClosed + 1; i &lt; dOrnPlace; i++) //After closing quotes and before delimiter we don't have space symbols
 					{
 						let s = data[i];
 						if (!(s === ' ' || s === '\r'))
@@ -402,7 +430,7 @@ module.exports.csvToObj = function(data, param1, param2)
 		//Deleting last empty rows
 		{
 			let i = dataArray.length - 1;
-			while (dataArray[i].length === 1 && dataArray[i][0] === '')
+			while (dataArray[i].length === 1 &amp;&amp; dataArray[i][0] === '')
 			{
 				dataArray.pop();
 				i--;
@@ -412,7 +440,7 @@ module.exports.csvToObj = function(data, param1, param2)
 
 		function addFieldWithNoQuotes()
 		{
-			if (dOrnPlace === rnPlace && data[dOrnPlace - 1] === '\r')
+			if (dOrnPlace === rnPlace &amp;&amp; data[dOrnPlace - 1] === '\r')
 			{
 				rowArray.push(data.slice(dataIndex, dOrnPlace - 1));
 			}
@@ -448,7 +476,7 @@ module.exports.csvToObj = function(data, param1, param2)
 			{
 				dOrnPlace = dPlace;
 			}
-			else if (rnPlace < dPlace)
+			else if (rnPlace &lt; dPlace)
 			{
 				dOrnPlace = rnPlace;
 			}
@@ -462,7 +490,7 @@ module.exports.csvToObj = function(data, param1, param2)
 
 /**
  * Reverse convert an array of objects from csvToObj to CSV text format.
- * @param {Array.<object>} obj - input array of objects (the format must match the one returned by csvToObj).
+ * @param {Array.&lt;object>} obj - input array of objects (the format must match the one returned by csvToObj).
  * @param {string} [delimiter=','] - column delimiter in the output table. If not specified, then the default is comma ",".
  * @param {string} [rowDelimiter='\n'] - rows separator. If not specified, then the default is "LF" (\n). For windows, it is reasonable to specify the "CRLF" delimiter (\r\n).
  * @returns {string}
@@ -488,7 +516,7 @@ module.exports.objToCsv = function(obj, delimiter, rowDelimiter)
 	let keys = []; //Saving keys order
 	for (let key in obj[0]) keys.push(key);
 	let isConstant = new Array(keys.length);
-	for (let i = 0; i < keys.length; i++)
+	for (let i = 0; i &lt; keys.length; i++)
 	{
 		out += needQuotesCheck(keys[i].toString());
 		if (i !== keys.length - 1) out += delimiter;
@@ -500,20 +528,20 @@ module.exports.objToCsv = function(obj, delimiter, rowDelimiter)
 	{
 		//Get max length of val arrays
 		let maxArrayLength = 0;
-		for (let i = 0; i < keys.length; i++)
+		for (let i = 0; i &lt; keys.length; i++)
 		{
 			if (!isConstant[i])
 			{
 				let ln = elem[keys[i]].length;
-				if (maxArrayLength < ln) maxArrayLength = ln;
+				if (maxArrayLength &lt; ln) maxArrayLength = ln;
 			}
 		}
 		//Filling rows
 		if (maxArrayLength) //have array properties
 		{
-			for (let i = 0; i < maxArrayLength; i++)
+			for (let i = 0; i &lt; maxArrayLength; i++)
 			{
-				for (let j = 0; j < keys.length; j++)
+				for (let j = 0; j &lt; keys.length; j++)
 				{
 					if (isConstant[j])
 					{
@@ -532,7 +560,7 @@ module.exports.objToCsv = function(obj, delimiter, rowDelimiter)
 		}
 		else
 		{
-			for (let i = 0; i < keys.length; i++)
+			for (let i = 0; i &lt; keys.length; i++)
 			{
 				let val = elem[keys[i]];
 				if (val !== null) out += needQuotesCheck(val.toString());
@@ -547,7 +575,7 @@ module.exports.objToCsv = function(obj, delimiter, rowDelimiter)
 	{
 		if (val.indexOf('"') === -1)
 		{
-			if (val.indexOf(delimiter) === -1 && val.indexOf('\n') === -1) return val;
+			if (val.indexOf(delimiter) === -1 &amp;&amp; val.indexOf('\n') === -1) return val;
 		}
 		else
 		{
@@ -559,11 +587,11 @@ module.exports.objToCsv = function(obj, delimiter, rowDelimiter)
 
 /**
  * In the objects that the csvToObj function returns, the properties that are responsible for non-grouped columns contain arrays of the same length. Using the combineArrays function, you can convert these arrays to a single array of objects, which in some cases may be a more natural representation of data in JavaScript.
- * @param {Array.<object>} obj - input object (usually from csvToObj)
+ * @param {Array.&lt;object>} obj - input object (usually from csvToObj)
  * @param {string} newKey - the name of the property in which the arrays will be combined
- * @param {Array.<string>} arrayKeys - the names of the properties in the input object that are arrays
- * @param {Array.<string>} [newArrayKeys] - if specified: the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties
- * @returns {Array.<object>}
+ * @param {Array.&lt;string>} arrayKeys - the names of the properties in the input object that are arrays
+ * @param {Array.&lt;string>} [newArrayKeys] - if specified: the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties
+ * @returns {Array.&lt;object>}
  */
 module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 {
@@ -572,14 +600,14 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 	if (!Array.isArray(obj)) throw new Error('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
 	const out = new Array(obj.length);
-	for (let index = 0; index < out.length; index++)
+	for (let index = 0; index &lt; out.length; index++)
 	{
 		out[index] = {};
 		const elem = obj[index];
 		if (!Array.isArray(elem[arrayKeys[0]])) throw new Error('Object array property is not array');
 		let newKeyObj = new Array(elem[arrayKeys[0]].length);
-		for (let i = 0; i < newKeyObj.length; i++) newKeyObj[i] = {};
-		for (let keyIndex = 0; keyIndex < arrayKeys.length; keyIndex++)
+		for (let i = 0; i &lt; newKeyObj.length; i++) newKeyObj[i] = {};
+		for (let keyIndex = 0; keyIndex &lt; arrayKeys.length; keyIndex++)
 		{
 			let key = arrayKeys[keyIndex];
 			let newKey = newArrayKeys[keyIndex];
@@ -589,7 +617,7 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 				if (!Array.isArray(arr)) throw new Error('Object array property is not array');
 				if (arr.length !== newKeyObj.length) throw new Error('Arrays have different lengths');
 			}
-			for(let i = 0; i < arr.length; i++)	newKeyObj[i][newKey] = arr[i];
+			for(let i = 0; i &lt; arr.length; i++)	newKeyObj[i][newKey] = arr[i];
 		}
 		out[index][newKey] = newKeyObj;
 		for (let key in elem)
@@ -602,11 +630,11 @@ module.exports.combineArrays = function(obj, newKey, arrayKeys, newArrayKeys)
 
 /**
  * Reverse conversion result from combineArrays to an object with separate arrays
- * @param {Array.<object>} obj - input object (usually from combineArrays)
+ * @param {Array.&lt;object>} obj - input object (usually from combineArrays)
  * @param {string} objArrayKey - name of the property where the arrays are combined
  * @param {string} arrayKeys - names of properties in the input object to convert it to separate arrays
- * @param {Array.<string>} [newArrayKeys] - if specified, the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties
- * @returns {Array.<object>}
+ * @param {string[]} [newArrayKeys] - if specified, the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties
+ * @returns {Array.&lt;object>}
  */
 module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKeys)
 {
@@ -615,17 +643,17 @@ module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKe
 	if (!Array.isArray(obj)) throw new Error('Object is not array');
 	if (!obj[0]) throw new Error('Object error');
 	const out = new Array(obj.length);
-	for (let index = 0; index < out.length; index++)
+	for (let index = 0; index &lt; out.length; index++)
 	{
 		out[index] = {};
 		const elem = obj[index];
 		const objArray = elem[objArrayKey];
 		if (!Array.isArray(objArray)) throw new Error('Object array property is not array');
-		for (let keyIndex = 0; keyIndex < arrayKeys.length; keyIndex++)
+		for (let keyIndex = 0; keyIndex &lt; arrayKeys.length; keyIndex++)
 		{
 			let newObjArray = new Array(objArray.length);
 			out[index][newArrayKeys[keyIndex]] = newObjArray;
-			for (let i = 0; i < objArray.length; i++)
+			for (let i = 0; i &lt; objArray.length; i++)
 			{
 				newObjArray[i] = objArray[i][arrayKeys[keyIndex]];
 			}
@@ -637,3 +665,26 @@ module.exports.separateArrays = function(obj, objArrayKey, arrayKeys, newArrayKe
 	}
 	return out;
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#combineArrays">combineArrays</a></li><li><a href="global.html#csvToObj">csvToObj</a></li><li><a href="global.html#objToCsv">objToCsv</a></li><li><a href="global.html#separateArrays">separateArrays</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Jun 18 2024 11:10:50 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

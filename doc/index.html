@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Convert csv data to an array of JavaScript objects</h1>
+<p>Converting csv files to an array of JavaScript objects and vice versa. Can group input data.</p>
+<h2>Installation</h2>
+<pre class="prettyprint source lang-bash"><code>npm i csv-to-js-parser
+</code></pre>
+<h2>Example</h2>
+<h3>csvToObj function</h3>
+<p>Suppose we have a table with customers and the goods they ordered in the store (Table 1).</p>
+<p><strong>Table 1</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">customer_id</th>
+<th style="text-align:center">customer_name</th>
+<th style="text-align:center">customer_status</th>
+<th style="text-align:center">product_id</th>
+<th style="text-align:center">product</th>
+<th style="text-align:center">price</th>
+<th style="text-align:center">closed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">Bob</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">computer</td>
+<td style="text-align:center">550</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">Bob</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">monitor</td>
+<td style="text-align:center">400</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">Bob</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">mobile phone</td>
+<td style="text-align:center">970</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">Bob</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">mouse</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">lice</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">laptop</td>
+<td style="text-align:center">1200</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">Alice</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">mouse</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">Eve</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">microphone</td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">Eve</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">router</td>
+<td style="text-align:center">105</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">Eve</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">laptop</td>
+<td style="text-align:center">1200</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p>Here, each customer has a unique identifier: &quot;customer_id&quot;.</p>
+<p>Table 1 has columns where repeated values occur in rows. For example, customer_id will be the same in the first four lines, as these lines describe the purchases of the same customer. In these situations, you usually don't need to convert each row to a separate JavaScript object, but it is necessary that there is one object per customer.</p>
+<p>Using this module, you can convert the above table into an array, where each element of this array is a JavaScript object that describes the parameters of a particular customer and his purchase.</p>
+<pre class="prettyprint source lang-javascript"><code>[
+    {
+        customer_id: 1,
+        customer_name: 'Bob',
+        customer_status: 0,
+        product: ['computer', 'monitor', 'mobile phone', 'mouse'],
+        product_id: [1, 2, 3, 4],
+        price: [550, 400, 970, 7],
+        closed: [true, false, true, true]
+    },
+    {
+        customer_id: 2,
+        customer_name: 'Alice',
+        customer_status: 1,
+        product: ['laptop', 'mouse'],
+        product_id: [5, 4],
+        price: [1200, 7],
+        closed: [true, false]
+    },
+    {
+        customer_id: 3,
+        customer_name: 'Eve',
+        customer_status: 1,
+        product: ['microphone', 'router', 'laptop'],
+        product_id: [6, 7, 5],
+        price: [20, 105, 1200],
+        closed: [true, false, false]
+    }
+]
+</code></pre>
+<p>Let's look at the source code for getting such result. Let the input table be stored in the &quot;data.csv&quot; file, where the column separators are the &quot;;&quot;.</p>
+<pre class="prettyprint source lang-javascript"><code>const fs = require('fs');
+const csvToObj = require('csv-to-js-parser').csvToObj;
+
+const data = fs.readFileSync('data.csv').toString();
+
+const description =
+    {
+        customer_id:     {type: 'number', group: 1},
+        product:         {type: 'string'},
+        product_id:      {type: 'number'},
+        customer_name:   {type: 'string', group: 2},
+        price:           {type: 'number'},
+        closed:          {type: 'boolean'},
+        customer_status: {type: 'number', group: 2}
+    };
+let obj = csvToObj(data, ';', description);
+</code></pre>
+<p>The csvToObj function accepts the following parameters:</p>
+<ul>
+<li>
+<p>data: csv table as a string.</p>
+</li>
+<li>
+<p>delimeter [optional]: column separator in the input table. If not specified, then the default is comma &quot;,&quot;.</p>
+</li>
+<li>
+<p>description [optional]: description of the input table.</p>
+</li>
+</ul>
+<p>The description object describes the input table:</p>
+<ul>
+<li>type: describes the type of column values. Three options are supported: &quot;number&quot;, &quot;string&quot; and &quot;boolean&quot;.</li>
+<li>group: the order of grouping. Have to be set only for the columns that need to be grouped. There must be at least one such column. The values of this property indicate the order in which the columns should be grouped. For example columns with &quot;group: 1&quot; are grouped first, then columns with &quot;group: 2&quot; are grouped inside the first grouping and so on. You can perceive the group property in the same way as a &quot;Group By&quot; construct in SQL.</li>
+</ul>
+<p>If the description parameter is not specified, then a string type is assigned to all columns of the input table and grouping is performed by all columns. This means that each row of the input table will be converted to a separate JavaScript object.</p>
+<p>The  delimeter and description parameters can be set in a different order: first description, then delimeter.</p>
+<p>Consider another example where you can better see how grouping works. Let the input data be table 2.</p>
+<p><strong>Table 2</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">sex</th>
+<th style="text-align:center">age</th>
+<th style="text-align:center">person_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">32</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">32</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">male</td>
+<td style="text-align:center">32</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">9</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">9</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">10</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">10</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">11</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">12</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">33</td>
+<td style="text-align:center">13</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">33</td>
+<td style="text-align:center">14</td>
+</tr>
+<tr>
+<td style="text-align:center">female</td>
+<td style="text-align:center">33</td>
+<td style="text-align:center">14</td>
+</tr>
+</tbody>
+</table>
+<p>We need to get an array of JavaScript objects in which the data from table 2 will be grouped first by age and then by sex. In this case, the description object will be as follows:</p>
+<pre class="prettyprint source lang-javascript"><code>const description = 
+{
+    age:       {type: 'number', group: 1},
+    sex:       {type: 'string', group: 2},
+    person_id: {type: 'number'}
+};
+</code></pre>
+<p>The output from csvToObj founction will be as follows:</p>
+<pre class="prettyprint source lang-javascript"><code>[
+    {
+        sex: 'female',
+        age: 30,
+        person_id: [9, 9, 10, 10]
+    },
+    {
+        sex: 'male',
+        age: 30,
+        person_id: [1, 2, 3]
+    },
+    {
+        sex: 'female',
+        age: 31,
+        person_id: [11, 12]
+    },
+    {
+        sex: 'male',
+        age: 31,
+        person_id: [4, 4, 5, 5, 6]
+    },
+    {
+        sex: 'male',
+        age: 32,
+        person_id: [7, 7, 8]
+    },
+    {
+        sex: 'female',
+        age: 33,
+        person_id: [13, 14, 14]
+    }
+]
+</code></pre>
+<h3>combineArrays function</h3>
+<p>You can notice that in the objects that the csvToObj function returns, the properties that are responsible for non-grouped columns contain arrays of the same length. Using the combineArrays function, you can convert these arrays to a single array of objects, which in some cases may be a more natural representation of data in JavaScript.</p>
+<p>The code for working with this function for the example from table 1:</p>
+<pre class="prettyprint source lang-javascript"><code>const combineArrays = require('csv-to-js-parser').combineArrays;
+obj = combineArrays(obj, 'products', ['product_id', 'product', 'price', 'closed'], ['product_id', 'name', 'price', 'closed']);
+</code></pre>
+<p>The combineArrays function takes the following parameters:</p>
+<ul>
+<li>obj: input object (usually from csvToObj).</li>
+<li>newKey: the name of the property in which the arrays will be combined.</li>
+<li>arrayKeys: the names of the properties in the input object that are arrays.</li>
+<li>newArrayKeys [optional]: if specified: the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties.</li>
+</ul>
+<p>The result of the combineArrays function for example from table 1 is shown below:</p>
+<pre class="prettyprint source lang-javascript"><code>[
+    {
+        customer_id: 1,
+        customer_name: 'Bob',
+        products:
+        [
+            {
+                product_id: 1,
+                name: 'computer',
+                price: 550,
+                closed: true
+            },
+            {
+                product_id: 2,
+                name: 'monitor',
+                price: 400,
+                closed: false
+            },
+            {
+                product_id: 3,
+                name: 'mobile phone',
+                price: 970,
+                closed: true
+            },
+            {
+                product_id: 4,
+                name: 'mouse',
+                price: 7,
+                closed: true
+            }
+        ],
+        customer_status: 0
+    },
+    {
+        customer_id: 2,
+        customer_name: 'Alice',
+        products:
+        [
+            {
+                product_id: 5,
+                name: 'laptop',
+                price: 1200,
+                closed: true
+            },
+            {
+                product_id: 4,
+                name: 'mouse',
+                price: 7,
+                closed: false
+            },
+        ],
+        customer_status: 1
+    },
+    {
+        customer_id: 3,
+        customer_name: 'Eve',
+        products:
+        [
+            {
+                product_id: 6,
+                name: 'microphone',
+                price: 20,
+                closed: true
+            },
+            {
+                product_id: 7,
+                name: 'router',
+                price: 105,
+                closed: false
+            },
+            {
+                product_id: 5,
+                name: 'laptop',
+                price: 1200,
+                closed: false
+            },
+
+        ],
+        customer_status: 1
+    }
+]
+</code></pre>
+<h3>separateArrays function</h3>
+<p>To reverse conversion to an object with separate arrays, you can use the separateArrays function.</p>
+<pre class="prettyprint source lang-javascript"><code>const separateArrays = require('csv-to-js-parser').separateArrays;
+obj = separateArrays(obj, 'products', ['product_id', 'name', 'price', 'closed'], ['product_id', 'product', 'price', 'closed']);
+</code></pre>
+<p>In this function, parameters are similar to those used in combineArrays:</p>
+<ul>
+<li>obj: input object (usually from combineArrays).</li>
+<li>objArrayKey: name of the property where the arrays are combined.</li>
+<li>arrayKeys: names of properties in the input object to convert it to separate arrays .</li>
+<li>newArrayKeys [optional]: if specified, the names of properties that override properties from arrayKeys, i.e. the output object will have newArrayKeys properties instead of arrayKeys properties.</li>
+</ul>
+<p>The result of this function will be the initial array of objects obtained from csvToObj.</p>
+<h3>Saving in JSON format</h3>
+<p>To save objects from csvToObj or combineArrays functions to a file, you can use the built-in node.js function JSON.stringify().</p>
+<pre class="prettyprint source lang-javascript"><code>const json = JSON.stringify(obj, null, ' ');
+fs.writeFileSync('data.json', json);
+</code></pre>
+<h3>objToCsv function</h3>
+<p>You can use the objToCsv function to reverse convert an array of objects from csvToObj to CSV text format.</p>
+<pre class="prettyprint source lang-javascript"><code>const objToCsv = require('csv-to-js-parser').objToCsv;
+const csv = objToCsv(obj, ';');
+fs.writeFileSync('newData.csv', csv);
+</code></pre>
+<p>The objToCsv function accepts the following parameters:</p>
+<ul>
+<li>obj: input array of objects (the format must match the one returned by csvToObj).</li>
+<li>delimeter [optional]: column delimiter in the output table. If not specified, then the default is comma &quot;,&quot;.</li>
+<li>rowDelimeter [optional]: rows separator. If not specified, then the default is &quot;LF&quot; (\n). For windows, it is reasonable to specify the &quot;CRLF&quot; delimiter (\r\n).</li>
+</ul>
+<h2>MIT License</h2>
+<p>https://github.com/Mendeo/csv-to-js-parser/blob/master/LICENSE</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#combineArrays">combineArrays</a></li><li><a href="global.html#csvToObj">csvToObj</a></li><li><a href="global.html#objToCsv">objToCsv</a></li><li><a href="global.html#separateArrays">separateArrays</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Jun 18 2024 11:10:50 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
